@@ -97,10 +97,10 @@ export default function Nav() {
             />
           </button>
           <div className="nav-drawer__couple-title">
+            <span className="nav-drawer__couple-name">{partner1}</span>
             <span className="nav-drawer__couple-name">
-              {partner1} <span className="nav-drawer__amp">&amp;</span>
+              <span className="nav-drawer__amp">&amp;</span> {partner2}
             </span>
-            <span className="nav-drawer__couple-name">{partner2}</span>
           </div>
           <button
             type="button"
