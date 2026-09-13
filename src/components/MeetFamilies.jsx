@@ -189,7 +189,7 @@ export default function MeetFamilies() {
         </div>
 
         <div className="family-cards-container">
-          <FamilyCard family={bride} side="bride" />
+          <FamilyCard family={groom} side="groom" />
 
           <div className="family-cards__divider" aria-hidden="true">
             <span className="family-cards__divider-line family-cards__divider-line--top" />
@@ -199,7 +199,7 @@ export default function MeetFamilies() {
             <span className="family-cards__divider-line family-cards__divider-line--bottom" />
           </div>
 
-          <FamilyCard family={groom} side="groom" />
+          <FamilyCard family={bride} side="bride" />
         </div>
       </div>
     </section>

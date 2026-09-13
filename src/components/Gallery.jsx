@@ -7,15 +7,15 @@ import "./Gallery.css";
 const VISIBLE_RANGE = 3; // covers beyond +/-3 slots from center are hidden
 const IDLE_RESET_DELAY_MS = 8000; // Reset to center logo card after 8s of inactivity
 
-// Default Generated Tile with MY Logo for Mahek & Yashoratna
+// Default Generated Tile with Monogram Logo
 const CARICATURE_PLACEHOLDERS = [
   {
     isCaricature: true,
     caricatureSrc: asset("/images/monogram/monogramWithoutBg.png"),
-    title: "Mahek & Yashoratna",
+    title: `${content.couple.partner1} & ${content.couple.partner2}`,
     subtitle: "A Lifetime of Love and Happiness",
     badge: "Forever Together 🌸",
-    alt: "Mahek & Yashoratna Monogram Logo",
+    alt: `${content.couple.partner1} & ${content.couple.partner2} Monogram Logo`,
   },
 ];
 
@@ -358,7 +358,7 @@ export default function Gallery() {
                       ? activePhoto.caricatureSrc
                       : CARICATURE_PLACEHOLDERS[0].caricatureSrc
                   }
-                  alt={activePhoto.alt || "Mahek & Yashoratna Monogram Logo"}
+                  alt={activePhoto.alt || `${content.couple.partner1} & ${content.couple.partner2} Monogram Logo`}
                   className="lightbox__img lightbox__img--caricature"
                 />
                 <h3 className="coverflow__caricature-title" style={{ fontSize: "1.5rem", marginTop: "0.35rem" }}>

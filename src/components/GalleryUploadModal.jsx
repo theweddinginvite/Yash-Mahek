@@ -243,7 +243,7 @@ export default function GalleryUploadModal({ isOpen, onClose, onUploadSuccess })
             </h3>
             <div className="gallery-upload__divider" aria-hidden="true" />
             <p className="gallery-upload__subtitle">
-              Capture a moment from Mahek &amp; Yashoratna&apos;s celebrations? Share your candid memories with the family!
+              Capture a moment from {content.couple.partner1} &amp; {content.couple.partner2}&apos;s celebrations? Share your candid memories with the family!
             </p>
           </div>
 
@@ -315,7 +315,7 @@ export default function GalleryUploadModal({ isOpen, onClose, onUploadSuccess })
               <div className="gallery-upload__success-icon">✓</div>
               <h4 className="gallery-upload__success-heading">Memories Uploaded!</h4>
               <p className="gallery-upload__success-text">
-                Thank you so much! Your photos have been safely saved to Yashoratna &amp; Mahek&apos;s wedding album.
+                Thank you so much! Your photos have been safely saved to {content.couple.partner1} &amp; {content.couple.partner2}&apos;s wedding album.
               </p>
               <div className="gallery-upload__success-actions">
                 <button

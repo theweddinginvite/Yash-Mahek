@@ -13,8 +13,8 @@ export const asset = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\//,
 
 const content = {
   couple: {
-    partner1: "Mahek",
-    partner2: "Yashoratna",
+    partner1: "Yashoratna",
+    partner2: "Mahek",
   },
 
   wedding: {
