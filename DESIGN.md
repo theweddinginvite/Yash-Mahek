@@ -188,7 +188,7 @@ The bottom-right floating control cluster (`FloatingControls.jsx`), top to botto
 - Events shown as interactive **3D Flip Cards** arranged in a centered 2-column, 3-row grid (`.events-grid`, total 6 event cards):
   - Row 1: **Haldi** (Dec 5, 12:30 PM) &amp; **Engagement &amp; Sangeet** (Dec 5, 5:00 PM)
   - Row 2: **Godh Bharai &amp; Sagai** (Dec 5, 7:00 PM) &amp; **Baraat &amp; Ghurchari** (Dec 6, 10:30 AM)
-  - Row 3: **Jaimaal** (Dec 6, 12:30 PM) &amp; **Phere** (Dec 6, 5:00 PM)
+  - Row 3: **Jaimaal** (Dec 6, 1:00 PM) &amp; **Phere** (Dec 6, 5:00 PM)
 - **Card Front**: Centered event title (`Playfair Display`, Burgundy `#8f3350`), subtle gold divider line, event date (uppercase, muted), and event time (`Playfair Display`, Gold `#b08968`), with a "Tap for details" hint icon.
 - **Card Back**: Tapping/clicking smoothly flips the card 180° (`rotateY(180deg)`) to reveal:
   - Header with **Short Date** (`Dec 5` or `Dec 6`) on the first line, and start time on the next line (e.g. `12:30 PM`, with the word "onwards" removed for clarity and precision).

@@ -140,7 +140,7 @@ const content = {
     {
       name: "Jaimaal",
       date: "December 6, 2026",
-      time: "12:30 PM",
+      time: "1:00 PM",
       description: "The auspicious floral garland exchange marking the union of bride and groom.",
       attire: "Traditional Festive and Elegance",
       location: "Central Mandap",
@@ -255,8 +255,8 @@ const content = {
       question: "What are the check-in formalities and accommodation arrangements?",
       answer:
         "Room accommodations have been arranged at Winsome Resort & Spa for outstation guests.\n\n" +
-        "• Check-in Time: 12:00 PM on Dec 5\n" +
-        "• Check-out Time: 10:00 AM on Dec 7\n\n" +
+        "• Check-in Time: 12:00 PM\n" +
+        "• Check-out Time: 10:00 AM\n\n" +
         "• Mandatory Photo ID: As per resort and Uttarakhand government regulations, all adult guests must present a valid physical or digital Aadhaar Card (or Driving License / Govt. ID) during check-in.\n\n" +
         "• Hospitality & Assistance Contacts:\n" +
         "  - Resort Helpdesk: +91 99714 99502 / +91 95600 02045\n" +

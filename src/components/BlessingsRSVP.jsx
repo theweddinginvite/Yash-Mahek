@@ -91,7 +91,7 @@ function buildWhatsAppUrl(data, whatsappNumber) {
   return `https://wa.me/${number}?text=${encodeURIComponent(lines.join("\n"))}`;
 }
 
-function SendingAnimation({ message = "Delivering your blessings to Mahek & Yashoratna..." }) {
+function SendingAnimation({ message = `Delivering your blessings to ${content.couple.partner1} & ${content.couple.partner2}...` }) {
   return (
     <div className="sending-animation" aria-live="polite">
       <div className="sending-animation__visual">
@@ -185,7 +185,7 @@ function BlessingForm({ appsScriptUrl, onBlessingSent, onCelebrate, onSwitchToRs
   };
 
   if (status === "submitting") {
-    return <SendingAnimation message="Delivering your heartfelt blessings to Mahek & Yashoratna…" />;
+    return <SendingAnimation message={`Delivering your heartfelt blessings to ${content.couple.partner1} & ${content.couple.partner2}…`} />;
   }
 
   if (status === "success") {
@@ -196,7 +196,7 @@ function BlessingForm({ appsScriptUrl, onBlessingSent, onCelebrate, onSwitchToRs
         </div>
         <h3 className="form-status__title">Blessings Delivered!</h3>
         <p className="form-status__desc">
-          Thank you{submittedName ? `, ${submittedName}` : ""}! Your warm wishes and blessings have reached Mahek &amp; Yashoratna.
+          Thank you{submittedName ? `, ${submittedName}` : ""}! Your warm wishes and blessings have reached {content.couple.partner1} &amp; {content.couple.partner2}.
         </p>
         <div className="form-status__actions">
           <button
@@ -344,7 +344,7 @@ function RsvpForm({ appsScriptUrl, whatsappNumber, onCelebrate, onSwitchToBlessi
   };
 
   if (status === "submitting") {
-    return <SendingAnimation message="Sending your RSVP confirmation to Mahek & Yashoratna…" />;
+    return <SendingAnimation message={`Sending your RSVP confirmation to ${content.couple.partner1} & ${content.couple.partner2}…`} />;
   }
 
   if (status === "success") {
@@ -355,7 +355,7 @@ function RsvpForm({ appsScriptUrl, whatsappNumber, onCelebrate, onSwitchToBlessi
         </div>
         <h3 className="form-status__title">RSVP Confirmed!</h3>
         <p className="form-status__desc">
-          Thank you{submittedData?.name ? `, ${submittedData.name}` : ""}! Your response has been recorded. We look forward to celebrating together!
+          Thank you{submittedData?.name ? `, ${submittedData.name}` : ""}! Your response has been recorded for {content.couple.partner1} &amp; {content.couple.partner2}&apos;s wedding. We look forward to celebrating together!
         </p>
         <div className="form-status__actions">
           <button
@@ -657,7 +657,7 @@ function MediaUploadForm({
         </div>
         <h3 className="form-status__title">Memories Uploaded!</h3>
         <p className="form-status__desc">
-          Thank you{uploaderName ? `, ${uploaderName.trim()}` : ""}! Your photos &amp; videos have been safely saved to Yashoratna &amp; Mahek&apos;s wedding album.
+          Thank you{uploaderName ? `, ${uploaderName.trim()}` : ""}! Your photos &amp; videos have been safely saved to {content.couple.partner1} &amp; {content.couple.partner2}&apos;s wedding album.
         </p>
 
         <div className="form-status__actions">
@@ -825,7 +825,7 @@ function MediaUploadForm({
 
 export default function BlessingsRSVP({ onBlessingSent }) {
   const { blessingsRsvp, integrations } = content;
-  const [activeTab, setActiveTab] = useState("blessings");
+  const [activeTab, setActiveTab] = useState("rsvp");
   const [prefilledName, setPrefilledName] = useState("");
   const [prefilledSide, setPrefilledSide] = useState(SIDES[0]);
   const [celebrateTrigger, setCelebrateTrigger] = useState(0);

@@ -24,7 +24,7 @@ A high-performance, single-page luxury Indian wedding invitation built with Reac
   - **Live Heart Reactions (❤️)**: Interactive heart reactions synchronized across all guests.
   - **Matching Royal Frame**: Harmonized luxury border design with burgundy inner dashed trim.
   - **Telegram Bot Notifications & Moderation**: Instant Telegram alerts for new blessings & RSVPs with native inline "🗑️ Delete from Live Wall" moderation buttons.
-- **FAQ & Footer (`#faq`)**: Curated 6-question accordion covering exact travel routes & distances, complimentary parking, dress codes, December weather breakdown, 12:00 PM check-in on Dec 5 & 10:00 AM check-out on Dec 7 with mandatory Aadhaar ID requirements, hospitality coordinators, 24/7 snacks availability, official wedding hashtags (`#MahekWedsYash` & `#YashKiMahek`), and interactive action buttons for venue navigation and gallery jumps.
+- **FAQ & Footer (`#faq`)**: Curated 6-question accordion covering exact travel routes & distances, complimentary parking, dress codes, December weather breakdown, 12:00 PM check-in & 10:00 AM check-out with mandatory Aadhaar ID requirements, hospitality coordinators, 24/7 snacks availability, official wedding hashtags (`#MahekWedsYash` & `#YashKiMahek`), and interactive action buttons for venue navigation and gallery jumps.
 - **Mobile Viewport Stability & Smooth Free Scrolling**: Standardized on `min-height: 100vh; min-height: 100lvh;` with global `overflow-anchor: none !important;` and `scroll-snap-type: none !important;`, preventing mobile URL bar expansion/retraction from triggering scroll jumps, erratic repositioning, or rubber-banding across iOS Safari and Android Chrome.
 - **Floating Controls**: Ambient background music player, envelope re-opener, and section navigation arrows.
 
@@ -59,9 +59,7 @@ All wedding details are centrally configured in **[`src/content.js`](src/content
 The gallery is built on a strictly separated two-tier Google Drive & Google Sheets architecture that ensures host curation integrity while welcoming guest participation:
 
 ### 1. Curated Host Gallery (Live Website Stream)
-- **Dedicated Folder**: `Wedding Invite Photo Gallery`
-  - Folder Link: `https://drive.google.com/drive/folders/1n0l1dZEb3eQE9qn9CZyZVhLZ9wC6fqtz?usp=sharing`
-  - Folder ID: `1n0l1dZEb3eQE9qn9CZyZVhLZ9wC6fqtz`
+- **Dedicated Folder**: `Wedding Invite Photo Gallery` (configured in Google Drive)
 - **One-Way Host Pipeline**:
   - Hosts upload curated high-resolution wedding photos directly into the Drive folder.
   - Automatically synchronizes to the dedicated **`GALLERY`** tab in Google Sheets, generating live `=IMAGE(...)` 60px thumbnail previews, file IDs, direct links, and timestamps.
@@ -91,7 +89,6 @@ The gallery is built on a strictly separated two-tier Google Drive & Google Shee
 ### 2. Google Sheets ('Wedding Admin System' Tier)
 - Spreadsheet Workbook: **'Wedding Admin System'**
 - Apps Script Project: **'WeddingAdminScript'**
-- Web App Endpoint: `https://script.google.com/macros/s/AKfycbw1uFiMAmvqL0L16zuvRrlnwO1E8ERHGyUCTLd_uySpWYbG3DU0DHxsaURlJyKqpCzAHQ/exec`
 - Automatically synchronized with Firebase every 1 minute and on real-time sheet edits with permanent data protection.
 - Dedicated Tabs:
   - `BLESSINGS_BRIDE` & `BLESSINGS_GROOM`: `Name | Side | Message | Timestamp | Hearts (❤️) | FirebaseDocID`

@@ -101,7 +101,7 @@ Event details are presented as interactive 3D flip cards in a clean 2-column, 3-
 
 **Jaimaal**
 - Date: `[ December 06, 2026 ]`
-- Time: `[ 12:30 PM ]`
+- Time: `[ 1:00 PM ]`
 - One-liner Description: `[ The auspicious floral garland exchange marking the union of bride and groom. ]`
 - Attire / Dress Code: `[ Traditional Festive and Elegance ]`
 - Venue / Location: `[ Central Mandap ]`
@@ -140,9 +140,7 @@ Event details are presented as interactive 3D flip cards in a clean 2-column, 3-
 The gallery system uses a strictly separated two-tier Google Drive & Google Sheets architecture:
 
 ### A. Curated Host Gallery (Live Website Stream)
-- **Drive Folder Name**: `Wedding Invite Photo Gallery`
-- **Folder Link**: `https://drive.google.com/drive/folders/1n0l1dZEb3eQE9qn9CZyZVhLZ9wC6fqtz?usp=sharing`
-- **Folder ID**: `1n0l1dZEb3eQE9qn9CZyZVhLZ9wC6fqtz`
+- **Drive Folder Name**: `Wedding Invite Photo Gallery` (configured in Google Drive)
 - **Google Sheets Tab**: `GALLERY` (Columns: `IMAGE_URL | PHOTO_CAPTION | DRIVE_FILE_ID | DATE_ADDED | PREVIEW`)
 - **Real-Time Sync**:
   - Uploading photos to this Drive folder populates the `GALLERY` tab with live `=IMAGE(...)` 60px preview thumbnails and streams directly to the website gallery.
@@ -182,8 +180,8 @@ The gallery system uses a strictly separated two-tier Google Drive & Google Shee
   (Tip: We recommend carrying warm shawls, jackets, or blazers for the evening and early morning outdoor celebrations).
 - **What are the check-in formalities and accommodation arrangements?**
   Room accommodations have been arranged at Winsome Resort & Spa for outstation guests:
-  - Check-in Time: 12:00 PM on Dec 5
-  - Check-out Time: 10:00 AM on Dec 7
+  - Check-in Time: 12:00 PM
+  - Check-out Time: 10:00 AM
   - Mandatory Photo ID: As per resort and Uttarakhand government regulations, all adult guests must present a valid physical or digital Aadhaar Card (or Driving License / Govt. ID) during check-in.
   - Hospitality & Assistance Contacts:
     - Resort Helpdesk: +91 99714 99502 / +91 95600 02045
@@ -201,8 +199,6 @@ The gallery system uses a strictly separated two-tier Google Drive & Google Shee
 - **Firebase Project ID**: `yashmahekwedding` (Real-Time 0-Latency Listener)
 - **Google Spreadsheet**: **'Wedding Admin System'**
 - **Google Apps Script Project**: **'WeddingAdminScript'**
-- **Web App URL**:
-  `https://script.google.com/macros/s/AKfycbw1uFiMAmvqL0L16zuvRrlnwO1E8ERHGyUCTLd_uySpWYbG3DU0DHxsaURlJyKqpCzAHQ/exec`
 - **Telegram Moderation Bot**:
   - Connected Telegram Group: `MKY Wedd: Blessings Wall and RSVP`
   - Real-time alerts with native `🗑️ Delete from Live Wall` button.
