@@ -593,7 +593,7 @@
   font-size: var(--card-names-size, 1.45rem);
   font-weight: 400;
   color: var(--card-names-color, var(--color-text));
-  line-height: 0.88;
+  line-height: 1.1;
   margin: 0.1rem 0;
 }
 
@@ -607,7 +607,7 @@
   font-style: italic;
   font-size: 0.78rem;
   line-height: 1;
-  margin: -0.15rem 0 -0.12rem;
+  margin: 0.04rem 0;
   opacity: 0.85;
 }
 

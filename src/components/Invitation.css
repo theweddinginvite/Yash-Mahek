@@ -70,14 +70,14 @@
   font-size: 4.2rem;
   font-weight: 400;
   color: var(--color-burgundy);
-  line-height: 1.15;
+  line-height: 1.25;
   letter-spacing: 0.01em;
   margin: 0;
   padding: 0 0.5rem;
 }
 
 .invitation__and-wrap {
-  margin: clamp(0.15rem, 0.7vh, 0.35rem) 0;
+  margin: clamp(0.5rem, 1.4vh, 0.85rem) 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -156,6 +156,11 @@
 @media (max-width: 640px) {
   .invitation__name {
     font-size: clamp(2.9rem, 6.8vh, 3.4rem);
+    line-height: 1.25;
+  }
+
+  .invitation__and-wrap {
+    margin: clamp(0.35rem, 1.2vh, 0.65rem) 0;
   }
 
   .invitation__and {

@@ -7,7 +7,7 @@ import rsvpIcon from "../assets/flaticons/rsvp-13430453.png";
 import blessingsIcon from "../assets/flaticons/blessings-18060799.png";
 import "./BlessingsRSVP.css";
 
-const SIDES = ["Bride Side", "Groom Side"];
+const SIDES = ["Groom Side", "Bride Side"];
 
 const CEREMONIES = [
   "General / All Events",
