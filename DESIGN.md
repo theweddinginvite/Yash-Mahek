@@ -186,14 +186,14 @@ The bottom-right floating control cluster (`FloatingControls.jsx`), top to botto
 ### Event Details
 - White/surface section (visually distinct from the ivory sections around it)
 - Events shown as interactive **3D Flip Cards** arranged in a centered 2-column, 3-row grid (`.events-grid`, total 6 event cards):
-  - Row 1: **Haldi** (Dec 5, 12:30 PM) &amp; **Engagement &amp; Sangeet** (Dec 5, 5:00 PM)
-  - Row 2: **Godh Bharai &amp; Sagai** (Dec 5, 7:00 PM) &amp; **Baraat &amp; Ghurchari** (Dec 6, 10:30 AM)
-  - Row 3: **Jaimaal** (Dec 6, 1:00 PM) &amp; **Phere** (Dec 6, 5:00 PM)
-- **Card Front**: Centered event title (`Playfair Display`, Burgundy `#8f3350`), subtle gold divider line, event date (uppercase, muted), and event time (`Playfair Display`, Gold `#b08968`), with a "Tap for details" hint icon.
+  - Row 1: **Haldi** (Sat, Dec 5, 12:30 PM, meal: *Followed by Lunch*) &amp; **Engagement &amp; Sangeet** (Sat, Dec 5, 5:00 PM)
+  - Row 2: **Godh Bharai &amp; Sagai** (Sat, Dec 5, 7:00 PM, meal: *Followed by Dinner*) &amp; **Baraat &amp; Ghurchari** (Sun, Dec 6, 10:30 AM)
+  - Row 3: **Jaimaal** (Sun, Dec 6, 1:00 PM, meal: *Followed by Gala Lunch*) &amp; **Phere** (Sun, Dec 6, 5:00 PM, meal: *Followed by Dinner*)
+- **Card Front**: Centered event title (`Playfair Display`, Burgundy `#8f3350`), meal subtitle slot (reserved fixed-height slot `1.2em` ensuring identical vertical rhythm across cards with and without meals), subtle gold divider line, event day & date (`Sat, December 5, 2026` / `Sun, December 6, 2026`, uppercase, muted), and event time (`Playfair Display`, Gold `#b08968`), with a "Tap for details" hint icon.
 - **Card Back**: Tapping/clicking smoothly flips the card 180° (`rotateY(180deg)`) to reveal:
-  - Header with **Short Date** (`Dec 5` or `Dec 6`) on the first line, and start time on the next line (e.g. `12:30 PM`, with the word "onwards" removed for clarity and precision).
+  - Header with event name, subtitle slot, **Short Date with Day** (`Sat, Dec 5` or `Sun, Dec 6`) on the first line, and start time on the next line (with the word "onwards" removed for clarity and precision).
   - One-liner event description.
-  - Metadata row for **Attire** (e.g. *Shades of Pink*, *Glam and Glitter*, *Traditional Festive and Elegance*).
+  - Metadata row for **Attire** with label `ATTIRE` in muted gold (`var(--color-accent)`) and attire theme in bold burgundy (`var(--color-burgundy)` / `#8f3350`, no underlines).
   - Animated burgundy boundary timer stroke (`.event-flip-card__border-timer`, `#8f3350`) tracing around the perimeter of the card showing the countdown until it flips back (default 20 seconds, or immediately on tap).
 - **Mobile (≤680px)**: Retains the 2-column, 3-row layout with compact sizing, typography, and margins so all 6 cards fit cleanly on mobile screens without overflowing.
 - **"How to reach the venue?" Button**: Sits centered below the event cards (`.event-details__venue-btn`, burgundy pill with map-pin icon).

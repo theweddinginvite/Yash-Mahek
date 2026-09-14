@@ -137,13 +137,13 @@ export default function MeetFamilies() {
     familyTitle: "THE GUPTA FAMILY",
     location: "Moradabad · The City of Brass",
     grandparents: [
-      content.coupleProfiles?.bride?.grandparentage?.person1 || "Late Shri Prem Shankar Gupta",
-      content.coupleProfiles?.bride?.grandparentage?.person2 || "Late Smt. Sarla Devi Gupta",
+      content.coupleProfiles?.bride?.grandparentage?.person1 || "Late Smt. Sarla Devi Gupta",
+      content.coupleProfiles?.bride?.grandparentage?.person2 || "Late Shri Prem Shankar Gupta",
     ],
     invitePhrase1: "with their family and loved ones",
     parents: [
       content.coupleProfiles?.bride?.parentage?.person1 || "Smt. Deepa Gupta",
-      content.coupleProfiles?.bride?.parentage?.person2 || "Shri Rajeev Gupta",
+      content.coupleProfiles?.bride?.parentage?.person2 || "Shri Rajiv Gupta",
     ],
     invitePhrase2: "request the pleasure of your company on the auspicious wedding of",
     name: content.couple?.partner1 || "Mahek",
@@ -155,8 +155,8 @@ export default function MeetFamilies() {
     familyTitle: "THE GUPTA FAMILY",
     location: "Moradabad · The City of Brass",
     grandparents: [
-      content.coupleProfiles?.groom?.grandparentage?.person1 || "Late Shri Shri Niwas Gupta",
-      content.coupleProfiles?.groom?.grandparentage?.person2 || "Late Smt. Rama Gupta",
+      content.coupleProfiles?.groom?.grandparentage?.person1 || "Late Smt. Rama Gupta",
+      content.coupleProfiles?.groom?.grandparentage?.person2 || "Late Shri Shri Niwas Gupta",
     ],
     invitePhrase1: "with their family and loved ones",
     parents: [

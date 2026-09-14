@@ -7,20 +7,50 @@ function formatEventTime(timeStr = "") {
   return timeStr.replace(/\s+onwards/i, "").trim();
 }
 
-function formatShortDate(dateStr = "") {
+function getEventDay(event) {
+  if (event?.day) {
+    const lower = event.day.toLowerCase();
+    if (lower.startsWith("sat")) return "Saturday";
+    if (lower.startsWith("sun")) return "Sunday";
+    return event.day;
+  }
+  if (!event?.date) return "";
+  try {
+    const parsed = new Date(event.date);
+    if (!isNaN(parsed.getTime())) {
+      return parsed.toLocaleDateString("en-US", { weekday: "long" });
+    }
+  } catch {
+    // fallback
+  }
+  return "";
+}
+
+function getShortDay(dayStr = "") {
+  if (!dayStr) return "";
+  const lower = dayStr.toLowerCase();
+  if (lower.startsWith("sat")) return "Sat";
+  if (lower.startsWith("sun")) return "Sun";
+  return dayStr.slice(0, 3);
+}
+
+function formatShortDate(dateStr = "", day = "") {
   if (!dateStr) return "";
   const match = dateStr.match(/(?:December|Dec)\s+(\d+)/i);
-  if (match) {
-    return `Dec ${match[1]}`;
+  const baseDate = match ? `Dec ${match[1]}` : dateStr;
+  const shortDay = getShortDay(day);
+  if (shortDay && !baseDate.toLowerCase().includes(shortDay.toLowerCase())) {
+    return `${shortDay}, ${baseDate}`;
   }
-  return dateStr;
+  return baseDate;
 }
 
 function EventCard({ event, autoFlipSeconds = 20 }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const timerRef = useRef(null);
   const displayTime = formatEventTime(event.time);
-  const shortDate = formatShortDate(event.date);
+  const day = getEventDay(event);
+  const shortDate = formatShortDate(event.date, day);
 
   useEffect(() => {
     if (isFlipped) {
@@ -51,15 +81,19 @@ function EventCard({ event, autoFlipSeconds = 20 }) {
       role="button"
       tabIndex={0}
       aria-expanded={isFlipped}
-      aria-label={`${event.name}, ${event.date} at ${displayTime}. Click to ${
+      aria-label={`${event.name}, ${day ? `${day}, ` : ""}${event.date} at ${displayTime}. Click to ${
         isFlipped ? "see front" : "see more details"
       }`}
     >
       <div className="event-flip-card__inner">
         {/* Front Face */}
         <div className="event-flip-card__face event-flip-card__face--front">
-          <h3 className="event-flip-card__name">{event.name}</h3>
+          <h3 className="event-flip-card__name">
+            <span className="event-flip-card__name-title">{event.name}</span>
+            <span className="event-flip-card__meal">{event.meal || ""}</span>
+          </h3>
           <div className="event-flip-card__divider" aria-hidden="true" />
+          {day && <p className="event-flip-card__day">{day}</p>}
           <p className="event-flip-card__date">{event.date}</p>
           <p className="event-flip-card__time">{displayTime}</p>
           <span className="event-flip-card__hint">
@@ -110,7 +144,10 @@ function EventCard({ event, autoFlipSeconds = 20 }) {
           )}
 
           <div className="event-flip-card__back-header">
-            <h4 className="event-flip-card__back-name">{event.name}</h4>
+            <h4 className="event-flip-card__back-name">
+              <span className="event-flip-card__name-title">{event.name}</span>
+              <span className="event-flip-card__meal">{event.meal || ""}</span>
+            </h4>
             <div className="event-flip-card__back-time-wrap">
               <span className="event-flip-card__back-date">{shortDate}</span>
               <span className="event-flip-card__back-time">{displayTime}</span>
@@ -120,11 +157,13 @@ function EventCard({ event, autoFlipSeconds = 20 }) {
           {event.description && (
             <p className="event-flip-card__desc">{event.description}</p>
           )}
-          {event.attire && (
+          {(event.theme || event.attire) && (
             <div className="event-flip-card__details">
               <div className="event-flip-card__detail-row">
                 <span className="event-flip-card__detail-label">Attire</span>
-                <span className="event-flip-card__detail-val">{event.attire}</span>
+                <span className="event-flip-card__detail-val">
+                  {event.theme || event.attire}
+                </span>
               </div>
             </div>
           )}

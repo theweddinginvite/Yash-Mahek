@@ -29,6 +29,7 @@ how the site *looks*, use `DESIGN.md` instead.
 A short line shown above your names in the Invitation:
 
 - Tagline: `[ With All The Blessings ]`
+- Invite Phrase: `[ WE INVITE YOU TO ]` (displayed above the envelope intro landing)
 
 ## 4. Family Section / Meet the Couple
 
@@ -42,9 +43,9 @@ A short line shown above your names in the Invitation:
 - Symbol Translation: `[ Auspicious Beginning ]`
 - Family Title: `[ THE GUPTA FAMILY ]`
 - City / Origin: `[ Moradabad · The City of Brass ]`
-- Grandparents: `[ Late Shri Prem Shankar Gupta ]` & `[ Late Smt. Sarla Devi Gupta ]`
+- Grandparents: `[ Late Smt. Sarla Devi Gupta ]` & `[ Late Shri Prem Shankar Gupta ]`
 - Invitation Line 1: `[ with their family and loved ones ]`
-- Parents: `[ Smt. Deepa Gupta ]` & `[ Shri Rajeev Gupta ]`
+- Parents: `[ Smt. Deepa Gupta ]` & `[ Shri Rajiv Gupta ]`
 - Invitation Line 2: `[ request the pleasure of your company on the auspicious wedding of ]`
 - Name: `[ Mahek ]`
 - Relation: `[ Their beloved daughter ]`
@@ -54,7 +55,7 @@ A short line shown above your names in the Invitation:
 - Symbol Translation: `[ Sacred Union ]`
 - Family Title: `[ THE GUPTA FAMILY ]`
 - City / Origin: `[ Moradabad · The City of Brass ]`
-- Grandparents: `[ Late Shri Shri Niwas Gupta ]` & `[ Late Smt. Rama Gupta ]`
+- Grandparents: `[ Late Smt. Rama Gupta ]` & `[ Late Shri Shri Niwas Gupta ]`
 - Invitation Line 1: `[ with their family and loved ones ]`
 - Parents: `[ Smt. Renu Gupta ]` & `[ Shri Sandeep Kumar Gupta ]`
 - Invitation Line 2: `[ request the pleasure of your company on the auspicious wedding of ]`
@@ -63,19 +64,22 @@ A short line shown above your names in the Invitation:
 
 ## 5. Event Details (3D Flip Cards)
 
-Event details are presented as interactive 3D flip cards in a clean 2-column, 3-row grid (total 6 events). Front shows the event name, date, and time. Tapping/clicking the card flips it to reveal the short date (`Dec 5` or `Dec 6`) and start time on the next line (with the word "onwards" removed for clarity), followed by the event's one-liner description, attire, venue, and extra notes.
+Event details are presented as interactive 3D flip cards in a clean 2-column, 3-row grid (total 6 events). Front shows the event name, day on its own line (`SATURDAY` or `SUNDAY`), date, and time. Tapping/clicking the card flips it to reveal the short date with day (`Sat, Dec 5` or `Sun, Dec 6`) and start time on the next line (with the word "onwards" removed for clarity), followed by the event's one-liner description, attire, venue, and extra notes.
 
 - Card auto-flip back timer (in seconds, default 20): `[ 20 ]`
 
 **Haldi**
+- Day: `[ Saturday ]`
 - Date: `[ December 05, 2026 ]`
 - Time: `[ 12:30 PM ]`
+- Meal: `[ Followed by Lunch ]`
 - One-liner Description: `[ A joyful and vibrant ceremony of turmeric blessings, love, and sunny smiles. ]`
 - Attire / Dress Code: `[ Shades of Pink ]`
 - Venue / Location: `[ Poolside Lawn ]`
 - Additional Note: `[ Get ready for color, music, and haldi fun! ]`
 
 **Engagement & Sangeet**
+- Day: `[ Saturday ]`
 - Date: `[ December 05, 2026 ]`
 - Time: `[ 5:00 PM ]`
 - One-liner Description: `[ An enchanting evening of music, dance performances, and celebration. ]`
@@ -84,14 +88,17 @@ Event details are presented as interactive 3D flip cards in a clean 2-column, 3-
 - Additional Note: `[ Followed by dinner, music & celebration. ]`
 
 **Godh Bharai & Sagai**
+- Day: `[ Saturday ]`
 - Date: `[ December 05, 2026 ]`
 - Time: `[ 7:00 PM ]`
+- Meal: `[ Followed by Dinner ]`
 - One-liner Description: `[ Traditional blessings and auspicious ring ceremony with family & loved ones. ]`
 - Attire / Dress Code: `[ Glam and Glitter ]`
 - Venue / Location: `[ Grand Ballroom ]`
 - Additional Note: `[ Celebration followed by music and dinner. ]`
 
 **Baraat & Ghurchari**
+- Day: `[ Sunday ]`
 - Date: `[ December 06, 2026 ]`
 - Time: `[ 10:30 AM ]`
 - One-liner Description: `[ The groom's royal dancing procession with festive dhol beats and celebration. ]`
@@ -100,16 +107,20 @@ Event details are presented as interactive 3D flip cards in a clean 2-column, 3-
 - Additional Note: `[ Join the groom's baraat procession! ]`
 
 **Jaimaal**
+- Day: `[ Sunday ]`
 - Date: `[ December 06, 2026 ]`
 - Time: `[ 1:00 PM ]`
+- Meal: `[ Followed by Gala Lunch ]`
 - One-liner Description: `[ The auspicious floral garland exchange marking the union of bride and groom. ]`
 - Attire / Dress Code: `[ Traditional Festive and Elegance ]`
 - Venue / Location: `[ Central Mandap ]`
 - Additional Note: `[ Shower the couple with flower petals. ]`
 
 **Phere**
+- Day: `[ Sunday ]`
 - Date: `[ December 06, 2026 ]`
 - Time: `[ 5:00 PM ]`
+- Meal: `[ Followed by Dinner ]`
 - One-liner Description: `[ The seven sacred vows around the holy agni solemnizing our sacred marriage bond. ]`
 - Attire / Dress Code: `[ Traditional Festive and Elegance ]`
 - Venue / Location: `[ Mandap by the Forest ]`
@@ -186,7 +197,7 @@ The gallery system uses a strictly separated two-tier Google Drive & Google Shee
   - Hospitality & Assistance Contacts:
     - Resort Helpdesk: +91 99714 99502 / +91 95600 02045
     - Shri Sandeep Kumar Gupta (Groom Side): +91 81719 97832
-    - Shri Rajeev Gupta (Bride Side): +91 94128 06535
+    - Shri Rajiv Gupta (Bride Side): +91 94128 06535
   Resort hospitality desk will be stationed at the reception to assist with room keys, luggage, and event timings. Snacks will be available throughout the event for untimely hunger pangs, late-night cravings, overnight chakhna needs, and guests arriving at different times.
 - **What are the official wedding hashtags for sharing photos?**
   #MahekWedsYash & #YashKiMahek

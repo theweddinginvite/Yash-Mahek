@@ -129,6 +129,7 @@ export default function EnvelopeIntro({ onOpen }) {
           aria-hidden="true"
         />
         <p className="envelope-intro__overline">{content.hero.tagline}</p>
+        <p className="envelope-intro__invite">{content.hero?.invite || "WE INVITE YOU TO"}</p>
 
         <div className="envelope-box">
           <div className="envelope-box__body" />

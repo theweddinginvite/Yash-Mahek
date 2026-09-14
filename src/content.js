@@ -27,6 +27,7 @@ const content = {
 
   hero: {
     tagline: "With All The Blessings",
+    invite: "WE INVITE YOU TO",
   },
 
   // Shown in the "Meet the Couple" / Family section — traditional royal Indian
@@ -43,9 +44,9 @@ const content = {
       symbolTranslation: "Auspicious Beginning",
       familyTitle: "THE GUPTA FAMILY",
       location: "Moradabad · The City of Brass",
-      grandparents: ["Late Shri Prem Shankar Gupta", "Late Smt. Sarla Devi Gupta"],
+      grandparents: ["Late Smt. Sarla Devi Gupta", "Late Shri Prem Shankar Gupta"],
       invitePhrase1: "with their family and loved ones",
-      parents: ["Smt. Deepa Gupta", "Shri Rajeev Gupta"],
+      parents: ["Smt. Deepa Gupta", "Shri Rajiv Gupta"],
       invitePhrase2: "request the pleasure of your company on the auspicious wedding of",
       name: "Mahek",
       relation: "Their beloved daughter",
@@ -55,7 +56,7 @@ const content = {
       symbolTranslation: "Sacred Union",
       familyTitle: "THE GUPTA FAMILY",
       location: "Moradabad · The City of Brass",
-      grandparents: ["Late Shri Shri Niwas Gupta", "Late Smt. Rama Gupta"],
+      grandparents: ["Late Smt. Rama Gupta", "Late Shri Shri Niwas Gupta"],
       invitePhrase1: "with their family and loved ones",
       parents: ["Smt. Renu Gupta", "Shri Sandeep Kumar Gupta"],
       invitePhrase2: "request the pleasure of your company on the auspicious wedding of",
@@ -69,21 +70,21 @@ const content = {
       name: "Mahek Gupta",
       grandparentage: {
         label: "Granddaughter of",
-        person1: "Late Shri Prem Shankar Gupta",
-        person2: "Late Smt. Sarla Devi Gupta",
+        person1: "Late Smt. Sarla Devi Gupta",
+        person2: "Late Shri Prem Shankar Gupta",
       },
       parentage: {
         label: "Daughter of",
         person1: "Smt. Deepa Gupta",
-        person2: "Shri Rajeev Gupta",
+        person2: "Shri Rajiv Gupta",
       },
     },
     groom: {
       name: "Yashoratna Gupta",
       grandparentage: {
         label: "Grandson of",
-        person1: "Late Shri Shri Niwas Gupta",
-        person2: "Late Smt. Rama Gupta",
+        person1: "Late Smt. Rama Gupta",
+        person2: "Late Shri Shri Niwas Gupta",
       },
       parentage: {
         label: "Son of",
@@ -99,10 +100,12 @@ const content = {
   eventCardAutoFlipSeconds: 20,
 
   // Event cards shown on the Event Details section (3D flip cards).
-  // Front shows name, date, time; back reveals description, attire, location, and notes.
+  // Front shows name, day, date, time; back reveals description, attire, location, and notes.
   events: [
     {
       name: "Haldi",
+      meal: "Followed by Lunch",
+      day: "Saturday",
       date: "December 5, 2026",
       time: "12:30 PM",
       description: "A joyful and vibrant ceremony of turmeric blessings, love, and sunny smiles.",
@@ -112,6 +115,7 @@ const content = {
     },
     {
       name: "Engagement & Sangeet",
+      day: "Saturday",
       date: "December 5, 2026",
       time: "5:00 PM",
       description: "An enchanting evening of music, dance performances, and celebration.",
@@ -121,6 +125,8 @@ const content = {
     },
     {
       name: "Godh Bharai & Sagai",
+      meal: "Followed by Dinner",
+      day: "Saturday",
       date: "December 5, 2026",
       time: "7:00 PM",
       description: "Traditional blessings and auspicious ring ceremony with family & loved ones.",
@@ -130,6 +136,7 @@ const content = {
     },
     {
       name: "Baraat & Ghurchari",
+      day: "Sunday",
       date: "December 6, 2026",
       time: "10:30 AM",
       description: "The groom's royal dancing procession with festive dhol beats and celebration.",
@@ -139,6 +146,8 @@ const content = {
     },
     {
       name: "Jaimaal",
+      meal: "Followed by Gala Lunch",
+      day: "Sunday",
       date: "December 6, 2026",
       time: "1:00 PM",
       description: "The auspicious floral garland exchange marking the union of bride and groom.",
@@ -148,6 +157,8 @@ const content = {
     },
     {
       name: "Phere",
+      meal: "Followed by Dinner",
+      day: "Sunday",
       date: "December 6, 2026",
       time: "5:00 PM",
       description: "The seven sacred vows around the holy agni solemnizing our sacred marriage bond.",
@@ -172,7 +183,7 @@ const content = {
       {
         mode: "By Road",
         description:
-          "• From Delhi: ~245 km (~4 hr 20 min) via Delhi – Moradabad – Tanda – Bajpur (or via Kashipur) – Ramnagar (Resort is ~6 km from Ramnagar town).\n" +
+          "• From Delhi: ~245 km (~4 hr 20 min) via Delhi – Moradabad – Rampur - Tanda – Bajpur (or via Kashipur) – Ramnagar (Resort is ~6 km from Ramnagar town).\n" +
           "• From Moradabad: ~81 km (~1 hr 50 min) via Moradabad – Tanda – Bajpur – Ramnagar.\n" +
           "• From Bareilly: ~138 km (~2 hr 50 min) via Bareilly – Rampur – Suar – Bajpur – Ramnagar.\n" +
           "• From Badaun: ~204 km (~3 hr 50 min) via Badaun – Chandausi Bypass – Moradabad – Tanda – Bajpur – Ramnagar.\n" +
@@ -261,7 +272,7 @@ const content = {
         "• Hospitality & Assistance Contacts:\n" +
         "  - Resort Helpdesk: +91 99714 99502 / +91 95600 02045\n" +
         "  - Shri Sandeep Kumar Gupta (Groom Side): +91 81719 97832\n" +
-        "  - Shri Rajeev Gupta (Bride Side): +91 94128 06535\n\n" +
+        "  - Shri Rajiv Gupta (Bride Side): +91 94128 06535\n\n" +
         "Resort's hospitality desk will be stationed at the resort reception to assist you with room keys, luggage, and event timings throughout your stay.\n\n" +
         "Snacks will be available throughout the event for untimely hunger pangs, late-night cravings, overnight chakhna needs, and guests arriving at different times.",
     },
