@@ -82,6 +82,7 @@
   position: relative;
   padding: var(--space-3);
   max-width: 40rem;
+  transform: translateY(-3.75rem);
 }
 
 .shree-ganesh__ganesh {

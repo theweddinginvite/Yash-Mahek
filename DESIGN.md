@@ -37,6 +37,11 @@ Design intent: warm, neutral, editorial — luxury royal Indian wedding aestheti
 
 Loaded via Google Fonts `<link>` in `index.html` (no npm font package).
 
+### Global Responsive Typography Scale
+- **Root `html` Font Size**: `17px` on desktop, `18px` on mobile (`≤680px`) with body font size `1.18rem` (`line-height: 1.6`) for enhanced legibility across smaller handheld viewports.
+- **Section Titles (`h2`)**: Anchored to `clamp(29.6px, 3.5vh, 38.4px)` to preserve their classic refined visual scale across all devices.
+- **Section Taglines (`.eyebrow`)**: Scaled at `0.82rem` (`14.76px` on mobile) with `0.28em` tracking in muted gold (`--color-accent`).
+
 ### Invitation Typography Scale
 - **Tagline**: `0.95 rem` (`Playfair Display`, uppercase, tracked)
 - **Intro text**: `1.25 rem` (`Playfair Display`, italic)
@@ -124,7 +129,7 @@ The bottom-right floating control cluster (`FloatingControls.jsx`), top to botto
   1. Ganesha shloka (*Vakratunda Mahakaya...*) with English translation.
   2. Ornamental gold diamond divider line (`.shree-ganesh__shlok-divider`).
   3. Vishnu Mangalam verse (*Mangalam Bhagwan Vishnuh...* without trailing commas for clean Sanskrit metre) with English translation.
-- **Bouncing Gold Scroll-Down Button**: Centered circular button at the bottom that smoothly scrolls directly to the Invitation screen (`#invitation`).
+- **Bouncing Gold Scroll-Down Button**: Centered circular button at the bottom that smoothly scrolls directly to the Invitation screen (`#invitation`). The inner view has tailored padding (`padding-bottom: clamp(1.2rem, 3.5vh, 2.25rem)`) and slightly elevated content layout to ensure the button has ample bottom clearance and remains fully visible on all mobile viewports without clipping.
 
 ### Invitation (`#invitation`)
 - **Dedicated 2nd View**: Extracted as a standalone component (`Invitation.jsx`) top-aligned with no dead space.
@@ -186,16 +191,17 @@ The bottom-right floating control cluster (`FloatingControls.jsx`), top to botto
 ### Event Details
 - White/surface section (visually distinct from the ivory sections around it)
 - Events shown as interactive **3D Flip Cards** arranged in a centered 2-column, 3-row grid (`.events-grid`, total 6 event cards):
-  - Row 1: **Haldi** (Sat, Dec 5, 12:30 PM, meal: *Followed by Lunch*) &amp; **Engagement &amp; Sangeet** (Sat, Dec 5, 5:00 PM)
-  - Row 2: **Godh Bharai &amp; Sagai** (Sat, Dec 5, 7:00 PM, meal: *Followed by Dinner*) &amp; **Baraat &amp; Ghurchari** (Sun, Dec 6, 10:30 AM)
-  - Row 3: **Jaimaal** (Sun, Dec 6, 1:00 PM, meal: *Followed by Gala Lunch*) &amp; **Phere** (Sun, Dec 6, 5:00 PM, meal: *Followed by Dinner*)
-- **Card Front**: Centered event title (`Playfair Display`, Burgundy `#8f3350`), meal subtitle slot (reserved fixed-height slot `1.2em` ensuring identical vertical rhythm across cards with and without meals), subtle gold divider line, event day & date (`Sat, December 5, 2026` / `Sun, December 6, 2026`, uppercase, muted), and event time (`Playfair Display`, Gold `#b08968`), with a "Tap for details" hint icon.
+  - Row 1: **Haldi** (Sat, Dec 5, 12:30 PM) &amp; **Engagement &amp; Sangeet** (Sat, Dec 5, 5:00 PM)
+  - Row 2: **Godh Bharai &amp; Sagai** (Sat, Dec 5, 7:00 PM) &amp; **Baraat &amp; Ghurchari** (Sun, Dec 6, 10:30 AM)
+  - Row 3: **Jaimaal** (Sun, Dec 6, 1:00 PM) &amp; **Phere** (Sun, Dec 6, 5:00 PM)
+- **Card Front**: Centered event title (`Playfair Display`, Burgundy `#8f3350`, `clamp(1.08rem, 2.9vw, 1.25rem)` mobile / `clamp(1.15rem, 2.2vw, 1.32rem)` desktop), subtle gold divider line, event day (`0.78rem`/`0.82rem`, uppercase, muted), date (`0.78rem`/`0.82rem`, uppercase, muted), and event time (`Playfair Display`, Gold `#b08968`, `1.12rem`/`1.18rem`), with a "Tap for details" hint icon (`0.7rem`). Food/meal details are cleanly excluded from the front face to keep it uncluttered.
 - **Card Back**: Tapping/clicking smoothly flips the card 180° (`rotateY(180deg)`) to reveal:
-  - Header with event name, subtitle slot, **Short Date with Day** (`Sat, Dec 5` or `Sun, Dec 6`) on the first line, and start time on the next line (with the word "onwards" removed for clarity and precision).
-  - One-liner event description.
-  - Metadata row for **Attire** with label `ATTIRE` in muted gold (`var(--color-accent)`) and attire theme in bold burgundy (`var(--color-burgundy)` / `#8f3350`, no underlines).
+  - Header with event name (`1.15rem`/`1.18rem`), **Short Date with Day** (`Sat, Dec 5` or `Sun, Dec 6`, `0.84rem`/`0.88rem`), and start time (`0.98rem`/`1.02rem`, with "onwards" removed).
+  - One-liner event description (`0.94rem`/`0.98rem`, italic).
+  - **Meal Line**: Displays food/dining details right before the attire line (*Dinner to follow* / *Lunch to follow* / *Gala Lunch to follow* in `0.94rem`/`0.95rem` italic bold gold `var(--color-accent)`).
+  - Metadata row for **Attire** with label `ATTIRE` in muted gold (`var(--color-accent)`) and attire theme in bold burgundy (`var(--color-burgundy)` / `#8f3350`, `0.94rem`/`0.98rem`, no underlines).
   - Animated burgundy boundary timer stroke (`.event-flip-card__border-timer`, `#8f3350`) tracing around the perimeter of the card showing the countdown until it flips back (default 20 seconds, or immediately on tap).
-- **Mobile (≤680px)**: Retains the 2-column, 3-row layout with compact sizing, typography, and margins so all 6 cards fit cleanly on mobile screens without overflowing.
+- **Mobile (≤680px) & Desktop Layout**: Cards occupy the view with calibrated heights (`min-height: 160px; height: 100%` mobile, `154px` desktop) and streamlined vertical padding (`padding-bottom: max(0.85rem, env(safe-area-inset-bottom))`), ensuring all 3 rows of cards and the bottom **"How to reach the venue?"** button fit comfortably in a single screen view.
 - **"How to reach the venue?" Button**: Sits centered below the event cards (`.event-details__venue-btn`, burgundy pill with map-pin icon).
 - **Venue & Travel Popup Modal (`VenueModal.jsx`)**:
   - Opens on clicking "How to reach the venue?".
@@ -261,11 +267,11 @@ The bottom-right floating control cluster (`FloatingControls.jsx`), top to botto
 
 - Mobile-first breakpoints, primarily at `480px`, `600px`, and `700px` — since most guests are expected to open this on a phone, mobile is treated as the primary layout, not an afterthought
 - Nav collapses to a hamburger menu ≤700px (see Nav section above)
-- Event Details maintains a centered 2-column, 3-row flip card grid (all 6 event ceremonies) across mobile, tablet, and desktop (see Event Details section above)
+- Event Details maintains a centered 2-column, 3-row flip card grid (total 6 event ceremonies) across mobile, tablet, and desktop, with calibrated heights (`min-height: 160px; height: 100%` on mobile) ensuring the bottom venue button remains fully in view
 - Gallery's coverflow shrinks its stage height/perspective and widens covers slightly on narrow screens, but keeps the same fan-out mechanic (no reflow to a stacked column) at any width
 - Meet the Couple displays two side-by-side family cards on desktop and tablet, and gracefully stacks them into a single column with an elegant horizontal divider and centered ॐ symbol on mobile screens (≤680px)
 - Blessings displays 6 curated wish cards in a clean 2-column, 3-row layout across all screen sizes, with a full-text modal on tap and a link to the dedicated Blessings Wall page
-- The floating bottom-right controls (section arrows + music button) shift slightly closer to the corner (`--space-1` instead of `--space-2`) on screens ≤480px
+- The floating bottom-right controls (section arrows + music button) are pinned on mobile (≤680px) at `right: max(17px, calc(env(safe-area-inset-right, 0px) + 17px))` for clean edge alignment
 - All interactive elements maintain a 44px minimum touch target
 
 ## 8. Images

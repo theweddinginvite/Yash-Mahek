@@ -45,12 +45,21 @@ function formatShortDate(dateStr = "", day = "") {
   return baseDate;
 }
 
+function getMealText(meal) {
+  if (!meal) return "";
+  if (/gala lunch/i.test(meal)) return "Gala Lunch to follow";
+  if (/lunch/i.test(meal)) return "Lunch to follow";
+  if (/dinner/i.test(meal)) return "Dinner to follow";
+  return meal;
+}
+
 function EventCard({ event, autoFlipSeconds = 20 }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const timerRef = useRef(null);
   const displayTime = formatEventTime(event.time);
   const day = getEventDay(event);
   const shortDate = formatShortDate(event.date, day);
+  const mealText = getMealText(event.meal);
 
   useEffect(() => {
     if (isFlipped) {
@@ -90,7 +99,6 @@ function EventCard({ event, autoFlipSeconds = 20 }) {
         <div className="event-flip-card__face event-flip-card__face--front">
           <h3 className="event-flip-card__name">
             <span className="event-flip-card__name-title">{event.name}</span>
-            <span className="event-flip-card__meal">{event.meal || ""}</span>
           </h3>
           <div className="event-flip-card__divider" aria-hidden="true" />
           {day && <p className="event-flip-card__day">{day}</p>}
@@ -146,7 +154,6 @@ function EventCard({ event, autoFlipSeconds = 20 }) {
           <div className="event-flip-card__back-header">
             <h4 className="event-flip-card__back-name">
               <span className="event-flip-card__name-title">{event.name}</span>
-              <span className="event-flip-card__meal">{event.meal || ""}</span>
             </h4>
             <div className="event-flip-card__back-time-wrap">
               <span className="event-flip-card__back-date">{shortDate}</span>
@@ -157,14 +164,21 @@ function EventCard({ event, autoFlipSeconds = 20 }) {
           {event.description && (
             <p className="event-flip-card__desc">{event.description}</p>
           )}
-          {(event.theme || event.attire) && (
+          {(mealText || event.theme || event.attire) && (
             <div className="event-flip-card__details">
-              <div className="event-flip-card__detail-row">
-                <span className="event-flip-card__detail-label">Attire</span>
-                <span className="event-flip-card__detail-val">
-                  {event.theme || event.attire}
-                </span>
-              </div>
+              {mealText && (
+                <div className="event-flip-card__meal-line">
+                  {mealText}
+                </div>
+              )}
+              {(event.theme || event.attire) && (
+                <div className="event-flip-card__detail-row">
+                  <span className="event-flip-card__detail-label">Attire</span>
+                  <span className="event-flip-card__detail-val">
+                    {event.theme || event.attire}
+                  </span>
+                </div>
+              )}
             </div>
           )}
         </div>

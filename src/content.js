@@ -104,7 +104,7 @@ const content = {
   events: [
     {
       name: "Haldi",
-      meal: "Followed by Lunch",
+      meal: "Lunch to follow",
       day: "Saturday",
       date: "December 5, 2026",
       time: "12:30 PM",
@@ -125,7 +125,7 @@ const content = {
     },
     {
       name: "Godh Bharai & Sagai",
-      meal: "Followed by Dinner",
+      meal: "Dinner to follow",
       day: "Saturday",
       date: "December 5, 2026",
       time: "7:00 PM",
@@ -146,7 +146,7 @@ const content = {
     },
     {
       name: "Jaimaal",
-      meal: "Followed by Gala Lunch",
+      meal: "Gala Lunch to follow",
       day: "Sunday",
       date: "December 6, 2026",
       time: "1:00 PM",
@@ -157,7 +157,7 @@ const content = {
     },
     {
       name: "Phere",
-      meal: "Followed by Dinner",
+      meal: "Dinner to follow",
       day: "Sunday",
       date: "December 6, 2026",
       time: "5:00 PM",

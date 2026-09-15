@@ -64,7 +64,7 @@ A short line shown above your names in the Invitation:
 
 ## 5. Event Details (3D Flip Cards)
 
-Event details are presented as interactive 3D flip cards in a clean 2-column, 3-row grid (total 6 events). Front shows the event name, day on its own line (`SATURDAY` or `SUNDAY`), date, and time. Tapping/clicking the card flips it to reveal the short date with day (`Sat, Dec 5` or `Sun, Dec 6`) and start time on the next line (with the word "onwards" removed for clarity), followed by the event's one-liner description, attire, venue, and extra notes.
+Event details are presented as interactive 3D flip cards in a clean 2-column, 3-row grid (total 6 events). Front shows the event name, day on its own line (`SATURDAY` or `SUNDAY`), date, time, and "Tap for details" hint icon. Food/meal details are placed exclusively on the flip/back side right before the Attire line (e.g. `Lunch to follow`, `Dinner to follow`, `Gala Lunch to follow`). Tapping/clicking the card flips it to reveal the short date with day (`Sat, Dec 5` or `Sun, Dec 6`), start time, one-liner description, meal line, attire, venue, and notes. Card heights and vertical spacing are optimized to ensure the bottom "How to reach the venue?" button remains fully visible on screen.
 
 - Card auto-flip back timer (in seconds, default 20): `[ 20 ]`
 

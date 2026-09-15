@@ -1,4 +1,4 @@
-# Mahek & Yashoratna — Luxury Wedding Invitation Website
+# Yashoratna & Mahek — Luxury Wedding Invitation Website
 
 A high-performance, single-page luxury Indian wedding invitation built with React, Vite, and Firebase Firestore, integrated with Google Sheets, Telegram Bot moderation, and dynamic Google Drive gallery streaming.
 
@@ -8,10 +8,10 @@ A high-performance, single-page luxury Indian wedding invitation built with Reac
 
 - **Interactive 3D Envelope Intro**: Realistic 3D flap rotation, card emergence, wax seal flip, and smooth fly-in animation to the invitation.
 - **Sacred Invocation (`#shree-ganesh`)**: Lord Ganesha crest with ambient golden rose glow and sacred Devanagari Sanskrit shlokas (*Vakratunda Mahakaya...* across 2 rhythmic lines & *Mangalam Bhagwan Vishnuh...*).
-- **Wedding Invitation (`#invitation`)**: Dedicated invitation screen with bride & groom names in royal burgundy cursive calligraphy, elegant gold ampersand connector, and monogrammed scratch-to-reveal card with animated glass shine sweep across "SAVE THE DATE", live countdown, confetti celebration, and synchronized global date reveal.
-- **Navigation Drawer**: Distraction-free viewport with glassmorphic top-left floating menu, tailored 240px width, two-line stacked couple header (*Mahek &* / *Yashoratna*), and smooth section jumping.
+- **Wedding Invitation (`#invitation`)**: Dedicated invitation screen with groom & bride names in royal burgundy cursive calligraphy, elegant gold ampersand connector, and monogrammed scratch-to-reveal card with animated glass shine sweep across "SAVE THE DATE", live countdown, confetti celebration, and synchronized global date reveal.
+- **Navigation Drawer**: Distraction-free viewport with glassmorphic top-left floating menu, tailored 240px width, two-line stacked couple header (*Yashoratna &* / *Mahek*), and smooth section jumping.
 - **Meet the Families (`#couple`)**: Traditional royal Indian wedding lineage cards with sacred Gayatri Mantra Sanskrit shloka (*॥ ॐ भूर्भुवः स्वः...*), `THE GUPTA FAMILY` titles in royal burgundy, `॥ मंगलम् ॥` (*Auspicious Beginning*) & `॥ युग्म ॥` (*Sacred Union*) symbols rendered in two-layer ghost-matched HTML typography with the couple's Hindi initials strictly on consonants (**म** & **य**) highlighted in royal burgundy, diacritics and framing elements in ceremonial gold, unified Cormorant Garamond italic typography across all contextual and relationship lines in muted gray, and luxury double borders with burgundy inner dashed accents.
-- **Event Details (`#details`)**: 2-column, 3-row 3D flip cards (total 6 events) with short date (`Dec 5` / `Dec 6`) and start time on back faces (without 'onwards'), 20s animated burgundy perimeter timer strokes, plus an interactive "How to reach the venue?" popup with QR code, GPS directions, and transit guides.
+- **Event Details (`#details`)**: 2-column, 3-row 3D flip cards (total 6 events: Haldi, Engagement & Sangeet, Godh Bharai & Sagai, Baraat & Ghurchari, Jaimaal, Phere) with dining notes ("Dinner to follow" / "Lunch to follow") and attire themes on back faces, calibrated whole-view heights ensuring the "How to reach the venue?" button remains fully visible, 20s animated perimeter timer strokes, plus an interactive venue navigation popup with QR code, GPS directions, and transit guides.
 - **Dynamic Memories Gallery (`#gallery`)**:
   - **Dedicated Whole-View Isolation**: Occupies its own whole view (`min-height: 100vh; min-height: 100lvh;`), cleanly separated from the Blessings Wall.
   - **Live Google Drive Integration**: Upload photos directly to a Google Drive folder to update the gallery in real-time.
@@ -26,7 +26,7 @@ A high-performance, single-page luxury Indian wedding invitation built with Reac
   - **Telegram Bot Notifications & Moderation**: Instant Telegram alerts for new blessings & RSVPs with native inline "🗑️ Delete from Live Wall" moderation buttons.
 - **FAQ & Footer (`#faq`)**: Curated 6-question accordion covering exact travel routes & distances, complimentary parking, dress codes, December weather breakdown, 12:00 PM check-in & 10:00 AM check-out with mandatory Aadhaar ID requirements, hospitality coordinators, 24/7 snacks availability, official wedding hashtags (`#MahekWedsYash` & `#YashKiMahek`), and interactive action buttons for venue navigation and gallery jumps.
 - **Mobile Viewport Stability & Smooth Free Scrolling**: Standardized on `min-height: 100vh; min-height: 100lvh;` with global `overflow-anchor: none !important;` and `scroll-snap-type: none !important;`, preventing mobile URL bar expansion/retraction from triggering scroll jumps, erratic repositioning, or rubber-banding across iOS Safari and Android Chrome.
-- **Floating Controls**: Ambient background music player, envelope re-opener, and section navigation arrows.
+- **Floating Controls**: Ambient background music player, envelope re-opener, and section navigation arrows pinned with responsive right safe-area offset.
 
 ---
 
@@ -130,7 +130,7 @@ src/
     Invitation.jsx          ← Dedicated invitation screen with couple names & scratch-to-reveal card
     ScratchReveal.jsx       ← Monogrammed scratch card with glass shine animation & live countdown
     MeetFamilies.jsx        ← Royal Indian family lineage cards with Gayatri Mantra shloka
-    EventDetails.jsx        ← 2-column, 3-row 3D flip cards with perimeter countdown timer
+    EventDetails.jsx        ← 2-column, 3-row 3D flip cards (6 events) with calibrated heights & venue button
     VenueModal.jsx          ← Venue travel directions popup with QR code & transit options
     Gallery.jsx             ← 3D coverflow carousel with adaptive matting & caricature fallback
     GalleryUploadModal.jsx  ← Guest photo/video upload modal with batch progress & ceremony picker

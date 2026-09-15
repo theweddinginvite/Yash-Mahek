@@ -9,9 +9,9 @@
   gap: 6px;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 680px) {
   .floating-controls {
-    right: max(0.85rem, calc(env(safe-area-inset-right, 0px) + 0.5rem));
+    right: max(17px, calc(env(safe-area-inset-right, 0px) + 17px));
     bottom: max(2.25rem, calc(env(safe-area-inset-bottom, 0px) + 1.75rem));
     gap: 5px;
   }
