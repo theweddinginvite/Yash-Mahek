@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import content from "../content";
 import VenueModal from "./VenueModal";
+import SaveEventsModal from "./SaveEventsModal";
 import "./EventDetails.css";
 
 function formatEventTime(timeStr = "") {
@@ -188,8 +189,9 @@ function EventCard({ event, autoFlipSeconds = 20 }) {
 }
 
 export default function EventDetails() {
-  const { events, eventCardAutoFlipSeconds, venue } = content;
+  const { events, eventCardAutoFlipSeconds, venue, couple } = content;
   const [isVenueModalOpen, setIsVenueModalOpen] = useState(false);
+  const [isSaveEventsModalOpen, setIsSaveEventsModalOpen] = useState(false);
 
   return (
     <section id="details" className="section section--surface">
@@ -208,11 +210,22 @@ export default function EventDetails() {
           ))}
         </div>
 
-        {/* Button to open 'How to reach the venue?' popup */}
-        <div className="event-details__venue-action">
+        {/* Action Buttons: Save Event Details (Left) + How to reach the venue? (Right) */}
+        <div className="event-details__actions">
           <button
             type="button"
-            className="event-details__venue-btn"
+            className="event-details__action-btn event-details__action-btn--primary"
+            onClick={() => setIsSaveEventsModalOpen(true)}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+            </svg>
+            Save Event Details
+          </button>
+
+          <button
+            type="button"
+            className="event-details__action-btn event-details__action-btn--secondary"
             onClick={() => setIsVenueModalOpen(true)}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -222,6 +235,15 @@ export default function EventDetails() {
             How to reach the venue?
           </button>
         </div>
+
+        {/* Save Events Modal Dialog */}
+        <SaveEventsModal
+          isOpen={isSaveEventsModalOpen}
+          onClose={() => setIsSaveEventsModalOpen(false)}
+          events={events}
+          couple={couple}
+          venue={venue}
+        />
 
         {/* Venue Modal Dialog */}
         <VenueModal

@@ -64,7 +64,7 @@ A short line shown above your names in the Invitation:
 
 ## 5. Event Details (3D Flip Cards)
 
-Event details are presented as interactive 3D flip cards in a clean 2-column, 3-row grid (total 6 events). Front shows the event name, day on its own line (`SATURDAY` or `SUNDAY`), date, time, and "Tap for details" hint icon. Food/meal details are placed exclusively on the flip/back side right before the Attire line (e.g. `Lunch to follow`, `Dinner to follow`, `Gala Lunch to follow`). Tapping/clicking the card flips it to reveal the short date with day (`Sat, Dec 5` or `Sun, Dec 6`), start time, one-liner description, meal line, attire, venue, and notes. Card heights and vertical spacing are optimized to ensure the bottom "How to reach the venue?" button remains fully visible on screen.
+Event details are presented as interactive 3D flip cards in a clean 2-column, 3-row grid (total 6 events). Front shows the event name, day on its own line (`SATURDAY` or `SUNDAY`), date, time, and "Tap for details" hint icon. Food/meal details are placed exclusively on the flip/back side right before the Attire line (e.g. `Lunch to follow`, `Dinner to follow`, `Gala Lunch to follow`). Tapping/clicking the card flips it to reveal the short date with day (`Sat, Dec 5` or `Sun, Dec 6`), start time, one-liner description, meal line, attire, venue, and notes. Beneath the cards, dual action buttons provide **"Save Event Details"** (opens an itinerary modal with 2x2 grid layout, WhatsApp formatted sharing, and themed PDF generation/downloading) alongside **"How to reach the venue?"** (travel directions and QR code modal), preserving a 10% bottom viewport spacing on all devices.
 
 - Card auto-flip back timer (in seconds, default 20): `[ 20 ]`
 
@@ -102,7 +102,7 @@ Event details are presented as interactive 3D flip cards in a clean 2-column, 3-
 - Date: `[ December 06, 2026 ]`
 - Time: `[ 10:30 AM ]`
 - One-liner Description: `[ The groom's royal dancing procession with festive dhol beats and celebration. ]`
-- Attire / Dress Code: `[ Traditional Festive and Elegance ]`
+- Attire / Dress Code: `[ Tradition & Grace ]`
 - Venue / Location: `[ Resort Entrance to Mandap ]`
 - Additional Note: `[ Join the groom's baraat procession! ]`
 
@@ -112,7 +112,7 @@ Event details are presented as interactive 3D flip cards in a clean 2-column, 3-
 - Time: `[ 1:00 PM ]`
 - Meal: `[ Followed by Gala Lunch ]`
 - One-liner Description: `[ The auspicious floral garland exchange marking the union of bride and groom. ]`
-- Attire / Dress Code: `[ Traditional Festive and Elegance ]`
+- Attire / Dress Code: `[ Tradition & Grace ]`
 - Venue / Location: `[ Central Mandap ]`
 - Additional Note: `[ Shower the couple with flower petals. ]`
 
@@ -122,7 +122,7 @@ Event details are presented as interactive 3D flip cards in a clean 2-column, 3-
 - Time: `[ 5:00 PM ]`
 - Meal: `[ Followed by Dinner ]`
 - One-liner Description: `[ The seven sacred vows around the holy agni solemnizing our sacred marriage bond. ]`
-- Attire / Dress Code: `[ Traditional Festive and Elegance ]`
+- Attire / Dress Code: `[ Tradition & Grace ]`
 - Venue / Location: `[ Mandap by the Forest ]`
 - Additional Note: `[ Dinner & reception to follow. ]`
 
@@ -182,7 +182,7 @@ The gallery system uses a strictly separated two-tier Google Drive & Google Shee
 - **What are the dress codes and themes for the events?**
   - Haldi (Dec 5, 12:30 PM): Shades of Pink
   - Engagement & Sangeet (Dec 5, 5:00 PM): Glam and Glitter
-  - Wedding Day (Dec 6): Traditional Festive and Elegance
+  - Wedding Day (Dec 6): Tradition & Grace
 - **What will the weather be like in Jim Corbett in December?**
   - Daytime: Roughly 21–24°C, comfortable and pleasant.
   - Afternoons: Usually sunny and pleasant, with around 9 hours of sunshine.

@@ -1,0 +1,408 @@
+.save-events-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(20, 15, 12, 0.68);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  box-sizing: border-box;
+  animation: saveEventsModalFadeIn 0.25s ease-out;
+}
+
+@keyframes saveEventsModalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.save-events-card {
+  position: relative;
+  width: 100%;
+  max-width: 34rem;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--color-bg);
+  border: 1px solid rgba(176, 137, 104, 0.45);
+  border-radius: 1.25rem;
+  box-shadow: 0 16px 40px rgba(46, 43, 40, 0.28);
+  padding: 0;
+  box-sizing: border-box;
+  animation: saveEventsModalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes saveEventsModalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Close Button */
+.save-events-card__close-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.save-events-card__close-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.save-events-card__close-btn:hover {
+  background: var(--color-burgundy);
+  color: #ffffff;
+  border-color: var(--color-burgundy);
+  transform: rotate(90deg);
+}
+
+/* Modal Body */
+.save-events-card__body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1.6rem 1.4rem 1rem;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(176, 137, 104, 0.45) transparent;
+}
+
+.save-events-card__body::-webkit-scrollbar {
+  width: 5px;
+}
+
+.save-events-card__body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.save-events-card__body::-webkit-scrollbar-thumb {
+  background: rgba(176, 137, 104, 0.45);
+  border-radius: 4px;
+}
+
+/* Header */
+.save-events-card__header {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.save-events-card__title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.4rem, 4.5vw, 1.8rem);
+  font-weight: 500;
+  color: var(--color-burgundy);
+  margin: 0.2rem 0 0.15rem;
+  line-height: 1.2;
+}
+
+.save-events-card__couple-pretext {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin: 0 0 0.4rem;
+}
+
+.save-events-card__divider {
+  display: block;
+  position: relative;
+  width: 4rem;
+  height: 1px;
+  margin: 0.45rem auto 0;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(176, 137, 104, 0.4) 20%,
+    var(--color-accent) 50%,
+    rgba(176, 137, 104, 0.4) 80%,
+    transparent 100%
+  );
+  opacity: 0.85;
+}
+
+.save-events-card__divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4.5px;
+  height: 4.5px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  transform: translate(-50%, -50%);
+}
+
+/* Events List */
+.save-events-card__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.save-events-card__item {
+  padding: 0.75rem 0.85rem;
+  background: var(--color-surface);
+  border: 1px solid rgba(176, 137, 104, 0.28);
+  border-radius: 0.75rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.save-events-card__item:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 4px 14px rgba(143, 51, 80, 0.08);
+}
+
+.save-events-card__item-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.55rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px dashed rgba(176, 137, 104, 0.28);
+}
+
+.save-events-card__item-name {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-burgundy);
+  line-height: 1.2;
+}
+
+.save-events-card__item-time {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+/* 2x2 Grid Layout for details */
+.save-events-card__grid {
+  display: grid;
+  grid-template-columns: minmax(95px, auto) 1fr;
+  row-gap: 0.48rem;
+  column-gap: 0.85rem;
+  align-items: baseline;
+}
+
+.save-events-card__grid-label {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-burgundy);
+  white-space: nowrap;
+}
+
+.save-events-card__grid-val {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: var(--color-text);
+  line-height: 1.45;
+}
+
+.save-events-card__grid-desc {
+  margin: 0;
+  font-style: normal;
+  color: var(--color-text);
+}
+
+.save-events-card__grid-meal {
+  margin: 0;
+  font-style: normal;
+  font-weight: 400;
+  color: var(--color-text);
+}
+
+.save-events-card__grid-attire {
+  margin: 0;
+  font-style: normal;
+  font-weight: 400;
+  color: var(--color-text);
+}
+
+/* Toast Notification */
+.save-events-card__toast {
+  margin-top: 0.85rem;
+  padding: 0.55rem 0.85rem;
+  background: #fdf5ea;
+  border: 1px solid var(--color-accent);
+  border-radius: 0.5rem;
+  color: var(--color-burgundy);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-align: center;
+  animation: saveEventsToastPop 0.25s ease-out;
+}
+
+@keyframes saveEventsToastPop {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Footer Actions (3 Buttons) */
+.save-events-card__footer {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  box-sizing: border-box;
+}
+
+.save-events-card__btn {
+  flex: 1;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: 2rem;
+  font-family: var(--font-body);
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  outline: none;
+}
+
+.save-events-card__btn svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+/* WhatsApp Button */
+.save-events-card__btn--whatsapp {
+  background: #25d366;
+  color: #ffffff;
+  border: 1px solid #25d366;
+}
+
+.save-events-card__btn--whatsapp:hover {
+  background: #1fa851;
+  border-color: #1fa851;
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35);
+}
+
+/* Share as PDF Button */
+.save-events-card__btn--share-pdf {
+  background: var(--color-burgundy);
+  color: #ffffff;
+  border: 1px solid var(--color-burgundy);
+}
+
+.save-events-card__btn--share-pdf:hover {
+  background: #73273e;
+  border-color: #73273e;
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 12px rgba(143, 51, 80, 0.3);
+}
+
+/* Download PDF Button */
+.save-events-card__btn--download {
+  background: #faf7f2;
+  color: var(--color-burgundy);
+  border: 1.5px solid var(--color-burgundy);
+}
+
+.save-events-card__btn--download:hover {
+  background: var(--color-burgundy);
+  color: #ffffff;
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 12px rgba(143, 51, 80, 0.25);
+}
+
+.save-events-card__btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@media (max-width: 480px) {
+  .save-events-card {
+    max-height: 92vh;
+  }
+
+  .save-events-card__body {
+    padding: 1.2rem 1rem 0.85rem;
+  }
+
+  .save-events-card__item-top {
+    flex-wrap: wrap;
+    gap: 0.25rem 0.5rem;
+  }
+
+  .save-events-card__grid {
+    grid-template-columns: minmax(88px, auto) 1fr;
+    column-gap: 0.6rem;
+    row-gap: 0.4rem;
+  }
+
+  .save-events-card__grid-label {
+    font-size: 0.82rem;
+  }
+
+  .save-events-card__grid-val {
+    font-size: 0.85rem;
+  }
+
+  .save-events-card__footer {
+    padding: 0.75rem 0.65rem;
+    gap: 0.4rem;
+  }
+
+  .save-events-card__btn {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.4rem;
+    gap: 0.25rem;
+  }
+
+  .save-events-card__btn svg {
+    width: 13px;
+    height: 13px;
+  }
+}
