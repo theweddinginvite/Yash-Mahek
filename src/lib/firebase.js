@@ -71,11 +71,32 @@ export function subscribeToBlessings(onData, onError) {
 }
 
 /**
+ * Fallback to fetch announcements directly from Google Sheets / Apps Script
+ * when Firestore security rules deny direct client read access.
+ */
+export async function fetchAnnouncementsFallback() {
+  const scriptUrl = content.integrations?.appsScriptUrl;
+  if (!scriptUrl) return [];
+  try {
+    const res = await fetch(`${scriptUrl}?action=getAnnouncements`);
+    const data = await res.json();
+    return data?.announcements || [];
+  } catch (err) {
+    console.error("Failed to fetch announcements fallback:", err);
+    return [];
+  }
+}
+
+/**
  * Subscribe to real-time wedding announcements from Firestore.
  * Updates instantly when a host sends an announcement via Telegram bot.
+ * Automatically falls back to Google Sheets if Firestore rules are not yet configured.
  */
 export function subscribeToAnnouncements(onData, onError) {
-  if (!db) return () => {};
+  if (!db) {
+    fetchAnnouncementsFallback().then(onData).catch(() => onData([]));
+    return () => {};
+  }
 
   const q = query(collection(db, "announcements"), orderBy("timestamp", "desc"));
   return onSnapshot(
@@ -99,7 +120,8 @@ export function subscribeToAnnouncements(onData, onError) {
       onData(announcements);
     },
     (error) => {
-      console.error("Firestore announcements subscription error:", error);
+      console.warn("Firestore announcements subscription error, falling back to Google Sheets:", error);
+      fetchAnnouncementsFallback().then(onData).catch(() => {});
       if (onError) onError(error);
     }
   );

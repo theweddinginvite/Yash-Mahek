@@ -484,6 +484,11 @@ function doGet(e) {
     return jsonResponse_({ ok: true, photos: photos });
   }
 
+  if (action === "getAnnouncements") {
+    const announcements = readAnnouncementsSheet_();
+    return jsonResponse_({ ok: true, announcements: announcements });
+  }
+
   if (action === "getRsvps") {
     const rsvps = ["RSVP_BRIDE", "RSVP_GROOM"].flatMap(readRsvpsSheet_).sort(
       (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
@@ -530,6 +535,24 @@ function readRsvpsSheet_(sheetName) {
       timestamp: row[5],
       id: row[6] || "",
     }));
+}
+
+function readAnnouncementsSheet_() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(ANNOUNCEMENTS_SHEET_NAME);
+  if (!sheet) return [];
+
+  const [, ...dataRows] = sheet.getDataRange().getValues();
+  return dataRows
+    .filter((row) => row[1] && String(row[4]).trim() !== "REMOVED")
+    .map((row, idx) => ({
+      id: String(row[5] || ("sheet_" + idx)),
+      message: String(row[1] || ""),
+      priority: String(row[2] || "NORMAL").toLowerCase(),
+      author: String(row[3] || "Host"),
+      timestamp: row[0] instanceof Date ? row[0].toISOString() : (row[0] ? new Date(row[0]).toISOString() : new Date().toISOString()),
+    }))
+    .reverse();
 }
 
 /**
