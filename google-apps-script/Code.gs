@@ -13,9 +13,15 @@
 const FIREBASE_PROJECT_ID = "yashmahekwedding";
 const FIREBASE_API_KEY = "AIzaSyB-H7JyM-REapOa3PftjigCqhMBjaSOu3Y";
 
-// Telegram Bot Configuration
-const TELEGRAM_BOT_TOKEN = "8998088060:AAFxapirVCDt0sIXQ0l9OmAN0Y1cduGNNLs";
-const TELEGRAM_CHAT_ID = "-1004270754193";
+// Telegram Bot Configuration (Private Script Properties)
+// Secrets are stored securely in Google Apps Script Properties so they are NEVER exposed in git!
+function getTelegramBotToken_() {
+  return PropertiesService.getScriptProperties().getProperty("TELEGRAM_BOT_TOKEN") || "";
+}
+
+function getTelegramChatId_() {
+  return PropertiesService.getScriptProperties().getProperty("TELEGRAM_CHAT_ID") || "";
+}
 
 const BLESSINGS_SHEETS = ["BLESSINGS_BRIDE", "BLESSINGS_GROOM"];
 const SHEET_BY_TYPE_AND_SIDE = {
@@ -66,7 +72,8 @@ function onOpen() {
     .addSeparator()
     .addItem("🚀 Activate Instant Auto-Sync Triggers", "setupInstantTriggers")
     .addSeparator()
-    .addItem("🤖 Register Telegram Webhook (For Native Delete Button)", "registerTelegramWebhook")
+    .addItem("🔑 Configure Telegram Bot Credentials", "promptSetTelegramCredentials")
+    .addItem("🤖 Register Telegram Webhook (For Delete & Notice Board)", "registerTelegramWebhook")
     .addItem("🧪 Send Test Telegram Alert", "sendTestTelegramNotification")
     .addSeparator()
     .addItem("🧹 Clear All Test RSVPs", "clearAllRsvpsMenu")
@@ -230,6 +237,40 @@ function extractDriveFileId_(input) {
   const matchId = input.match(/id=([a-zA-Z0-9_-]+)/);
   if (matchId) return matchId[1];
   return input.trim();
+}
+
+/**
+ * Prompt to set Telegram Bot Token and Chat ID securely in Script Properties
+ */
+function promptSetTelegramCredentials() {
+  const ui = SpreadsheetApp.getUi();
+  const currentToken = getTelegramBotToken_();
+  const maskedToken = currentToken ? currentToken.substring(0, 10) + "..." + currentToken.slice(-4) : "Not Set";
+  const currentChatId = getTelegramChatId_() || "Not Set";
+
+  const tokenPrompt = ui.prompt(
+    "🔑 Configure Telegram Bot Token",
+    "Enter your Telegram Bot Token from @BotFather:\n\nCurrent: " + maskedToken,
+    ui.ButtonSet.OK_CANCEL
+  );
+  if (tokenPrompt.getSelectedButton() !== ui.Button.OK) return;
+  const tokenVal = tokenPrompt.getResponseText().trim();
+  if (tokenVal) {
+    PropertiesService.getScriptProperties().setProperty("TELEGRAM_BOT_TOKEN", tokenVal);
+  }
+
+  const chatPrompt = ui.prompt(
+    "💬 Configure Telegram Chat ID",
+    "Enter your Telegram Group/Channel Chat ID (e.g. -100xxxxxxxxxx):\n\nCurrent: " + currentChatId,
+    ui.ButtonSet.OK_CANCEL
+  );
+  if (chatPrompt.getSelectedButton() !== ui.Button.OK) return;
+  const chatVal = chatPrompt.getResponseText().trim();
+  if (chatVal) {
+    PropertiesService.getScriptProperties().setProperty("TELEGRAM_CHAT_ID", chatVal);
+  }
+
+  ui.alert("✅ Saved! Telegram credentials have been stored securely in Script Properties.\n\nNow click '🤖 Register Telegram Webhook' from the Wedding Admin menu to activate.");
 }
 
 /**
@@ -553,7 +594,9 @@ function doPost(e) {
  * Sends a Telegram notification when a new Blessing is posted
  */
 function sendTelegramBlessingNotification_(data) {
-  if (!TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN.includes("YOUR_")) return;
+  const botToken = getTelegramBotToken_();
+  const chatId = getTelegramChatId_();
+  if (!botToken || !chatId || botToken.includes("YOUR_")) return;
 
   const text =
     `🌸 <b>New Blessing on Wedding Wall!</b> 🌸\n\n` +
@@ -574,7 +617,7 @@ function sendTelegramBlessingNotification_(data) {
   };
 
   sendTelegramApi_("sendMessage", {
-    chat_id: TELEGRAM_CHAT_ID,
+    chat_id: chatId,
     text: text,
     parse_mode: "HTML",
     reply_markup: keyboard,
@@ -585,7 +628,9 @@ function sendTelegramBlessingNotification_(data) {
  * Sends a Telegram notification when a new RSVP is submitted
  */
 function sendTelegramRsvpNotification_(data) {
-  if (!TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN.includes("YOUR_")) return;
+  const botToken = getTelegramBotToken_();
+  const chatId = getTelegramChatId_();
+  if (!botToken || !chatId || botToken.includes("YOUR_")) return;
 
   const isAttending = data.attending === "Yes" ? "✅ Joyfully Accept (Attending)" : "❌ Regretfully Decline";
   const text =
@@ -609,7 +654,7 @@ function sendTelegramRsvpNotification_(data) {
   };
 
   sendTelegramApi_("sendMessage", {
-    chat_id: TELEGRAM_CHAT_ID,
+    chat_id: chatId,
     text: text,
     parse_mode: "HTML",
     reply_markup: keyboard,
@@ -932,8 +977,9 @@ function updateNoticeSheetStatus_(docId, status) {
 }
 
 function sendTelegramApi_(method, payload) {
-  if (!TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN.includes("YOUR_")) return;
-  const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/${method}`;
+  const botToken = getTelegramBotToken_();
+  if (!botToken || botToken.includes("YOUR_")) return null;
+  const url = `https://api.telegram.org/bot${botToken}/${method}`;
   return UrlFetchApp.fetch(url, {
     method: "POST",
     contentType: "application/json",
@@ -947,6 +993,12 @@ function sendTelegramApi_(method, payload) {
  */
 function registerTelegramWebhook() {
   const ui = SpreadsheetApp.getUi();
+  const botToken = getTelegramBotToken_();
+  if (!botToken || botToken.includes("YOUR_")) {
+    ui.alert("Please configure your Telegram Bot Token first using:\n\n'💌 Wedding Admin' -> '🔑 Configure Telegram Bot Credentials'");
+    return;
+  }
+
   const prompt = ui.prompt(
     "Register Telegram Webhook",
     "Enter your Google Apps Script Web App URL (the URL ending with /exec):",
@@ -971,8 +1023,10 @@ function registerTelegramWebhook() {
  * Test function to verify Telegram Bot connectivity
  */
 function sendTestTelegramNotification() {
-  if (!TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN.includes("YOUR_")) {
-    SpreadsheetApp.getUi().alert("Please fill TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID at the top of Code.gs first!");
+  const botToken = getTelegramBotToken_();
+  const chatId = getTelegramChatId_();
+  if (!botToken || !chatId || botToken.includes("YOUR_")) {
+    SpreadsheetApp.getUi().alert("Please configure your Telegram Bot Token and Chat ID first using:\n\n'💌 Wedding Admin' -> '🔑 Configure Telegram Bot Credentials'");
     return;
   }
 
@@ -1342,7 +1396,9 @@ function handleMediaUpload_(payload) {
  * Includes: Uploader Name, Total Photos, Ceremony, Date, Time, and Drive folder link.
  */
 function sendTelegramGuestBatchNotification_(data) {
-  if (!TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN.indexOf("YOUR_") !== -1) return;
+  const botToken = getTelegramBotToken_();
+  const chatId = getTelegramChatId_();
+  if (!botToken || !chatId || botToken.indexOf("YOUR_") !== -1) return;
 
   const sender = data.uploaderName && data.uploaderName.trim() ? data.uploaderName.trim() : "A Loving Guest";
   const event = data.ceremony && data.ceremony.trim() ? data.ceremony.trim() : "Wedding";
@@ -1367,7 +1423,7 @@ function sendTelegramGuestBatchNotification_(data) {
   };
 
   sendTelegramApi_("sendMessage", {
-    chat_id: TELEGRAM_CHAT_ID,
+    chat_id: chatId,
     text: text,
     parse_mode: "HTML",
     reply_markup: keyboard,
