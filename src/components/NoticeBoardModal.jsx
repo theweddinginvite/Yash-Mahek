@@ -140,11 +140,6 @@ export default function NoticeBoardModal({
                       {timeStr && <span className="notice-card__time">{timeStr}</span>}
                     </div>
                     <p className="notice-card__message">{item.message}</p>
-                    {item.author && (
-                      <div className="notice-card__author">
-                        <span>Posted by:</span> {item.author}
-                      </div>
-                    )}
                   </article>
                 );
               })
