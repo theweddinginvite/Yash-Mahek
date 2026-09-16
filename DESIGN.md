@@ -122,14 +122,14 @@ The bottom-right floating control cluster (`FloatingControls.jsx`), top to botto
   - Clicking any link smoothly scrolls to the target with zero offset and auto-closes the drawer.
 
 #### Shree Ganesh (`#shree-ganesh`, `ShreeGanesh.jsx`)
-- **Sacred Invocation Screen**: Pure spiritual focus on Lord Ganesha and Lord Vishnu blessings.
-- **Ganesh Crest**: Centered emblem (`clamp(120px, 17.5vh, 155px)` mobile / `230px` desktop, `public/images/lordganesh/ganeshWithoutBackground.png`) with top margin (`0.5rem auto clamp(0.25rem, 1vh, 0.6rem)`) providing generous breathing room above.
+- **Sacred Invocation Screen**: Pure spiritual focus on Lord Ganesha and Lord Vishnu blessings with balanced vertical layout and generous breathing room.
+- **Top Clearance & Ganesh Crest**: After comfortable top spacing, Lord Ganesha's sacred emblem (`clamp(185px, 24vh, 230px)` on mobile, `230px` on desktop, `public/images/lordganesh/ganeshWithoutBackground.png`) is prominently displayed.
 - **Glow Aura**: `🌸 Golden Rose` halo (`.shree-ganesh__ganesh-glow`, `inset: -20%`, radial gradient with `rgba(230, 155, 165, 0.75)` core and `rgba(216, 150, 76, 0.5)` mid, `filter: blur(5px)`), pulsing softly with a tranquil `5.5s` breathing rhythm (`opacity: 0.75`, `scale: 1.0`).
-- **Devanagari Shlokas**:
-  1. Ganesha shloka (*Vakratunda Mahakaya...*) with English translation (`clamp(0.7rem, 1.25vh, 0.8rem)` on mobile).
+- **Devanagari Shlokas & Readable Typography**:
+  1. Ganesha shloka (*Vakratunda Mahakaya...*) in `Tiro Devanagari Sanskrit` (`clamp(1.2rem, 2.35vh, 1.35rem)`) with readable English translation (`clamp(0.92rem, 1.6vh, 1.02rem)`).
   2. Ornamental gold diamond divider line (`.shree-ganesh__shlok-divider`).
-  3. Vishnu Mangalam verse (*Mangalam Bhagwan Vishnuh...* without trailing commas for clean Sanskrit metre) with English translation (`clamp(0.7rem, 1.25vh, 0.8rem)` on mobile).
-- **Bouncing Gold Scroll-Down Button**: Centered circular button at the bottom that smoothly scrolls directly to the Invitation screen (`#invitation`). Verified visible with comfortable margin on all mobile viewports without clipping.
+  3. Vishnu Mangalam verse (*Mangalam Bhagwan Vishnuh...* without trailing commas for clean Sanskrit metre) in `Tiro Devanagari Sanskrit` with readable English translation.
+- **Bouncing Gold Scroll-Down Button**: Centered circular button (`clamp(2.55rem, 5.2vh, 2.85rem)`) that smoothly scrolls directly to the Invitation screen (`#invitation`). Verified visible with balanced bottom clearance on all mobile viewports.
 
 ### Invitation (`#invitation`)
 - **Dedicated 2nd View**: Extracted as a standalone component (`Invitation.jsx`) top-aligned with no dead space.
