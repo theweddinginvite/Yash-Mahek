@@ -20,7 +20,7 @@ function getTelegramBotToken_() {
 }
 
 function getTelegramChatId_() {
-  return PropertiesService.getScriptProperties().getProperty("TELEGRAM_CHAT_ID") || "";
+  return PropertiesService.getScriptProperties().getProperty("TELEGRAM_CHAT_ID") || "-1004270754193";
 }
 
 const BLESSINGS_SHEETS = ["BLESSINGS_BRIDE", "BLESSINGS_GROOM"];
@@ -239,6 +239,8 @@ function extractDriveFileId_(input) {
   return input.trim();
 }
 
+const DEFAULT_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxibdTIQ5m8jfUdoCZ2SSAIVNOIJE6uzDPKrPUulREgq8rZ8TCtykTghNK7WJWR86oxxA/exec";
+
 /**
  * Prompt to set Telegram Bot Token and Chat ID securely in Script Properties
  */
@@ -246,11 +248,11 @@ function promptSetTelegramCredentials() {
   const ui = SpreadsheetApp.getUi();
   const currentToken = getTelegramBotToken_();
   const maskedToken = currentToken ? currentToken.substring(0, 10) + "..." + currentToken.slice(-4) : "Not Set";
-  const currentChatId = getTelegramChatId_() || "Not Set";
+  const currentChatId = getTelegramChatId_();
 
   const tokenPrompt = ui.prompt(
     "🔑 Configure Telegram Bot Token",
-    "Enter your Telegram Bot Token from @BotFather:\n\nCurrent: " + maskedToken,
+    "Paste your NEW Telegram Bot Token from @BotFather:\n\nCurrent: " + maskedToken,
     ui.ButtonSet.OK_CANCEL
   );
   if (tokenPrompt.getSelectedButton() !== ui.Button.OK) return;
@@ -260,17 +262,35 @@ function promptSetTelegramCredentials() {
   }
 
   const chatPrompt = ui.prompt(
-    "💬 Configure Telegram Chat ID",
-    "Enter your Telegram Group/Channel Chat ID (e.g. -100xxxxxxxxxx):\n\nCurrent: " + currentChatId,
+    "💬 Configure Telegram Chat ID (Optional)",
+    "Telegram Group Chat ID:\n(Press OK to keep default: " + currentChatId + ")",
     ui.ButtonSet.OK_CANCEL
   );
-  if (chatPrompt.getSelectedButton() !== ui.Button.OK) return;
-  const chatVal = chatPrompt.getResponseText().trim();
-  if (chatVal) {
-    PropertiesService.getScriptProperties().setProperty("TELEGRAM_CHAT_ID", chatVal);
+  if (chatPrompt.getSelectedButton() === ui.Button.OK) {
+    const chatVal = chatPrompt.getResponseText().trim();
+    if (chatVal) {
+      PropertiesService.getScriptProperties().setProperty("TELEGRAM_CHAT_ID", chatVal);
+    }
   }
 
-  ui.alert("✅ Saved! Telegram credentials have been stored securely in Script Properties.\n\nNow click '🤖 Register Telegram Webhook' from the Wedding Admin menu to activate.");
+  // Automatically attempt webhook registration using active Bot Token
+  const activeToken = getTelegramBotToken_();
+  let webhookMsg = "";
+  if (activeToken) {
+    try {
+      const res = UrlFetchApp.fetch(`https://api.telegram.org/bot${activeToken}/setWebhook?url=${encodeURIComponent(DEFAULT_WEB_APP_URL)}`, { muteHttpExceptions: true });
+      const resJson = JSON.parse(res.getContentText());
+      if (resJson.ok) {
+        webhookMsg = "\n\n🤖 Webhook successfully registered to Telegram!";
+      } else {
+        webhookMsg = "\n\n⚠️ Webhook registration response: " + resJson.description;
+      }
+    } catch (e) {
+      webhookMsg = "\n\n⚠️ Webhook auto-connect note: " + e.message;
+    }
+  }
+
+  ui.alert("✅ Saved! Credentials stored in Script Properties." + webhookMsg);
 }
 
 /**
@@ -1001,14 +1021,17 @@ function registerTelegramWebhook() {
 
   const prompt = ui.prompt(
     "Register Telegram Webhook",
-    "Enter your Google Apps Script Web App URL (the URL ending with /exec):",
+    "Confirm or paste your Google Apps Script Web App URL (ending in /exec):\n\n(Press OK directly to use active URL: " + DEFAULT_WEB_APP_URL + ")",
     ui.ButtonSet.OK_CANCEL
   );
 
   if (prompt.getSelectedButton() !== ui.Button.OK) return;
-  const webAppUrl = prompt.getResponseText().trim();
+  let webAppUrl = prompt.getResponseText().trim();
+  if (!webAppUrl) {
+    webAppUrl = DEFAULT_WEB_APP_URL;
+  }
 
-  if (!webAppUrl || !webAppUrl.includes("/exec")) {
+  if (!webAppUrl.includes("/exec")) {
     ui.alert("Invalid URL. It must be your deployed Apps Script URL ending in /exec.");
     return;
   }
