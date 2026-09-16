@@ -188,10 +188,12 @@ function EventCard({ event, autoFlipSeconds = 20 }) {
   );
 }
 
-export default function EventDetails() {
+export default function EventDetails({ onOpenSaveEvents }) {
   const { events, eventCardAutoFlipSeconds, venue, couple } = content;
   const [isVenueModalOpen, setIsVenueModalOpen] = useState(false);
-  const [isSaveEventsModalOpen, setIsSaveEventsModalOpen] = useState(false);
+  const [isInternalSaveEventsOpen, setIsInternalSaveEventsOpen] = useState(false);
+  const isControlled = typeof onOpenSaveEvents === "function";
+  const handleOpenSaveEvents = isControlled ? onOpenSaveEvents : () => setIsInternalSaveEventsOpen(true);
 
   return (
     <section id="details" className="section section--surface">
@@ -210,12 +212,12 @@ export default function EventDetails() {
           ))}
         </div>
 
-        {/* Action Buttons: Save Event Details (Left) + How to reach the venue? (Right) */}
+        {/* Action Buttons: Save Event Details (Left) + How to reach venue? (Right) */}
         <div className="event-details__actions">
           <button
             type="button"
-            className="event-details__action-btn event-details__action-btn--primary"
-            onClick={() => setIsSaveEventsModalOpen(true)}
+            className="event-details__action-btn"
+            onClick={handleOpenSaveEvents}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
@@ -225,25 +227,27 @@ export default function EventDetails() {
 
           <button
             type="button"
-            className="event-details__action-btn event-details__action-btn--secondary"
+            className="event-details__action-btn"
             onClick={() => setIsVenueModalOpen(true)}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z" />
               <circle cx="12" cy="10" r="3" />
             </svg>
-            How to reach the venue?
+            How to reach venue?
           </button>
         </div>
 
-        {/* Save Events Modal Dialog */}
-        <SaveEventsModal
-          isOpen={isSaveEventsModalOpen}
-          onClose={() => setIsSaveEventsModalOpen(false)}
-          events={events}
-          couple={couple}
-          venue={venue}
-        />
+        {/* Save Events Modal Dialog (fallback if not controlled from parent) */}
+        {!isControlled && (
+          <SaveEventsModal
+            isOpen={isInternalSaveEventsOpen}
+            onClose={() => setIsInternalSaveEventsOpen(false)}
+            events={events}
+            couple={couple}
+            venue={venue}
+          />
+        )}
 
         {/* Venue Modal Dialog */}
         <VenueModal

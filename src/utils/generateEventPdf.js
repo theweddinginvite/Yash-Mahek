@@ -5,14 +5,13 @@ export function getWhatsAppShareText(couple, events, venue) {
   const p2 = (couple?.partner2 || "Groom").replace(/oratna/i, "");
 
   let text = `*The wedding of ${p1} & ${p2}*\n`;
-  text += `December 5-6, 2026\n\n`;
+  text += `*December 5-6, 2026*\n\n`;
   text += `Events details:\n\n`;
 
   events.forEach((ev) => {
     text += `✨ *${ev.name.toUpperCase()}*\n`;
     const dayStr = ev.day ? `${ev.day}, ` : "";
-    text += `📅 ${dayStr}${ev.date} · ${ev.time}\n`;
-    if (ev.description) text += `• ${ev.description}\n`;
+    text += `${dayStr}${ev.date} · ${ev.time}\n`;
     if (ev.meal) text += `• ${ev.meal}\n`;
     if (ev.attire) text += `• Attire: ${ev.attire}\n`;
     text += `\n`;
@@ -20,9 +19,12 @@ export function getWhatsAppShareText(couple, events, venue) {
 
   if (venue) {
     text += `📍 *Venue:* ${venue.name}\n`;
-    text += `${venue.address}\n`;
-    if (venue.directionsUrl || venue.qrUrl) {
-      text += `🗺️ Location Map: ${venue.directionsUrl || venue.qrUrl}\n`;
+    if (venue.address) {
+      text += `Address: ${venue.address}\n`;
+    }
+    const mapLink = venue.qrUrl || venue.directionsUrl;
+    if (mapLink) {
+      text += `Location Map: ${mapLink}\n`;
     }
   }
 
@@ -54,26 +56,15 @@ export function createEventPdfDocument({ events, couple, venue }) {
   doc.setLineWidth(0.3);
   doc.rect(10, 10, pageWidth - 20, pageHeight - 20);
 
-  // Corner decorative diamonds
-  function drawDiamond(cx, cy, size = 1.6) {
+  // Corner decorative circles (consistent with website jewel dots)
+  function drawCircle(cx, cy, r = 1.35) {
     doc.setFillColor(176, 137, 104);
-    doc.lines(
-      [
-        [size, size],
-        [-size, size],
-        [-size, -size],
-        [size, -size],
-      ],
-      cx,
-      cy - size,
-      [1, 1],
-      "F"
-    );
+    doc.circle(cx, cy, r, "F");
   }
-  drawDiamond(10, 10);
-  drawDiamond(pageWidth - 10, 10);
-  drawDiamond(10, pageHeight - 10);
-  drawDiamond(pageWidth - 10, pageHeight - 10);
+  drawCircle(10, 10, 1.35);
+  drawCircle(pageWidth - 10, 10, 1.35);
+  drawCircle(10, pageHeight - 10, 1.35);
+  drawCircle(pageWidth - 10, pageHeight - 10, 1.35);
 
   // Header Section with increased font size & line spacing
   let y = 22;
@@ -111,18 +102,21 @@ export function createEventPdfDocument({ events, couple, venue }) {
 
   y += 7.5;
 
-  // Ornamental Divider Line with Center Diamond
+  // Ornamental Divider Line with Center Circle
   doc.setDrawColor(176, 137, 104);
   doc.setLineWidth(0.4);
-  doc.line(pageWidth / 2 - 28, y, pageWidth / 2 - 3.5, y);
-  doc.line(pageWidth / 2 + 3.5, y, pageWidth / 2 + 28, y);
-  drawDiamond(pageWidth / 2, y, 1.3);
+  doc.line(pageWidth / 2 - 28, y, pageWidth / 2 - 3, y);
+  doc.line(pageWidth / 2 + 3, y, pageWidth / 2 + 28, y);
+  drawCircle(pageWidth / 2, y, 1.25);
 
   y += 11;
 
   // Events Iteration
   const boxX = margin + 2;
   const boxWidth = contentWidth - 4;
+  const labelX = boxX + 3;
+  const valueX = boxX + 22;
+  const eventSpacing = events.length <= 5 ? 7.0 : 5.5;
 
   events.forEach((event) => {
     // Event Name (Left)
@@ -150,59 +144,57 @@ export function createEventPdfDocument({ events, couple, venue }) {
 
     y += 5.0;
 
-    // Details bullet
-    if (event.description) {
+    // Details block (Description + Meal)
+    const hasDetails = Boolean(event.description || event.meal);
+    if (hasDetails) {
       doc.setTextColor(143, 51, 80);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(10);
-      doc.text("•  Details:", boxX + 3, y);
+      doc.text("•  Details:", labelX, y);
 
-      doc.setTextColor(46, 43, 40);
-      doc.setFont("times", "normal");
+      doc.setTextColor(55, 50, 48);
+      doc.setFont("helvetica", "normal");
       doc.setFontSize(10);
-      const descLines = doc.splitTextToSize(event.description, boxWidth - 28);
-      doc.text(descLines, boxX + 24, y);
-      y += descLines.length * 4.4;
+
+      if (event.description) {
+        const descLines = doc.splitTextToSize(event.description, boxWidth - 24);
+        doc.text(descLines, valueX, y);
+        y += descLines.length * 4.4;
+
+        if (event.meal) {
+          doc.text(event.meal, valueX, y);
+          y += 4.6;
+        }
+      } else if (event.meal) {
+        doc.text(event.meal, valueX, y);
+        y += 4.6;
+      }
     }
 
-    // Food bullet
-    if (event.meal) {
-      doc.setTextColor(143, 51, 80);
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(10);
-      doc.text("•  Food:", boxX + 3, y);
-
-      doc.setTextColor(176, 137, 104);
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(10);
-      doc.text(event.meal, boxX + 24, y);
-      y += 4.8;
-    }
-
-    // Attire bullet
+    // Attire block
     if (event.attire) {
       doc.setTextColor(143, 51, 80);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(10);
-      doc.text("•  Attire:", boxX + 3, y);
+      doc.text("•  Attire:", labelX, y);
 
-      doc.setTextColor(90, 85, 80);
+      doc.setTextColor(55, 50, 48);
       doc.setFont("helvetica", "normal");
       doc.setFontSize(10);
-      doc.text(event.attire, boxX + 24, y);
-      y += 4.8;
+      doc.text(event.attire, valueX, y);
+      y += 4.6;
     }
 
-    y += 5.5; // spacing between events
+    y += eventSpacing; // spacing between events
   });
 
   // Footer Section with increased line spacing & font size
   const footerY = pageHeight - 28;
   doc.setDrawColor(176, 137, 104);
   doc.setLineWidth(0.4);
-  doc.line(pageWidth / 2 - 35, footerY, pageWidth / 2 - 4, footerY);
-  doc.line(pageWidth / 2 + 4, footerY, pageWidth / 2 + 35, footerY);
-  drawDiamond(pageWidth / 2, footerY, 1.3);
+  doc.line(pageWidth / 2 - 35, footerY, pageWidth / 2 - 3.5, footerY);
+  doc.line(pageWidth / 2 + 3.5, footerY, pageWidth / 2 + 35, footerY);
+  drawCircle(pageWidth / 2, footerY, 1.25);
 
   doc.setTextColor(111, 106, 99);
   doc.setFont("helvetica", "normal");

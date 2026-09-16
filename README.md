@@ -11,7 +11,7 @@ A high-performance, single-page luxury Indian wedding invitation built with Reac
 - **Wedding Invitation (`#invitation`)**: Dedicated invitation screen with groom & bride names in royal burgundy cursive calligraphy, elegant gold ampersand connector, and monogrammed scratch-to-reveal card with animated glass shine sweep across "SAVE THE DATE", live countdown, confetti celebration, and synchronized global date reveal.
 - **Navigation Drawer**: Distraction-free viewport with glassmorphic top-left floating menu, tailored 240px width, two-line stacked couple header (*Yashoratna &* / *Mahek*), and smooth section jumping.
 - **Meet the Families (`#couple`)**: Traditional royal Indian wedding lineage cards with sacred Gayatri Mantra Sanskrit shloka (*॥ ॐ भूर्भुवः स्वः...*), `THE GUPTA FAMILY` titles in royal burgundy, `॥ मंगलम् ॥` (*Auspicious Beginning*) & `॥ युग्म ॥` (*Sacred Union*) symbols rendered in two-layer ghost-matched HTML typography with the couple's Hindi initials strictly on consonants (**म** & **य**) highlighted in royal burgundy, diacritics and framing elements in ceremonial gold, unified Cormorant Garamond italic typography across all contextual and relationship lines in muted gray, and luxury double borders with burgundy inner dashed accents.
-- **Event Details (`#details`)**: 2-column, 3-row 3D flip cards (total 6 events: Haldi, Engagement & Sangeet, Godh Bharai & Sagai, Baraat & Ghurchari, Jaimaal, Phere) with dining notes ("Dinner to follow" / "Lunch to follow") and attire themes on back faces, 20s animated perimeter timer strokes, signature gold divider lines with center jewel dot, dual action buttons ("Save Event Details" & "How to reach the venue?") with 10% bottom viewport spacing, interactive venue navigation popup with QR code, and a dedicated itinerary modal featuring 2x2 grid layout, WhatsApp sharing, and custom themed PDF generation/downloading (`The_Wedding_Events_Yash_Mahek.pdf`).
+- **Event Details (`#details`)**: 2-column, 3-row 3D flip cards (total 6 events: Haldi, Engagement & Sangeet, Godh Bharai & Sagai, Baraat & Ghurchari, Jaimaal, Phere) with dining notes ("Dinner to follow" / "Lunch to follow") and attire themes on back faces, 20s animated perimeter timer strokes, signature gold divider lines with center jewel dot, desktop card partition line optimization, dual unified action buttons ("Save Event Details" & "How to reach venue?") with 10% bottom viewport spacing, interactive venue navigation popup with QR code, and a dedicated itinerary modal featuring 2x2 grid layout, 30s auto-close timer, dynamic viewport bounds (`100dvh`, `100svh`), Flaticon buttons, WhatsApp sharing with short map link, and custom themed PDF generation/downloading (`The_Wedding_Events_Yash_Mahek.pdf`) featuring circular jewel dot ornaments.
 - **Dynamic Memories Gallery (`#gallery`)**:
   - **Dedicated Whole-View Isolation**: Occupies its own whole view (`min-height: 100vh; min-height: 100lvh;`), cleanly separated from the Blessings Wall.
   - **Live Google Drive Integration**: Upload photos directly to a Google Drive folder to update the gallery in real-time.
@@ -26,7 +26,7 @@ A high-performance, single-page luxury Indian wedding invitation built with Reac
   - **Telegram Bot Notifications & Moderation**: Instant Telegram alerts for new blessings & RSVPs with native inline "🗑️ Delete from Live Wall" moderation buttons.
 - **FAQ & Footer (`#faq`)**: Curated 6-question accordion covering exact travel routes & distances, complimentary parking, dress codes, December weather breakdown, 12:00 PM check-in & 10:00 AM check-out with mandatory Aadhaar ID requirements, hospitality coordinators, 24/7 snacks availability, official wedding hashtags (`#MahekWedsYash` & `#YashKiMahek`), and interactive action buttons for venue navigation and gallery jumps.
 - **Mobile Viewport Stability & Smooth Free Scrolling**: Standardized on `min-height: 100vh; min-height: 100lvh;` with global `overflow-anchor: none !important;` and `scroll-snap-type: none !important;`, preventing mobile URL bar expansion/retraction from triggering scroll jumps, erratic repositioning, or rubber-banding across iOS Safari and Android Chrome.
-- **Floating Controls**: Ambient background music player, envelope re-opener, and section navigation arrows pinned with responsive right safe-area offset.
+- **Floating Controls**: Ambient background music player, envelope re-opener, and Event Details & Itinerary popup button pinned with responsive right safe-area offset.
 
 ---
 
@@ -132,12 +132,15 @@ src/
     MeetFamilies.jsx        ← Royal Indian family lineage cards with Gayatri Mantra shloka
     EventDetails.jsx        ← 2-column, 3-row 3D flip cards (6 events) with calibrated heights & venue button
     VenueModal.jsx          ← Venue travel directions popup with QR code & transit options
+    SaveEventsModal.jsx     ← Save Event Details modal with 2x2 grid, auto-close timer & PDF/WhatsApp tools
     Gallery.jsx             ← 3D coverflow carousel with adaptive matting & caricature fallback
     GalleryUploadModal.jsx  ← Guest photo/video upload modal with batch progress & ceremony picker
     Blessings.jsx           ← Curated blessings wall cards with live heart reactions (❤️)
     BlessingsRSVP.jsx       ← Tabbed blessings submission & RSVP form
     FAQ.jsx                 ← Interactive accordion with route, dress code & stay guides
-    FloatingControls.jsx    ← Music player, envelope re-opener & section navigation arrows
+    FloatingControls.jsx    ← Music player, envelope re-opener & Event Details itinerary trigger
+  utils/
+    generateEventPdf.js     ← Client-side luxury PDF generator with jewel dot ornaments & WhatsApp formatter
 public/
   images/             ← Static vector artwork, caricature fallbacks, and monogram assets
   flaticons/          ← Traditional Indian wedding motifs

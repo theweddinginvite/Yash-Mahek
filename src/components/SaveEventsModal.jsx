@@ -4,6 +4,9 @@ import {
   downloadEventPdf,
   shareEventPdf,
 } from "../utils/generateEventPdf";
+import whatsappIcon from "../assets/flaticons/whatsapp-2582600.png";
+import sharePdfIcon from "../assets/flaticons/share-1358023.png";
+import downloadPdfIcon from "../assets/flaticons/download-pdf-7257793.png";
 import "./SaveEventsModal.css";
 
 export default function SaveEventsModal({ isOpen, onClose, events = [], couple, venue }) {
@@ -12,11 +15,20 @@ export default function SaveEventsModal({ isOpen, onClose, events = [], couple, 
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
 
+  const autoCloseSeconds = venue?.modalAutoCloseSeconds ?? 30;
+
   useEffect(() => {
     if (!isOpen) {
       setToastMessage("");
       return;
     }
+
+    const autoCloseMs = autoCloseSeconds * 1000;
+    const timerId = setTimeout(() => {
+      if (onCloseRef.current) {
+        onCloseRef.current();
+      }
+    }, autoCloseMs);
 
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
@@ -29,10 +41,11 @@ export default function SaveEventsModal({ isOpen, onClose, events = [], couple, 
     document.body.style.overflow = "hidden";
 
     return () => {
+      clearTimeout(timerId);
       window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = originalOverflow;
     };
-  }, [isOpen]);
+  }, [isOpen, autoCloseSeconds]);
 
   if (!isOpen) return null;
 
@@ -87,6 +100,16 @@ export default function SaveEventsModal({ isOpen, onClose, events = [], couple, 
       aria-labelledby="save-events-modal-title"
     >
       <div className="save-events-card" onClick={(e) => e.stopPropagation()}>
+        {/* Pinned Top Progress Timer Bar */}
+        <div
+          className="save-events-card__timer-bar"
+          style={{
+            animationDuration: `${autoCloseSeconds}s`,
+          }}
+          onAnimationEnd={onClose}
+          aria-hidden="true"
+        />
+
         {/* Close button */}
         <button
           type="button"
@@ -162,9 +185,7 @@ export default function SaveEventsModal({ isOpen, onClose, events = [], couple, 
             onClick={handleShareText}
             title="Share ceremony schedule on WhatsApp"
           >
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.63.076-1.85-.429-1.57-.648-2.58-2.247-2.66-2.355-.078-.108-.636-.848-.636-1.616 0-.769.403-1.147.546-1.303.143-.155.313-.194.417-.194.103 0 .207.002.298.006.096.004.226-.036.353.27.13.313.444 1.082.483 1.162.039.08.065.174.013.279-.052.104-.078.17-.156.26-.078.092-.163.205-.233.275-.078.078-.16.162-.069.318.092.156.408.673.875 1.089.601.535 1.109.7 1.265.778.156.078.247.065.338-.04.092-.104.39-.455.494-.61.104-.156.208-.13.351-.078.143.052.91.429 1.066.507.156.078.26.117.299.182.039.065.039.377-.105.782z" />
-            </svg>
+            <img src={whatsappIcon} alt="" className="save-events-card__btn-icon" aria-hidden="true" />
             Share as text
           </button>
 
@@ -175,13 +196,7 @@ export default function SaveEventsModal({ isOpen, onClose, events = [], couple, 
             disabled={isProcessing}
             title="Share PDF via device share sheet"
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-              <circle cx="18" cy="5" r="3" />
-              <circle cx="6" cy="12" r="3" />
-              <circle cx="18" cy="19" r="3" />
-              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-            </svg>
+            <img src={sharePdfIcon} alt="" className="save-events-card__btn-icon" aria-hidden="true" />
             Share as pdf
           </button>
 
@@ -192,11 +207,7 @@ export default function SaveEventsModal({ isOpen, onClose, events = [], couple, 
             disabled={isProcessing}
             title="Download PDF document"
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-              <polyline points="7 10 12 15 17 10" />
-              <line x1="12" y1="15" x2="12" y2="3" />
-            </svg>
+            <img src={downloadPdfIcon} alt="" className="save-events-card__btn-icon" aria-hidden="true" />
             Download pdf
           </button>
         </div>

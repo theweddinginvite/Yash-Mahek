@@ -12,6 +12,8 @@ import FloatingControls from "./components/FloatingControls";
 import EnvelopeIntro from "./components/EnvelopeIntro";
 import PageSparkles from "./components/PageSparkles";
 import CursorSparkleTrail from "./components/CursorSparkleTrail";
+import SaveEventsModal from "./components/SaveEventsModal";
+import content from "./content";
 
 function App({ entries, status, myBlessingKey, addLocalBlessing }) {
   // Remembered per-session so navigating to/from the Blessings Wall page
@@ -26,6 +28,8 @@ function App({ entries, status, myBlessingKey, addLocalBlessing }) {
   const [dateRevealed, setDateRevealed] = useState(
     () => sessionStorage.getItem("dateRevealed") === "true"
   );
+
+  const [isSaveEventsModalOpen, setIsSaveEventsModalOpen] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = opened ? "" : "hidden";
@@ -66,12 +70,22 @@ function App({ entries, status, myBlessingKey, addLocalBlessing }) {
       <ShreeGanesh />
       <Invitation isDateRevealed={dateRevealed} onDateReveal={handleDateReveal} />
       <MeetFamilies />
-      <EventDetails />
+      <EventDetails onOpenSaveEvents={() => setIsSaveEventsModalOpen(true)} />
       <Gallery />
       <Blessings entries={entries} status={status} myBlessingKey={myBlessingKey} />
       <BlessingsRSVP onBlessingSent={addLocalBlessing} />
       <FAQ isDateRevealed={dateRevealed} />
-      <FloatingControls onReopenEnvelope={handleReopenEnvelope} />
+      <FloatingControls
+        onReopenEnvelope={handleReopenEnvelope}
+        onOpenSaveEvents={() => setIsSaveEventsModalOpen(true)}
+      />
+      <SaveEventsModal
+        isOpen={isSaveEventsModalOpen}
+        onClose={() => setIsSaveEventsModalOpen(false)}
+        events={content.events}
+        couple={content.couple}
+        venue={content.venue}
+      />
     </>
   );
 }

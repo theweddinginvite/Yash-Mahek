@@ -1,6 +1,14 @@
 .venue-modal-overlay {
   position: fixed;
   inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  height: 100svh;
   z-index: 1000;
   background: rgba(20, 15, 12, 0.68);
   backdrop-filter: blur(5px);
@@ -8,8 +16,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: max(0.75rem, env(safe-area-inset-top, 0px)) max(0.75rem, env(safe-area-inset-right, 0px)) max(0.75rem, env(safe-area-inset-bottom, 0px)) max(0.75rem, env(safe-area-inset-left, 0px));
   box-sizing: border-box;
+  overflow: hidden;
   animation: venueModalFadeIn 0.25s ease-out;
 }
 
@@ -26,7 +35,7 @@
   position: relative;
   width: 100%;
   max-width: 32rem;
-  max-height: 86vh;
+  max-height: min(86vh, 86dvh, calc(100svh - 1.5rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)));
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -365,8 +374,13 @@
 
 /* Mobile Responsiveness */
 @media (max-width: 540px) {
+  .venue-modal-overlay {
+    padding: max(0.4rem, env(safe-area-inset-top, 0px)) max(0.4rem, env(safe-area-inset-right, 0px)) max(0.4rem, env(safe-area-inset-bottom, 0px)) max(0.4rem, env(safe-area-inset-left, 0px));
+  }
+
   .venue-modal-card {
-    max-height: 88vh;
+    border-radius: 1rem;
+    max-height: min(84vh, 84dvh, calc(100svh - 0.8rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)));
   }
 
   .venue-modal__body {

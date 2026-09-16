@@ -82,17 +82,17 @@ A single scale used everywhere via CSS variables — no ad-hoc pixel values:
 1. **Shree Ganesh** (`#shree-ganesh`) — full-height sacred invocation screen with Lord Ganesh crest & shlokas
 2. **Invitation** (`#invitation`) — standalone wedding invitation, lineage, and scratch card date reveal
 3. **Meet the Couple** (`#couple`)
-4. **Event Details** (`#details`) — 2x3 interactive flip cards grid + dual action buttons ("Save Event Details" & "How to reach the venue?") with modal dialogs
+4. **Event Details** (`#details`) — 2x3 interactive flip cards grid + dual unified action buttons ("Save Event Details" & "How to reach venue?") with modal dialogs
 5. **Gallery** (`#gallery`) — 3D coverflow carousel
 6. **Blessings** (`#blessings`) — guest blessings display
 7. **Blessings and RSVP** (`#blessings-rsvp`) — interactive RSVP & blessing form
-8. **FAQ & Footer** (`#faq`) — frequently asked questions accordion with the footer signature (`Mahek & Yash` and wedding date) integrated at the bottom of the final page
+8. **FAQ & Footer** (`#faq`) — frequently asked questions accordion with the footer signature (`Yash & Mahek` and wedding date) integrated at the bottom of the final page
 
 Each section is a full-screen "frame" you can jump to directly — every section above has a stable `id`, used both by the Nav links and by the section frame-nav (below).
 
-### Section frame-nav (home / up / down arrows)
+### Floating Controls Cluster (Envelope, Event Details & Music Player)
 
-The bottom-right floating control cluster (`FloatingControls.jsx`), top to bottom: an **Envelope button** (`HomeButton.jsx`) with an envelope icon — reopens the interactive 3D Envelope invitation intro; a pair of stacked up/down arrow buttons (`src/components/SectionNav.jsx`); then the music mute button. Clicking up/down jumps to the previous/next section's top edge using the same eased scroll as the Nav links. The current section is tracked from scroll position; the up arrow disables at the first section (Shree Ganesh), the down arrow disables at the last (FAQ & Footer). A short animation lock (~750ms, matching the scroll duration) ignores further clicks mid-scroll.
+The bottom-right floating control cluster (`FloatingControls.jsx`), top to bottom: an **Envelope button** (`HomeButton.jsx`) with an envelope icon — reopens the interactive 3D Envelope invitation intro; an **Event Details & Itinerary button** (`CalendarIcon`) — opens the Save Event Details popup with 2x2 grid itinerary, PDF downloads, and WhatsApp sharing; then the music mute/unmute button (`MusicPlayer.jsx`). All buttons share the unified `.icon-button` circular ivory/gold styling with responsive safe-area offset.
 
 ---
 
@@ -264,11 +264,11 @@ The bottom-right floating control cluster (`FloatingControls.jsx`), top to botto
 
 - Mobile-first breakpoints, primarily at `480px`, `600px`, and `700px` — since most guests are expected to open this on a phone, mobile is treated as the primary layout, not an afterthought
 - Nav collapses to a hamburger menu ≤700px (see Nav section above)
-- Event Details maintains a centered 2-column, 3-row flip card grid (total 6 event ceremonies) across mobile, tablet, and desktop, with calibrated heights (`min-height: 160px; height: 100%` on mobile) ensuring the bottom venue button remains fully in view
+- Event Details maintains a centered 2-column, 3-row flip card grid (total 6 event ceremonies) across mobile, tablet, and desktop, with calibrated heights (`min-height: 162px; height: 162px;` on desktop) ensuring the bottom venue button remains fully in view without text crowding
 - Gallery's coverflow shrinks its stage height/perspective and widens covers slightly on narrow screens, but keeps the same fan-out mechanic (no reflow to a stacked column) at any width
 - Meet the Couple displays two side-by-side family cards on desktop and tablet, and gracefully stacks them into a single column with an elegant horizontal divider and centered ॐ symbol on mobile screens (≤680px)
 - Blessings displays 6 curated wish cards in a clean 2-column, 3-row layout across all screen sizes, with a full-text modal on tap and a link to the dedicated Blessings Wall page
-- The floating bottom-right controls (section arrows + music button) are pinned on mobile (≤680px) at `right: max(17px, calc(env(safe-area-inset-right, 0px) + 17px))` for clean edge alignment
+- The floating bottom-right controls (envelope + event itinerary + music player) are pinned on mobile (≤680px) at `right: max(17px, calc(env(safe-area-inset-right, 0px) + 17px))` for clean edge alignment
 - All interactive elements maintain a 44px minimum touch target
 
 ## 8. Images
@@ -281,7 +281,7 @@ random landscape/scenery shots — no copyrighted/trademarked imagery. See
 
 ## 9. Background Music
 
-- Site-wide looping background audio (`src/components/MusicPlayer.jsx`), controlled by a circular mute/unmute button, part of the bottom-right `FloatingControls` stack (see §5's section frame-nav) alongside the up/down arrows — shared `.icon-button` style (44px, white surface, hairline border, soft shadow, accent-colored icon)
+- Site-wide looping background audio (`src/components/MusicPlayer.jsx`), controlled by a circular mute/unmute button, part of the bottom-right `FloatingControls` stack (alongside the envelope and event details buttons) — shared `.icon-button` style (44px, white surface, hairline border, soft shadow, accent-colored icon)
 - Attempts to autoplay on load; if the browser blocks autoplay-with-sound (standard behavior until the visitor interacts with the page), it starts on the visitor's first click/tap anywhere on the site
 - Button icon swaps between a sound-on and sound-off (crossed-out) speaker glyph based on mute state
 - Hidden entirely — no button rendered at all — until a real audio file is configured (`content.music.src`), same "absent until configured" pattern as the Blessings backend. Currently set to `public/audio/background-music.mp3`. See `README.md` → "Background music" for where to legally source a track if you swap it out (music carries real copyright risk, unlike the stock photos above, so nothing was bundled by default originally)
