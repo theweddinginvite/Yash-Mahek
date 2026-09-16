@@ -1,0 +1,412 @@
+/* ==========================================================================
+   Notice Board Modal (Follows VenueModal luxury properties & styling)
+   ========================================================================== */
+
+.notice-modal-overlay {
+  position: fixed;
+  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  height: 100svh;
+  z-index: 1000;
+  background: rgba(20, 15, 12, 0.68);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(0.75rem, env(safe-area-inset-top, 0px)) max(0.75rem, env(safe-area-inset-right, 0px)) max(0.75rem, env(safe-area-inset-bottom, 0px)) max(0.75rem, env(safe-area-inset-left, 0px));
+  box-sizing: border-box;
+  overflow: hidden;
+  animation: noticeModalFadeIn 0.25s ease-out;
+}
+
+@keyframes noticeModalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.notice-modal-card {
+  position: relative;
+  width: 100%;
+  max-width: 32rem;
+  max-height: min(86vh, 86dvh, calc(100svh - 1.5rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--color-bg, #faf7f2);
+  border: 1px solid rgba(176, 137, 104, 0.45);
+  border-radius: 1.25rem;
+  box-shadow: 0 16px 40px rgba(46, 43, 40, 0.28);
+  padding: 0;
+  box-sizing: border-box;
+  animation: noticeModalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes noticeModalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Pinned Top Progress Timer Bar (45s countdown) */
+.notice-modal__timer-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(to right, var(--color-burgundy, #8f3350), var(--color-accent, #b08968));
+  width: 100%;
+  transform-origin: left center;
+  animation-name: noticeTimerShrink;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  z-index: 10;
+}
+
+@keyframes noticeTimerShrink {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+/* Pinned Top-right close button */
+.notice-modal__close-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-border, #e6ddd2);
+  background: var(--color-surface, #ffffff);
+  color: var(--color-text, #2e2b28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.notice-modal__close-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.notice-modal__close-btn:hover {
+  background: var(--color-burgundy, #8f3350);
+  color: #ffffff;
+  border-color: var(--color-burgundy, #8f3350);
+  transform: rotate(90deg);
+}
+
+/* Scrollable Modal Body */
+.notice-modal__body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1.6rem 1.4rem 1.4rem;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(176, 137, 104, 0.45) transparent;
+  display: flex;
+  flex-direction: column;
+}
+
+.notice-modal__body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notice-modal__body::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 0.75rem 0;
+}
+
+.notice-modal__body::-webkit-scrollbar-thumb {
+  background: rgba(176, 137, 104, 0.45);
+  border-radius: 999px;
+}
+
+.notice-modal__body::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent, #b08968);
+}
+
+/* Header */
+.notice-modal__header {
+  text-align: center;
+  margin-bottom: 1.15rem;
+  padding-right: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.notice-modal__header .eyebrow {
+  display: inline-block;
+  font-family: var(--font-body, "Cormorant Garamond", serif);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-accent, #b08968);
+  margin-bottom: 0.2rem;
+}
+
+.notice-modal__title {
+  font-family: var(--font-heading, "Playfair Display", serif);
+  font-size: 1.45rem;
+  font-weight: 500;
+  color: var(--color-burgundy, #8f3350);
+  margin: 0 0 0.3rem;
+  line-height: 1.2;
+}
+
+.notice-modal__divider {
+  display: block;
+  position: relative;
+  width: 4.5rem;
+  height: 1px;
+  margin: 0.25rem auto 0.45rem;
+  background: linear-gradient(to right, transparent, var(--color-accent, #b08968) 50%, transparent);
+  opacity: 0.85;
+}
+
+.notice-modal__divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4.5px;
+  height: 4.5px;
+  border-radius: 50%;
+  background: var(--color-accent, #b08968);
+  transform: translate(-50%, -50%);
+}
+
+.notice-modal__subtitle {
+  font-family: var(--font-body, "Cormorant Garamond", serif);
+  font-size: 0.88rem;
+  color: var(--color-text-muted, #6f6a63);
+  margin: 0.2rem 0 0;
+  line-height: 1.35;
+}
+
+/* Feed List */
+.notice-modal__feed {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-bottom: 1.2rem;
+  flex: 1;
+}
+
+/* Individual Notice Card (Parched Luxury Look) */
+.notice-card {
+  background: var(--color-surface, #ffffff);
+  border: 1px solid rgba(176, 137, 104, 0.28);
+  border-radius: 0.85rem;
+  padding: 0.9rem 1rem;
+  box-shadow: 0 2px 10px rgba(46, 43, 40, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.notice-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(46, 43, 40, 0.09);
+}
+
+.notice-card--urgent {
+  border-color: rgba(143, 51, 80, 0.45);
+  background: linear-gradient(to bottom, #fffdfd, #ffffff);
+  border-left: 3.5px solid var(--color-burgundy, #8f3350);
+}
+
+.notice-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+}
+
+.notice-card__badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-body, "Cormorant Garamond", serif);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-accent, #b08968);
+  background: rgba(176, 137, 104, 0.1);
+  border: 1px solid rgba(176, 137, 104, 0.22);
+  padding: 0.18rem 0.5rem;
+  border-radius: 0.35rem;
+}
+
+.notice-card--urgent .notice-card__badge {
+  color: var(--color-burgundy, #8f3350);
+  background: rgba(143, 51, 80, 0.09);
+  border-color: rgba(143, 51, 80, 0.25);
+}
+
+.notice-card__time {
+  font-family: var(--font-body, "Cormorant Garamond", serif);
+  font-size: 0.74rem;
+  color: var(--color-text-muted, #6f6a63);
+}
+
+.notice-card__message {
+  font-family: var(--font-body, "Cormorant Garamond", serif);
+  font-size: 0.98rem;
+  line-height: 1.45;
+  color: var(--color-text, #2e2b28);
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.notice-card__author {
+  margin-top: 0.45rem;
+  font-family: var(--font-body, "Cormorant Garamond", serif);
+  font-size: 0.74rem;
+  color: var(--color-text-muted, #6f6a63);
+  text-align: right;
+  font-style: italic;
+}
+
+.notice-card__author span {
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* Empty State */
+.notice-modal__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1.2rem;
+  background: var(--color-surface, #ffffff);
+  border: 1px dashed rgba(176, 137, 104, 0.35);
+  border-radius: 0.85rem;
+}
+
+.notice-modal__empty-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(176, 137, 104, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent, #b08968);
+  margin-bottom: 0.75rem;
+}
+
+.notice-modal__empty-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.notice-modal__empty-title {
+  font-family: var(--font-heading, "Playfair Display", serif);
+  font-size: 1.12rem;
+  font-weight: 500;
+  color: var(--color-burgundy, #8f3350);
+  margin: 0 0 0.35rem;
+}
+
+.notice-modal__empty-desc {
+  font-family: var(--font-body, "Cormorant Garamond", serif);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--color-text-muted, #6f6a63);
+  margin: 0;
+  max-width: 20rem;
+}
+
+/* Footer Live Status */
+.notice-modal__footer-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(176, 137, 104, 0.2);
+  font-family: var(--font-body, "Cormorant Garamond", serif);
+  font-size: 0.78rem;
+  color: var(--color-text-muted, #6f6a63);
+}
+
+.notice-modal__live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #2e7d32;
+  box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
+  animation: liveDotPulse 2s infinite ease-in-out;
+}
+
+@keyframes liveDotPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 540px) {
+  .notice-modal-overlay {
+    padding: max(0.4rem, env(safe-area-inset-top, 0px)) max(0.4rem, env(safe-area-inset-right, 0px)) max(0.4rem, env(safe-area-inset-bottom, 0px)) max(0.4rem, env(safe-area-inset-left, 0px));
+  }
+
+  .notice-modal-card {
+    border-radius: 1rem;
+    max-height: min(84vh, 84dvh, calc(100svh - 0.8rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)));
+  }
+
+  .notice-modal__body {
+    padding: 1.3rem 0.95rem 1rem;
+  }
+
+  .notice-modal__header {
+    padding-right: 1.2rem;
+    padding-left: 1.2rem;
+    margin-bottom: 0.95rem;
+  }
+
+  .notice-modal__title {
+    font-size: 1.28rem;
+  }
+
+  .notice-card {
+    padding: 0.8rem 0.85rem;
+  }
+
+  .notice-card__message {
+    font-size: 0.92rem;
+  }
+}

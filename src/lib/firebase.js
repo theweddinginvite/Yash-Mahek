@@ -71,6 +71,41 @@ export function subscribeToBlessings(onData, onError) {
 }
 
 /**
+ * Subscribe to real-time wedding announcements from Firestore.
+ * Updates instantly when a host sends an announcement via Telegram bot.
+ */
+export function subscribeToAnnouncements(onData, onError) {
+  if (!db) return () => {};
+
+  const q = query(collection(db, "announcements"), orderBy("timestamp", "desc"));
+  return onSnapshot(
+    q,
+    (snapshot) => {
+      const announcements = snapshot.docs
+        .map((docSnap) => {
+          const data = docSnap.data();
+          if (data.active === false) return null;
+          return {
+            id: docSnap.id,
+            message: data.message || "",
+            priority: data.priority || "normal",
+            author: data.author || "",
+            timestamp: data.timestamp?.toDate
+              ? data.timestamp.toDate().toISOString()
+              : (typeof data.timestamp === "string" ? data.timestamp : new Date().toISOString()),
+          };
+        })
+        .filter(Boolean);
+      onData(announcements);
+    },
+    (error) => {
+      console.error("Firestore announcements subscription error:", error);
+      if (onError) onError(error);
+    }
+  );
+}
+
+/**
  * Post a new blessing to Firestore
  */
 export async function addBlessingToFirestore({ name, message, side }) {

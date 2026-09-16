@@ -488,6 +488,11 @@ function doPost(e) {
       return handleTelegramCallback_(payload.callback_query);
     }
 
+    // CASE 1.2: Telegram Incoming Message (Notice Board Announcement)
+    if (payload.message && payload.message.text) {
+      return handleTelegramMessage_(payload.message);
+    }
+
     // CASE 2: Guest Media Upload (Photo/Video to Google Drive)
     if (payload.action === "uploadMedia") {
       return handleMediaUpload_(payload);
@@ -659,14 +664,19 @@ function handleTelegramCallback_(callbackQuery) {
 
   const [action, docId] = callbackData.split(":");
 
-  if (action === "del_blessing" || action === "del_rsvp") {
+  if (action === "del_blessing" || action === "del_rsvp" || action === "del_notice") {
     // 2. IMMEDIATELY update Telegram message in-place: Strike through text and REMOVE the delete button
     // This gives the admin instant visual feedback (<0.5s) and prevents double-clicks!
-    const cleanOriginalText = originalText.replace(/🗑️ Delete from Live Wall/g, "").trim();
+    const cleanOriginalText = originalText
+      .replace(/🗑️ Delete from Live Wall/g, "")
+      .replace(/🗑️ Remove from Notice Board/g, "")
+      .trim();
+    const isNotice = action === "del_notice";
+    const itemTypeDesc = isNotice ? "This announcement has been removed from the live website" : "This item is now deleted from Firebase and the live website";
     const updatedText =
       `<s>${escapeHtml_(cleanOriginalText)}</s>\n\n` +
       `❌ <b>REMOVED & DELETED by ${escapeHtml_(fromUser)}</b>\n` +
-      `<i>(This wish is now deleted from Firebase and the live website)</i>`;
+      `<i>(${itemTypeDesc})</i>`;
 
     try {
       sendTelegramApi_("editMessageText", {
@@ -683,7 +693,9 @@ function handleTelegramCallback_(callbackQuery) {
     // 3. Delete from Firebase Firestore immediately
     if (docId) {
       try {
-        const collectionName = action === "del_blessing" ? "blessings" : "rsvps";
+        let collectionName = "blessings";
+        if (action === "del_rsvp") collectionName = "rsvps";
+        if (action === "del_notice") collectionName = "announcements";
         const deleteUrl = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/${collectionName}/${docId}?key=${FIREBASE_API_KEY}`;
         UrlFetchApp.fetch(deleteUrl, { method: "delete", muteHttpExceptions: true });
       } catch (fbErr) {
@@ -691,9 +703,13 @@ function handleTelegramCallback_(callbackQuery) {
       }
     }
 
-    // 4. Delete row from Google Sheet (targeted to relevant sheets only, fast)
+    // 4. Update row in Google Sheet (targeted to relevant sheets only, fast)
     try {
-      deleteRowFromSheetByDocId_(docId, action);
+      if (action === "del_notice") {
+        updateNoticeSheetStatus_(docId, "REMOVED");
+      } else {
+        deleteRowFromSheetByDocId_(docId, action);
+      }
     } catch (sheetErr) {
       Logger.log("Sheet delete error: " + sheetErr);
     }
@@ -754,6 +770,165 @@ function clearAllRsvpsMenu() {
   if (resp !== ui.Button.YES) return;
   clearAllRsvps_();
   ui.alert("✅ All RSVPs have been cleared from RSVP_BRIDE and RSVP_GROOM.");
+}
+
+const ANNOUNCEMENTS_SHEET_NAME = "ANNOUNCEMENTS";
+
+/**
+ * Handles incoming Telegram messages sent to the Bot or Admin Group.
+ * Detects /notice, /announce, /alert, or #notice commands and posts
+ * them directly to the Live Wedding Notice Board (Firebase Firestore + Google Sheets).
+ */
+function handleTelegramMessage_(msg) {
+  const text = (msg.text || "").trim();
+  const chatId = msg.chat?.id;
+  const fromName = msg.from?.first_name || "Host";
+
+  if (!text) {
+    return HtmlService.createHtmlOutput("OK");
+  }
+
+  // 1. Help or info command
+  if (text === "/notice" || text === "/announce" || text === "/notices" || text === "/notice_help") {
+    sendTelegramApi_("sendMessage", {
+      chat_id: chatId,
+      text:
+        "📢 <b>Wedding Notice Board Guide</b>\n\n" +
+        "To post an announcement to the live wedding website, send:\n" +
+        "• <code>/notice Your message here</code>\n" +
+        "• <code>/announce Your message here</code>\n" +
+        "• <code>/alert Urgent message here</code> (marks as Urgent)\n\n" +
+        "<i>Example:</i>\n" +
+        "<code>/notice Lunch is now being served at the Poolside Lawn!</code>\n\n" +
+        "Any announcement posted will appear instantly on the guests' Notice Board with an inline delete button to remove it whenever needed.",
+      parse_mode: "HTML",
+    });
+    return HtmlService.createHtmlOutput("OK");
+  }
+
+  // 2. Check for Announcement Command or Prefix
+  let noticeText = "";
+  let isUrgent = false;
+
+  if (text.startsWith("/alert ") || text.startsWith("/urgent ")) {
+    noticeText = text.replace(/^\/(alert|urgent)\s+/i, "").trim();
+    isUrgent = true;
+  } else if (text.startsWith("/notice ") || text.startsWith("/announce ")) {
+    noticeText = text.replace(/^\/(notice|announce)\s+/i, "").trim();
+  } else if (text.startsWith("#notice ") || text.toLowerCase().startsWith("notice: ")) {
+    noticeText = text.replace(/^(#notice|notice:)\s+/i, "").trim();
+  }
+
+  // If not an announcement command, return OK
+  if (!noticeText) {
+    return HtmlService.createHtmlOutput("OK");
+  }
+
+  // 3. Post to Firebase Firestore collection 'announcements'
+  let firestoreId = "";
+  try {
+    const firestoreUrl = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/announcements?key=${FIREBASE_API_KEY}`;
+    const payload = {
+      fields: {
+        message: { stringValue: noticeText },
+        priority: { stringValue: isUrgent ? "urgent" : "normal" },
+        author: { stringValue: fromName },
+        active: { booleanValue: true },
+        timestamp: { timestampValue: new Date().toISOString() },
+        telegramMessageId: { integerValue: msg.message_id ? String(msg.message_id) : "0" },
+      },
+    };
+
+    const res = UrlFetchApp.fetch(firestoreUrl, {
+      method: "post",
+      contentType: "application/json",
+      payload: JSON.stringify(payload),
+      muteHttpExceptions: true,
+    });
+
+    const resJson = JSON.parse(res.getContentText());
+    if (resJson.name) {
+      firestoreId = resJson.name.split("/").pop();
+    }
+  } catch (fbErr) {
+    Logger.log("Firestore announcement error: " + fbErr);
+  }
+
+  // 4. Save to Google Sheets tab 'ANNOUNCEMENTS'
+  try {
+    const sheet = getOrCreateAnnouncementsSheet_();
+    sheet.appendRow([
+      new Date(),
+      noticeText,
+      isUrgent ? "URGENT" : "NORMAL",
+      fromName,
+      "ACTIVE",
+      firestoreId,
+      msg.message_id || "",
+    ]);
+    SpreadsheetApp.flush();
+  } catch (sheetErr) {
+    Logger.log("Sheet announcement error: " + sheetErr);
+  }
+
+  // 5. Send Telegram confirmation reply with native inline Delete button
+  const timeFormatted = Utilities.formatDate(new Date(), "GMT+5:30", "hh:mm a, dd MMM");
+  sendTelegramApi_("sendMessage", {
+    chat_id: chatId,
+    text:
+      `📢 <b>${isUrgent ? "🚨 URGENT NOTICE POSTED" : "POSTED TO WEDDING NOTICE BOARD"}</b>\n\n` +
+      `"${escapeHtml_(noticeText)}"\n\n` +
+      `⏱️ <i>${timeFormatted} IST · Live on website</i>`,
+    parse_mode: "HTML",
+    reply_markup: {
+      inline_keyboard: [
+        [
+          {
+            text: "🗑️ Remove from Notice Board",
+            callback_data: `del_notice:${firestoreId}`,
+          },
+        ],
+      ],
+    },
+  });
+
+  return HtmlService.createHtmlOutput("OK");
+}
+
+function getOrCreateAnnouncementsSheet_() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(ANNOUNCEMENTS_SHEET_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(ANNOUNCEMENTS_SHEET_NAME);
+    sheet.appendRow([
+      "Timestamp",
+      "Notice Message",
+      "Priority",
+      "Posted By",
+      "Status",
+      "Firestore ID",
+      "Telegram Msg ID",
+    ]);
+    sheet.getRange(1, 1, 1, 7).setFontWeight("bold").setBackground("#f3e8eb");
+    sheet.setFrozenRows(1);
+    sheet.setColumnWidth(2, 400);
+  }
+  return sheet;
+}
+
+function updateNoticeSheetStatus_(docId, status) {
+  if (!docId) return;
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(ANNOUNCEMENTS_SHEET_NAME);
+  if (!sheet) return;
+
+  const data = sheet.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    if (String(data[i][5]).trim() === docId) {
+      sheet.getRange(i + 1, 5).setValue(status);
+      break;
+    }
+  }
 }
 
 function sendTelegramApi_(method, payload) {

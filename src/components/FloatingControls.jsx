@@ -14,10 +14,36 @@ function CalendarIcon() {
   );
 }
 
-export default function FloatingControls({ onReopenEnvelope, onOpenSaveEvents }) {
+function MegaphoneIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M3 11l13-5v12L3 13v-2z" />
+      <path d="M16 8.5c1.5.8 2.5 2.1 2.5 3.5s-1 2.7-2.5 3.5" />
+      <path d="M19 6c2.5 1.5 4 3.8 4 6s-1.5 4.5-4 6" />
+      <path d="M6 13v4a2 2 0 0 0 2 2h1" />
+    </svg>
+  );
+}
+
+export default function FloatingControls({
+  onReopenEnvelope,
+  onOpenSaveEvents,
+  onOpenNoticeBoard,
+  hasNotices = false,
+}) {
   return (
     <div className="floating-controls">
       <HomeButton onReopenEnvelope={onReopenEnvelope} />
+      <button
+        type="button"
+        className="icon-button"
+        onClick={onOpenNoticeBoard}
+        aria-label="Wedding Notice Board & Announcements"
+        title="Notice Board & Announcements"
+      >
+        <MegaphoneIcon />
+        {hasNotices && <span className="icon-button__badge" aria-hidden="true" />}
+      </button>
       <button
         type="button"
         className="icon-button"

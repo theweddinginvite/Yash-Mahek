@@ -13,6 +13,8 @@ import EnvelopeIntro from "./components/EnvelopeIntro";
 import PageSparkles from "./components/PageSparkles";
 import CursorSparkleTrail from "./components/CursorSparkleTrail";
 import SaveEventsModal from "./components/SaveEventsModal";
+import NoticeBoardModal from "./components/NoticeBoardModal";
+import { subscribeToAnnouncements } from "./lib/firebase";
 import content from "./content";
 
 function App({ entries, status, myBlessingKey, addLocalBlessing }) {
@@ -30,6 +32,18 @@ function App({ entries, status, myBlessingKey, addLocalBlessing }) {
   );
 
   const [isSaveEventsModalOpen, setIsSaveEventsModalOpen] = useState(false);
+  const [isNoticeBoardOpen, setIsNoticeBoardOpen] = useState(false);
+  const [announcements, setAnnouncements] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = subscribeToAnnouncements(
+      (data) => setAnnouncements(data || []),
+      (err) => console.warn("Firestore announcements subscription notice:", err)
+    );
+    return () => {
+      if (typeof unsubscribe === "function") unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = opened ? "" : "hidden";
@@ -78,6 +92,8 @@ function App({ entries, status, myBlessingKey, addLocalBlessing }) {
       <FloatingControls
         onReopenEnvelope={handleReopenEnvelope}
         onOpenSaveEvents={() => setIsSaveEventsModalOpen(true)}
+        onOpenNoticeBoard={() => setIsNoticeBoardOpen(true)}
+        hasNotices={announcements.length > 0}
       />
       <SaveEventsModal
         isOpen={isSaveEventsModalOpen}
@@ -85,6 +101,11 @@ function App({ entries, status, myBlessingKey, addLocalBlessing }) {
         events={content.events}
         couple={content.couple}
         venue={content.venue}
+      />
+      <NoticeBoardModal
+        isOpen={isNoticeBoardOpen}
+        onClose={() => setIsNoticeBoardOpen(false)}
+        announcements={announcements}
       />
     </>
   );
