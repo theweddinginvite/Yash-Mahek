@@ -49,22 +49,28 @@ export default function ShreeGanesh() {
             />
           </div>
 
-          <FitDevanagari
-            className="shree-ganesh__shlok"
-            lines={["वक्रतुण्ड महाकाय सूर्यकोटिसमप्रभ ।", "निर्विघ्नं कुरु मे देव सर्वकार्येषु सर्वदा ॥"]}
-          />
-          <p className="shree-ganesh__shlok-translation">
-            O Lord Ganesha, of the curved trunk and massive body, with the brilliance of a
-            million suns — please make all my endeavors free of obstacles, always.
-          </p>
-          <span className="shree-ganesh__shlok-divider" aria-hidden="true" />
-          <FitDevanagari
-            className="shree-ganesh__shlok"
-            lines={["मंगलम् भगवान विष्णुः मंगलम् गरुणध्वजः ।", "मंगलम् पुण्डरी काक्षः मंगलाय तनो हरिः ॥"]}
-          />
-          <p className="shree-ganesh__shlok-translation">
-            Lord Vishnu is auspicious, the lotus-eyed Lord who bears Garuda upon His banner is auspicious; may Lord Hari bless us with auspiciousness.
-          </p>
+          <div className="shree-ganesh__inbetween">
+            <div className="shree-ganesh__shlok-block">
+              <FitDevanagari
+                className="shree-ganesh__shlok"
+                lines={["वक्रतुण्ड महाकाय सूर्यकोटिसमप्रभ ।", "निर्विघ्नं कुरु मे देव सर्वकार्येषु सर्वदा ॥"]}
+              />
+              <p className="shree-ganesh__shlok-translation">
+                O Lord Ganesha, of the curved trunk and massive body, with the brilliance of a
+                million suns — please make all my endeavors free of obstacles, always.
+              </p>
+            </div>
+            <span className="shree-ganesh__shlok-divider" aria-hidden="true" />
+            <div className="shree-ganesh__shlok-block">
+              <FitDevanagari
+                className="shree-ganesh__shlok"
+                lines={["मंगलम् भगवान विष्णुः मंगलम् गरुणध्वजः ।", "मंगलम् पुण्डरी काक्षः मंगलाय तनो हरिः ॥"]}
+              />
+              <p className="shree-ganesh__shlok-translation">
+                Lord Vishnu is auspicious, the lotus-eyed Lord who bears Garuda upon His banner is auspicious; may Lord Hari bless us with auspiciousness.
+              </p>
+            </div>
+          </div>
 
           <button
             type="button"

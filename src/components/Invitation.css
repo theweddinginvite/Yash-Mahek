@@ -136,22 +136,26 @@
   font-size: 1.25rem;
   color: var(--color-text-muted);
   letter-spacing: 0.05em;
+  white-space: nowrap;
 }
 
 .invitation__date--reveal {
   font-family: var(--font-heading);
-  font-size: 1.85rem;
+  font-size: clamp(0.95rem, 5.2vw, 1.85rem);
   font-weight: 500;
   color: var(--color-text);
   margin: 0 0 0.5rem;
-  letter-spacing: 0.06em;
+  letter-spacing: clamp(0.02em, 0.5vw, 0.06em);
   text-transform: uppercase;
   white-space: nowrap;
+  max-width: 100%;
 }
 
 .invitation__reveal-content {
   padding: 0.6rem 1rem;
   text-align: center;
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 @media (max-width: 640px) {
@@ -172,13 +176,17 @@
     font-size: 1.15rem;
   }
 
-  .invitation__date--reveal {
-    font-size: clamp(1.18rem, 3.4vw, 1.45rem);
-    letter-spacing: 0.04em;
-    margin-bottom: 0.35rem;
+  .invitation .scratch-reveal {
+    max-width: min(calc(100vw - 2.5rem), 28rem);
   }
 
-  .invitation .scratch-reveal {
-    max-width: calc(100vw - 3rem);
+  .invitation__reveal-content {
+    padding: 0.5rem 0.5rem;
+  }
+
+  .invitation__date--reveal {
+    font-size: clamp(0.85rem, 5.2vw, 1.45rem);
+    letter-spacing: clamp(0.02em, 0.4vw, 0.05em);
+    white-space: nowrap;
   }
 }
