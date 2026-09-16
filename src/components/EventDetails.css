@@ -428,195 +428,227 @@
   #details {
     min-height: 100vh;
     min-height: 100lvh;
-    padding-top: clamp(0.55rem, 1.2vh, 0.85rem);
-    padding-bottom: max(0.85rem, env(safe-area-inset-bottom));
+    height: 100vh;
+    height: 100lvh;
+    padding-top: clamp(0.35rem, 1vh, 0.65rem);
+    padding-bottom: max(0.6rem, env(safe-area-inset-bottom, 0.6rem));
+    padding-left: 0.65rem;
+    padding-right: 0.65rem;
+    overflow: hidden;
   }
 
   #details .section__inner {
     height: 100%;
+    max-height: 100%;
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow: hidden;
   }
 
   #details .section__heading {
-    margin-bottom: clamp(0.3rem, 0.7vh, 0.5rem);
+    margin-top: 0;
+    margin-bottom: clamp(0.15rem, 0.4vh, 0.35rem);
+    flex-shrink: 0;
+  }
+
+  #details .section__heading .eyebrow {
+    font-size: 0.72rem;
+    margin-bottom: 0.1rem;
+    letter-spacing: 0.24em;
+  }
+
+  #details .section__heading h2 {
+    font-size: clamp(1.35rem, 3.2vh, 1.75rem);
+    line-height: 1.15;
   }
 
   .events-grid {
-    --grid-gap: clamp(0.4rem, 0.9vh, 0.55rem);
+    flex: 1;
+    min-height: 0;
+    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--grid-gap);
-    margin-bottom: clamp(0.45rem, 1vh, 0.75rem);
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.3rem, 0.7vh, 0.45rem);
+    margin: 0 auto clamp(0.3rem, 0.7vh, 0.45rem);
     width: 100%;
+    max-width: 32rem;
   }
 
   .event-flip-card {
     min-width: 0;
-    min-height: 160px;
+    min-height: 0;
     height: 100%;
+    width: 100%;
   }
 
   .event-flip-card__face {
-    border-radius: 0.75rem;
-    padding: 0.6rem 0.52rem;
+    border-radius: 0.65rem;
+    padding: clamp(0.25rem, 0.6vh, 0.45rem) clamp(0.3rem, 1vw, 0.45rem);
+  }
+
+  .event-flip-card__face--front {
+    justify-content: center;
   }
 
   .event-flip-card__face--back {
-    padding: 0.65rem 0.65rem 0.55rem;
+    padding: clamp(0.3rem, 0.7vh, 0.5rem) clamp(0.35rem, 1.2vw, 0.55rem);
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+
+  .event-flip-card__face--back::-webkit-scrollbar {
+    display: none;
   }
 
   .event-flip-card__name {
-    font-size: clamp(1.08rem, 2.9vw, 1.25rem);
-    margin-bottom: 0.1rem;
+    font-size: clamp(0.86rem, 2.3vw, 1rem);
+    margin-bottom: 0.05rem;
     overflow-wrap: break-word;
     word-break: break-word;
+    line-height: 1.15;
   }
 
   .event-flip-card__divider {
-    width: 2.8rem;
-    margin: 0.12rem auto 0.2rem;
+    width: 2.2rem;
+    margin: 0.08rem auto 0.12rem;
   }
 
   .event-flip-card__day {
-    font-size: 0.78rem;
-    margin-bottom: 0.05rem;
+    font-size: 0.66rem;
+    margin-bottom: 0.03rem;
+    line-height: 1.15;
   }
 
   .event-flip-card__date {
-    font-size: 0.78rem;
-    margin-bottom: 0.08rem;
+    font-size: 0.66rem;
+    margin-bottom: 0.05rem;
+    line-height: 1.15;
   }
 
   .event-flip-card__time {
-    font-size: 1.12rem;
+    font-size: clamp(0.88rem, 2.4vw, 1.02rem);
+    line-height: 1.15;
   }
 
   .event-flip-card__hint {
-    font-size: 0.7rem;
-    margin-top: 0.18rem;
+    font-size: 0.62rem;
+    margin-top: 0.1rem;
+    gap: 0.2rem;
+  }
+
+  .event-flip-card__hint svg {
+    width: 10px;
+    height: 10px;
+  }
+
+  .event-flip-card__back-header {
+    gap: 0.35rem;
+    padding-bottom: 0.02rem;
   }
 
   .event-flip-card__back-name {
-    font-size: 1.15rem;
+    font-size: 0.92rem;
     line-height: 1.15;
   }
 
   .event-flip-card__back-date {
-    font-size: 0.84rem;
-    margin-bottom: 0.06rem;
+    font-size: 0.7rem;
+    margin-bottom: 0.04rem;
   }
 
   .event-flip-card__back-time {
-    font-size: 0.98rem;
+    font-size: 0.8rem;
   }
 
   .event-flip-card__desc {
-    font-size: 0.94rem;
-    line-height: 1.28;
-    margin-bottom: 0.25rem;
+    font-size: clamp(0.68rem, 1.6vw, 0.76rem);
+    line-height: 1.18;
+    margin-bottom: 0.12rem;
   }
 
   .event-flip-card__details {
     margin-top: auto;
-    gap: 0.12rem;
+    gap: 0.06rem;
   }
 
   .event-flip-card__meal-line {
-    font-size: 0.94rem;
-    line-height: 1.2;
+    font-size: 0.76rem;
+    line-height: 1.12;
   }
 
   .event-flip-card__detail-row {
-    gap: 0.35rem;
-    line-height: 1.22;
+    gap: 0.25rem;
+    line-height: 1.12;
   }
 
   .event-flip-card__detail-label {
-    font-size: 0.78rem;
-    min-width: 3.1rem;
+    font-size: 0.64rem;
+    min-width: 2.5rem;
   }
 
   .event-flip-card__detail-val {
-    font-size: 0.94rem;
+    font-size: 0.76rem;
     font-weight: 700;
+  }
+
+  .event-details__venue-action {
+    flex-shrink: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .event-details__venue-btn {
+    padding: 0.4rem 1.15rem;
+    font-size: 0.84rem;
+    min-height: 36px;
+    border-radius: 2rem;
   }
 }
 
 @media (max-width: 380px) {
   .events-grid {
-    --grid-gap: 0.38rem;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin-bottom: 0.4rem;
-  }
-
-  .event-flip-card {
-    min-width: 0;
-    min-height: 152px;
-    height: 100%;
-  }
-
-  .event-flip-card__face {
-    padding: 0.52rem 0.42rem;
-  }
-
-  .event-flip-card__face--back {
-    padding: 0.55rem 0.55rem 0.5rem;
+    gap: 0.28rem;
+    margin-bottom: 0.28rem;
   }
 
   .event-flip-card__name {
-    font-size: 1.02rem;
-  }
-
-  .event-flip-card__day {
-    font-size: 0.72rem;
-    margin-bottom: 0.04rem;
-  }
-
-  .event-flip-card__date {
-    font-size: 0.72rem;
-    margin-bottom: 0.06rem;
+    font-size: 0.82rem;
   }
 
   .event-flip-card__time {
-    font-size: 1.02rem;
+    font-size: 0.84rem;
+  }
+
+  .event-flip-card__day,
+  .event-flip-card__date {
+    font-size: 0.62rem;
   }
 
   .event-flip-card__hint {
-    margin-top: 0.14rem;
+    font-size: 0.58rem;
+    margin-top: 0.06rem;
   }
 
   .event-flip-card__back-name {
-    font-size: 1.06rem;
-  }
-
-  .event-flip-card__back-date {
-    font-size: 0.76rem;
-    margin-bottom: 0.05rem;
-  }
-
-  .event-flip-card__back-time {
-    font-size: 0.88rem;
+    font-size: 0.84rem;
   }
 
   .event-flip-card__desc {
-    font-size: 0.86rem;
-    line-height: 1.24;
-    margin-bottom: 0.2rem;
+    font-size: 0.66rem;
+    line-height: 1.14;
   }
 
-  .event-flip-card__meal-line {
-    font-size: 0.88rem;
-  }
-
-  .event-flip-card__detail-label {
-    font-size: 0.72rem;
-    min-width: 2.8rem;
-  }
-
+  .event-flip-card__meal-line,
   .event-flip-card__detail-val {
-    font-size: 0.88rem;
+    font-size: 0.72rem;
+  }
+
+  .event-details__venue-btn {
+    padding: 0.35rem 1rem;
+    font-size: 0.8rem;
+    min-height: 34px;
   }
 }
 

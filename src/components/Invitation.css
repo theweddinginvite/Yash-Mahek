@@ -146,6 +146,7 @@
   margin: 0 0 0.5rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .invitation__reveal-content {
@@ -171,7 +172,13 @@
     font-size: 1.15rem;
   }
 
+  .invitation__date--reveal {
+    font-size: clamp(1.18rem, 3.4vw, 1.45rem);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.35rem;
+  }
+
   .invitation .scratch-reveal {
-    max-width: calc(100vw - 4.5rem);
+    max-width: calc(100vw - 3rem);
   }
 }

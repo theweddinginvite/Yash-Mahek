@@ -80,16 +80,17 @@
 
 .shree-ganesh__overlay {
   position: relative;
-  padding: var(--space-3);
+  padding: clamp(0.75rem, 2vh, 1.5rem) 1.25rem clamp(0.5rem, 1.5vh, 1rem);
   max-width: 40rem;
-  transform: translateY(-3.75rem);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .shree-ganesh__ganesh {
   position: relative;
-  width: 230px;
-  height: 230px;
-  margin: 0 auto var(--space-2);
+  width: clamp(150px, 20vh, 210px);
+  height: clamp(150px, 20vh, 210px);
+  margin: clamp(0.5rem, 1.8vh, 1.2rem) auto clamp(0.35rem, 1.2vh, 0.75rem);
 }
 
 .shree-ganesh__ganesh-glow {
@@ -122,27 +123,27 @@
 
 .shree-ganesh__shlok {
   font-family: "Tiro Devanagari Sanskrit", var(--font-heading), serif;
-  font-size: 1.3rem;
+  font-size: clamp(1.05rem, 2.2vh, 1.25rem);
   color: var(--color-text);
-  line-height: 1.6;
-  margin: 0 0 var(--space-1);
+  line-height: 1.5;
+  margin: 0 0 clamp(0.15rem, 0.5vh, 0.35rem);
 }
 
 .shree-ganesh__shlok-translation {
   font-style: italic;
-  font-size: clamp(0.95rem, 1.6vh, 1.05rem);
+  font-size: clamp(0.75rem, 1.35vh, 0.86rem);
   color: var(--color-text-muted);
-  line-height: 1.55;
-  max-width: 32rem;
-  margin: 0 auto var(--space-3);
+  line-height: 1.45;
+  max-width: 30rem;
+  margin: 0 auto clamp(0.35rem, 0.9vh, 0.65rem);
 }
 
 .shree-ganesh__shlok-divider {
   display: block;
   position: relative;
-  width: 6rem;
+  width: 5rem;
   height: 1px;
-  margin: 0 auto var(--space-3);
+  margin: clamp(0.3rem, 0.8vh, 0.6rem) auto clamp(0.35rem, 0.9vh, 0.65rem);
   background: linear-gradient(to right, transparent, var(--color-accent) 50%, transparent);
   opacity: 0.7;
 }
@@ -163,9 +164,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  margin-top: 1rem;
+  width: clamp(2.35rem, 5vh, 2.65rem);
+  height: clamp(2.35rem, 5vh, 2.65rem);
+  margin-top: clamp(0.4rem, 1.2vh, 0.85rem);
   background: rgba(255, 255, 255, 0.7);
   border: 1px solid var(--color-border);
   border-radius: 50%;
@@ -209,11 +210,47 @@
   }
 }
 
-@media (max-width: 480px) {
-  .shree-ganesh__overlay {
-    padding: var(--space-2) 1.25rem;
-    max-width: 100%;
+@media (max-width: 680px) {
+  .shree-ganesh__view {
+    padding-top: max(1.2rem, env(safe-area-inset-top, 1.2rem));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom, 1rem));
     box-sizing: border-box;
+  }
+
+  .shree-ganesh__overlay {
+    padding: 0.25rem 1rem;
+    max-width: 100%;
+    transform: none;
+  }
+
+  .shree-ganesh__ganesh {
+    width: clamp(120px, 17.5vh, 155px);
+    height: clamp(120px, 17.5vh, 155px);
+    margin: 0.5rem auto clamp(0.25rem, 1vh, 0.6rem);
+  }
+
+  .shree-ganesh__shlok {
+    font-size: clamp(0.95rem, 1.9vh, 1.12rem);
+    line-height: 1.42;
+    margin-bottom: 0.15rem;
+  }
+
+  .shree-ganesh__shlok-translation {
+    font-size: clamp(0.7rem, 1.25vh, 0.8rem);
+    line-height: 1.38;
+    max-width: 25rem;
+    margin-bottom: clamp(0.25rem, 0.7vh, 0.45rem);
+  }
+
+  .shree-ganesh__shlok-divider {
+    width: 4rem;
+    margin: clamp(0.2rem, 0.6vh, 0.45rem) auto;
+  }
+
+  .shree-ganesh__scroll-btn {
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-top: clamp(0.3rem, 0.9vh, 0.65rem);
   }
 }
 
