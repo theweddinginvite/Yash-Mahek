@@ -3,7 +3,7 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: var(--space-3);
-  margin-top: var(--space-3);
+  margin-top: var(--space-2);
 }
 
 .countdown__unit {
@@ -15,16 +15,19 @@
 
 .countdown__value {
   font-family: var(--font-heading);
-  font-size: 1.35rem;
+  font-size: 1.65rem;
+  font-weight: 600;
   color: var(--color-text);
+  line-height: 1.15;
 }
 
 .countdown__label {
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  font-size: 0.88rem;
+  font-weight: 600;
   color: var(--color-text-muted);
-  margin-top: var(--space-1);
+  margin-top: 0.3rem;
 }
 
 .countdown--past {
@@ -36,7 +39,8 @@
 @media (max-width: 600px) {
   .countdown {
     flex-wrap: nowrap;
-    gap: var(--space-1);
+    gap: 0.65rem;
+    margin-top: 0.45rem;
   }
 
   .countdown__unit {
@@ -45,11 +49,12 @@
   }
 
   .countdown__value {
-    font-size: clamp(0.95rem, 5.5vw, 1.3rem);
+    font-size: clamp(1.2rem, 5.8vw, 1.5rem);
   }
 
   .countdown__label {
-    font-size: 0.62rem;
-    letter-spacing: 0.1em;
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+    margin-top: 0.2rem;
   }
 }

@@ -216,9 +216,11 @@
 
 .save-events-card__item-top {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.18rem;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
   margin-bottom: 0.55rem;
   padding-bottom: 0.35rem;
   border-bottom: 1px dashed rgba(176, 137, 104, 0.28);
@@ -238,6 +240,8 @@
   font-weight: 600;
   color: var(--color-accent);
   white-space: nowrap;
+  margin-left: auto;
+  text-align: right;
 }
 
 /* 2x2 Grid Layout for details */
@@ -434,7 +438,11 @@
   }
 
   .save-events-card__item-top {
-    gap: 0.15rem;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.5rem;
   }
 
   .save-events-card__item-name {
@@ -443,6 +451,8 @@
 
   .save-events-card__item-time {
     font-size: 0.98rem;
+    margin-left: auto;
+    text-align: right;
   }
 
   .save-events-card__grid {

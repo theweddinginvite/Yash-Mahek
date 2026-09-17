@@ -4,8 +4,8 @@ import "./Countdown.css";
 const UNITS = [
   { key: "days", label: "Days" },
   { key: "hours", label: "Hours" },
-  { key: "minutes", label: "Minutes" },
-  { key: "seconds", label: "Seconds" },
+  { key: "minutes", label: "Mins" },
+  { key: "seconds", label: "Secs" },
 ];
 
 export default function Countdown({ targetDate, numSize, labelSize }) {
