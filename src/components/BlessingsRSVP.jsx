@@ -850,7 +850,7 @@ export default function BlessingsRSVP({ onBlessingSent }) {
   };
 
   return (
-    <section id="blessings-rsvp" className="section section--surface">
+    <section id="blessings-rsvp" className="section">
       <ConfettiBurst trigger={celebrateTrigger} />
       <div className="section__inner">
         <div className="section__heading">
@@ -940,6 +940,9 @@ export default function BlessingsRSVP({ onBlessingSent }) {
           </div>
         </div>
       </div>
+
+      {/* Full-Width Section Division Line Across Page */}
+      <div className="section-divider" aria-hidden="true" />
     </section>
   );
 }

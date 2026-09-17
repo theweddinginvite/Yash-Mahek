@@ -329,6 +329,9 @@ export default function Gallery() {
         </div>
       </div>
 
+      {/* Full-Width Section Division Line Across Page */}
+      <div className="section-divider" aria-hidden="true" />
+
       {lightboxOpen && activePhoto && (
         <div className="lightbox" onClick={closeLightbox}>
           <button

@@ -241,6 +241,14 @@ const content = {
       },
     },
     {
+      question: "How to save or share the event details?",
+      answer: "Click the button below to save, download pdf or share as text/pdf over whatsapp",
+      action: {
+        type: "saveEventsModal",
+        label: "Save Event Details",
+      },
+    },
+    {
       question: "Is parking available at the venue?",
       answer:
         "Yes, complimentary on-site self-parking and dedicated valet assistance are available at Winsome Resort & Spa for all wedding guests throughout the celebrations.",
