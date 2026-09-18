@@ -12,7 +12,7 @@ const FLAP_OPEN_DURATION = 900; // ms — flap tilting open
 const CARD_RISE_DELAY = 1100; // ms — card waits a beat after the flap starts before it lifts
 const CARD_RISE_DURATION = 900; // ms — card lifting out of the envelope
 const OPEN_DURATION = Math.max(FLAP_OPEN_DURATION, CARD_RISE_DELAY + CARD_RISE_DURATION);
-const PAUSE_DURATION = 1600; // ms — card sits still, front showing, so it can be read
+const PAUSE_DURATION = 4000; // ms — card sits still, front showing, so it can be read
 const CARD_FLIP_DURATION = 700; // ms — card turning over to its back face
 const BACK_PAUSE_DURATION = 800; // ms — back face (seal) sits still before flying
 const CARD_FLY_DURATION = 900; // ms — card rushing toward the viewer, out of the screen
@@ -41,9 +41,15 @@ export default function EnvelopeIntro({ onOpen }) {
       setPhase("open");
       const flippedAt = OPEN_DURATION + PAUSE_DURATION;
       const flyingAt = flippedAt + CARD_FLIP_DURATION + BACK_PAUSE_DURATION;
-      setTimeout(() => setPhase("flipped"), flippedAt);
-      setTimeout(() => setPhase("flying"), flyingAt);
-      setTimeout(() => onOpen(), flyingAt + FLYING_DURATION);
+      setTimeout(() => {
+        if (!window.FREEZE_FRONT) setPhase("flipped");
+      }, flippedAt);
+      setTimeout(() => {
+        if (!window.HOLD_FLIP && !window.FREEZE_FRONT) setPhase("flying");
+      }, flyingAt);
+      setTimeout(() => {
+        if (!window.HOLD_FLIP && !window.FREEZE_FRONT) onOpen();
+      }, flyingAt + FLYING_DURATION);
     }, OPEN_START_DELAY);
   }
 

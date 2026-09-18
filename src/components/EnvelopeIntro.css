@@ -58,14 +58,11 @@
   --card-height: 144px;
   --card-top-offset: -32px;
   --card-names-font: var(--font-cursive);
-  --card-names-size: 1.55rem;
-  --card-names-color: #6b1d33;
+    --card-names-color: #6b1d33;
   --card-text-color: #000000;
   --card-frame-color: #000000;
   --card-divider-margin: 3px 0;
-  --card-venue-size: 0.48rem;
-  --card-eyebrow-size: 0.46rem;
-  --card-back-seal-size: 54%;
+      --card-back-seal-size: 54%;
   position: fixed;
   inset: 0;
   z-index: 1000;
@@ -127,21 +124,23 @@
 .envelope-intro__overline {
   margin: 0 0 clamp(0.25rem, 0.8vh, 0.35rem);
   text-align: center;
-  font-size: 0.95rem;
+  font-size: var(--hero-overline-size, 0.95rem);
   text-transform: uppercase;
   letter-spacing: 0.28em;
   color: rgba(250, 247, 242, 0.7);
   transition: opacity 0.35s ease;
+  font-weight: 600;
 }
 
 .envelope-intro__invite {
   margin: 0 0 clamp(0.6rem, 1.6vh, 1rem);
   text-align: center;
-  font-size: 0.85rem;
+  font-size: var(--hero-invite-size, 0.90rem);
   text-transform: uppercase;
   letter-spacing: 0.28em;
   color: rgba(250, 247, 242, 0.7);
   transition: opacity 0.35s ease;
+  font-weight: 600;
 }
 
 .envelope-intro--open .envelope-intro__overline,
@@ -491,8 +490,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.25rem;
-  padding: 0.65rem var(--space-2);
+  gap: var(--card-gap, 0.21rem);
+  padding: var(--card-padding-v, 0rem) var(--card-padding-h, 0rem);
   text-align: center;
 }
 
@@ -589,10 +588,11 @@
 }
 
 .envelope-box__card-eyebrow {
-  font-size: var(--card-eyebrow-size, 0.55rem);
+  font-size: var(--card-eyebrow-size, 0.70rem);
   text-transform: uppercase;
   letter-spacing: 0.24em;
   color: var(--card-text-color, var(--color-text-muted));
+  font-weight: 600;
 }
 
 .envelope-box__card-names {
@@ -601,10 +601,10 @@
   align-items: center;
   justify-content: center;
   font-family: var(--card-names-font, var(--font-cursive));
-  font-size: var(--card-names-size, 1.45rem);
+  font-size: var(--card-names-size, 1.95rem);
   font-weight: 400;
   color: var(--card-names-color, var(--color-text));
-  line-height: 1.1;
+  line-height: var(--card-names-line-height, 0.77);
   margin: 0.1rem 0;
 }
 
@@ -616,10 +616,11 @@
 .envelope-box__card-amp {
   font-family: var(--font-heading);
   font-style: italic;
-  font-size: 0.78rem;
+  font-size: var(--card-amp-size, 0.78rem);
   line-height: 1;
-  margin: 0.04rem 0;
-  opacity: 0.85;
+  margin: 0.08rem 0 0.18rem;
+  opacity: 1;
+  font-weight: 600;
 }
 
 .envelope-box__card-divider {
@@ -645,15 +646,16 @@
 }
 
 .envelope-box__card-venue {
-  font-size: var(--card-venue-size, 0.6rem);
+  font-size: var(--card-venue-size, 0.63rem);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--card-text-color, var(--color-text-muted));
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.15rem;
-  line-height: 1.25;
+  gap: var(--card-venue-gap, 0.2rem);
+  line-height: var(--card-venue-line-height, 0.68);
+  font-weight: 600;
 }
 
 /* Large ivory disc — sized and placed like an actual wax seal sitting
@@ -745,10 +747,11 @@
 .envelope-intro__invocation {
   margin: var(--space-3) 0 0;
   text-align: center;
-  font-size: 0.95rem;
+  font-size: var(--invocation-en-size, 0.95rem);
   text-transform: uppercase;
   letter-spacing: 0.2em;
   color: rgba(250, 247, 242, 0.6);
+  font-weight: 600;
 }
 
 /* The Devanagari line sits above its English transliteration (see JSX) —
@@ -759,10 +762,11 @@
    two separately-spaced lines. */
 .envelope-intro__invocation--sanskrit {
   font-family: "Tiro Devanagari Sanskrit", var(--font-heading), serif;
-  font-size: 1.1rem;
+  font-size: var(--invocation-sa-size, 1.25rem);
   text-transform: none;
   letter-spacing: 0.05em;
   margin-bottom: 0.2rem;
+  font-weight: 600;
 }
 
 .envelope-intro__invocation--sanskrit + .envelope-intro__invocation {
@@ -779,10 +783,11 @@
   text-align: center;
   font-family: var(--font-body);
   font-style: italic;
-  font-size: 0.95rem;
+  font-size: var(--hint-size, 0.98rem);
   color: rgba(250, 247, 242, 0.65);
   opacity: 0;
   animation: envelope-hint-in 0.6s ease 3.2s forwards;
+  font-weight: 600;
 }
 
 /* Once the envelope's been tapped, fade the hint out quickly rather than
