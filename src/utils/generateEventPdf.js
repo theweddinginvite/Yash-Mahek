@@ -57,7 +57,7 @@ export function getItineraryEvents(events = []) {
         foodName = "Lunch";
       }
 
-      const foodTime = addOneHour(event.time);
+      const foodTime = event.mealTime ? event.mealTime : addOneHour(event.time);
 
       result.push({
         name: foodName,

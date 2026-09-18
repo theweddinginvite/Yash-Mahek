@@ -67,31 +67,47 @@ export default function VenueModal({ isOpen, onClose, venue: propVenue, couple: 
   async function handleShareText() {
     const text = getWhatsAppVenueShareText(couple, venue);
     const encoded = encodeURIComponent(text);
-    const waUrl = `https://api.whatsapp.com/send?text=${encoded}`;
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const waUrl = isMobile 
+      ? `whatsapp://send?text=${encoded}` 
+      : `https://web.whatsapp.com/send?text=${encoded}`;
 
     try {
       setIsProcessing(true);
-      const cardImageUrl = asset("/images/wedding_invite_card.png");
+      
       if (navigator.canShare) {
-        const response = await fetch(cardImageUrl);
-        if (response.ok) {
-          const blob = await response.blob();
-          const cardFile = new File([blob], `Wedding_Invitation_${partner1}_${partner2}.png`, {
-            type: "image/png",
-          });
-          if (navigator.canShare({ files: [cardFile] })) {
-            await navigator.share({
-              files: [cardFile],
-              text: text,
-              title: `The Wedding of ${partner1} & ${partner2}`,
+        try {
+          const cardImageUrl = asset("/images/monogram/monogram-share-card.jpg");
+          const absoluteUrl = cardImageUrl.startsWith("http")
+            ? cardImageUrl
+            : `${window.location.origin}${cardImageUrl.startsWith("/") ? "" : "/"}${cardImageUrl}`;
+          const response = await fetch(absoluteUrl);
+          if (response.ok) {
+            const blob = await response.blob();
+            const cardFile = new File([blob], `Wedding_Location_${partner1}_${partner2}.jpg`, {
+              type: "image/jpeg",
             });
+            if (navigator.canShare({ files: [cardFile] })) {
+              await navigator.share({
+                files: [cardFile],
+                text: text,
+                title: `The Wedding of ${partner1} & ${partner2}`,
+              });
+              return;
+            }
+          }
+        } catch (err) {
+          if (err.name === "AbortError") return;
+        }
+
+        try {
+          if (navigator.canShare({ text })) {
+            await navigator.share({ text, title: `The Wedding of ${partner1} & ${partner2}` });
             return;
           }
+        } catch (err) {
+          if (err.name === "AbortError") return;
         }
-      }
-    } catch (err) {
-      if (err.name === "AbortError") {
-        return;
       }
     } finally {
       setIsProcessing(false);

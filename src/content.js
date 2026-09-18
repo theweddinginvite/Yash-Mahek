@@ -158,6 +158,7 @@ const content = {
     {
       name: "Phere",
       meal: "Dinner to follow",
+      mealTime: "8:00 PM",
       day: "Sunday",
       date: "December 6, 2026",
       time: "5:00 PM",
@@ -188,39 +189,31 @@ const content = {
           {
             name: "Delhi",
             distance: "~245 km · ~5–6 hrs",
-            details: [
-              { text: "Via Moradabad – Ramnagar" },
-            ],
+            details: [{ text: "→ Moradabad → Ramnagar" }],
           },
           {
             name: "Moradabad",
             distance: "~81 km · ~2 hrs",
             details: [
-              { text: "Via Tanda – Bajpur – Ramnagar (Recommended)" },
-              { text: "Via Kashipur – Ramnagar" },
+              { text: "*Route 1* — Tanda → Bajpur → Ramnagar  ✅ *Recommended*" },
+              { text: "*Route 2* — Kashipur → Ramnagar" },
             ],
           },
           {
             name: "Bareilly",
             distance: "~138 km · ~3 hrs",
-            details: [
-              { text: "Via Rampur – Suar – Bajpur – Ramnagar" },
-            ],
+            details: [{ text: "→ Rampur → Suar → Bajpur → Ramnagar" }],
           },
           {
             name: "Dehradun / Haridwar",
             distance: "~250 km · ~5 hrs",
-            details: [
-              { text: "Via Haridwar – Ramnagar" },
-            ],
+            details: [{ text: "→ Haridwar → Ramnagar" }],
           },
           {
             name: "Chandigarh",
             distance: "~425 km · ~8 hrs",
-            details: [
-              { text: "Via Saharanpur – Haridwar – Ramnagar" },
-            ],
-          },
+            details: [{ text: "→ Saharanpur → Haridwar → Ramnagar" }],
+          }
         ],
       },
       {
@@ -230,13 +223,12 @@ const content = {
           {
             name: "Ramnagar Railway Station (RMR)",
             distance: "~7 km · ~15 min",
-            details: [
-              { text: "Direct trains are available from Delhi & Moradabad." },
-            ],
+            details: [{ text: "→ Direct trains available from Delhi & Moradabad" }],
           },
           {
             name: "Kathgodam Railway Station (KGM)",
-            distance: "~60 km · ~1.5–2 hrs",
+            distance: "~80 km · ~2.5 hrs",
+            details: [{ text: "→ Connected by trains from Delhi and other major cities" }]
           },
         ],
       },
@@ -247,16 +239,12 @@ const content = {
           {
             name: "Pantnagar Airport (PGH)",
             distance: "~150 km · ~3–4 hrs",
-            details: [
-              { text: "Nearest airport to the resort." },
-            ],
+            details: [{ text: "→ Nearest airport to the resort." }],
           },
           {
             name: "Indira Gandhi International Airport (IGI)",
             distance: "~265 km · ~5.5–6 hrs",
-            details: [
-              { text: "Major airport hub with direct cabs and train connections to Ramnagar." },
-            ],
+            details: [{ text: "→ Major airport hub with direct cabs and train connections to Ramnagar." }],
           },
         ],
       },

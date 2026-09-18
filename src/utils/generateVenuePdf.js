@@ -6,48 +6,50 @@ export function getWhatsAppVenueShareText(couple, venue) {
   const p2 = (couple?.partner2 || "Groom").replace(/oratna/i, "");
 
   let text = `*The wedding of ${p1} & ${p2}*\n`;
-  text += `*Location & Travel Guide*\n\n`;
+  text += `*December 5-6, 2026*\n\n`;
+  text += `✨ *Location & Travel Guide*\n\n`;
 
   if (venue) {
-    text += `📍 *Venue:* ${venue.name}\n`;
+    text += `*Venue:* ${venue.name}\n`;
     if (venue.address) {
       text += `Address: ${venue.address}\n\n`;
     }
     if (venue.phone) {
-      text += `📞 Helpdesk: ${venue.phone}\n\n`;
+      text += `Helpdesk: ${venue.phone}\n\n`;
     }
     if (venue.qrUrl) {
-      text += `🔍 *Google Search Resort:* ${venue.qrUrl}\n`;
+      text += `*Google Search Resort:* ${venue.qrUrl}\n\n`;
     }
     if (venue.directionsUrl) {
-      text += `🧭 *Maps Direction:* ${venue.directionsUrl}\n\n`;
+      text += `*Maps Direction:* ${venue.directionsUrl}\n\n`;
     }
 
     if (venue.howToReach && venue.howToReach.length > 0) {
-      text += `🚗 *TRAVEL & DIRECTIONS:*\n\n`;
+      text += `*TRAVEL OPTIONS & DIRECTIONS:*\n\n`;
       venue.howToReach.forEach((item) => {
-        const subtitleStr = item.subtitle ? ` (${item.subtitle})` : "";
-        text += `*${item.mode.toUpperCase()}*${subtitleStr}\n`;
+        text += `*${item.mode.toUpperCase()}*\n`;
+        if (item.subtitle) {
+          text += `*${item.subtitle}*\n\n`;
+        } else {
+          text += `\n`;
+        }
         if (item.routes && item.routes.length > 0) {
           item.routes.forEach((route) => {
-            text += `• *${route.name}* (${route.distance})\n`;
+            text += `*${route.name}* · ${route.distance}\n`;
             if (route.details && route.details.length > 0) {
               route.details.forEach((d) => {
                 const prefix = d.label ? `${d.label} ` : "";
-                text += `  - ${prefix}${d.text}\n`;
+                text += `${prefix}${d.text}\n`;
               });
             }
+            text += `\n`;
           });
-          text += `\n`;
-        } else if (item.description) {
-          text += `${item.description.trim()}\n\n`;
         }
       });
     }
   }
 
-  text += `With warmest regards & best compliments! ✨`;
-  return text;
+  return text.trim();
 }
 
 export async function createVenuePdfDocument({ couple, venue }) {
