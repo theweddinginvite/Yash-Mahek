@@ -85,26 +85,15 @@ export function getWhatsAppShareText(couple, rawEvents, venue) {
   events.forEach((ev) => {
     text += `*${ev.name.toUpperCase()}*\n`;
     const dayStr = ev.day ? `${ev.day}, ` : "";
-    text += `${dayStr}${ev.date} · ${ev.time}\n`;
-    if (ev.description) text += `• ${ev.description}\n`;
-    if (ev.attire) text += `• Attire: ${ev.attire}\n`;
-    text += `\n`;
+    text += `${dayStr}${ev.date} · ${ev.time}\n\n`;
   });
 
   if (venue) {
     text += `*Venue:* ${venue.name}\n`;
-    if (venue.address) {
-      text += `${venue.address}\n\n`;
-    }
-    if (venue.phone) {
-      text += `*Helpdesk:* ${venue.phone}\n\n`;
-    }
-    if (venue.qrUrl) {
-      text += `*Google Search Resort:*\n${venue.qrUrl}\n`;
-    }
-    if (venue.directionsUrl) {
-      text += `*Maps Direction:*\n${venue.directionsUrl}\n`;
-    }
+    if (venue.address) text += `${venue.address}\n\n`;
+    if (venue.phone) text += `*Helpdesk:* ${venue.phone}\n\n`;
+    if (venue.qrUrl) text += `*Google Search Resort:*\n${venue.qrUrl}\n`;
+    if (venue.directionsUrl) text += `*Maps Direction:*\n${venue.directionsUrl}\n`;
   }
 
   return text;

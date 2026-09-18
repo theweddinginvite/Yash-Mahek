@@ -64,7 +64,12 @@ export default function SaveEventsModal({ isOpen, onClose, events = [], couple, 
   async function handleShareText() {
     const text = getWhatsAppShareText(couple, itinerary, venue);
     const encoded = encodeURIComponent(text);
-    const waUrl = `https://wa.me/?text=${encoded}`;
+    
+    // Use whatsapp:// intent on mobile to avoid browser URL length limits causing truncation
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const waUrl = isMobile 
+      ? `whatsapp://send?text=${encoded}` 
+      : `https://web.whatsapp.com/send?text=${encoded}`;
 
     try {
       setIsProcessing(true);
