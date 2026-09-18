@@ -352,7 +352,7 @@ const content = {
   integrations: {
     // Google Sheets & Drive integration (Primary)
     appsScriptUrl:
-      "https://script.google.com/macros/s/AKfycbxibdTIQ5m8jfUdoCZ2SSAIVNOIJE6uzDPKrPUulREgq8rZ8TCtykTghNK7WJWR86oxxA/exec",
+      "https://script.google.com/macros/s/AKfycbylOxWOQ0hVZfrTDVLmqm3qIhdIRylwc-kOgu0iu-zrTkQeutSD96UARBdNltJe1zMDlA/exec",
 
     // Firebase Firestore integration (Real-time text blessings & RSVPs)
     firebase: {
