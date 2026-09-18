@@ -5,7 +5,7 @@ import ConfettiBurst from "./ConfettiBurst";
 import blessingsIcon from "../assets/flaticons/blessings-18060799.png";
 import "./SendBlessingModal.css";
 
-const SIDES = ["Bride Side", "Groom Side"];
+const SIDES = ["Bride", "Groom"];
 
 function submitToSheet(appsScriptUrl, payload) {
   return fetch(appsScriptUrl, {
@@ -75,6 +75,7 @@ export default function SendBlessingModal({
       setStatus("idle");
       setForm({ name: initialName || "", side: initialSide || SIDES[0], message: "" });
       setTimeLeft(15);
+      setCelebrateTrigger(0); // reset so confetti doesn't replay on next open
       return;
     }
 
@@ -282,7 +283,7 @@ export default function SendBlessingModal({
               </label>
 
               <div className="blessing-modal__field">
-                <span className="blessing-modal__label">Which side are you on?</span>
+                <span className="blessing-modal__label">From the side of</span>
                 <div className="blessing-modal__side-pills">
                   {SIDES.map((side) => (
                     <label

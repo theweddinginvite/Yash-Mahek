@@ -193,7 +193,7 @@
 .rsvp-form-fields textarea {
   width: 100%;
   font-family: var(--font-body);
-  font-size: 0.96rem;
+  font-size: 16px;
   color: var(--color-text);
   background: #ffffff;
   border: 1.4px solid rgba(176, 137, 104, 0.4);
@@ -911,10 +911,10 @@
   .rsvp-form-fields input[type="text"],
   .rsvp-form-fields input[type="number"],
   .rsvp-form-fields select {
-    min-height: 36px;
-    height: 36px;
-    padding: 0.35rem 0.6rem;
-    font-size: 0.86rem;
+    min-height: 40px;
+    height: 40px;
+    padding: 0.4rem 0.6rem;
+    font-size: 16px;
     border-radius: 0.45rem;
   }
 
@@ -928,7 +928,7 @@
     min-height: 68px;
     height: 68px;
     padding: 0.4rem 0.6rem;
-    font-size: 0.86rem;
+    font-size: 16px;
     border-radius: 0.45rem;
     line-height: 1.35;
   }

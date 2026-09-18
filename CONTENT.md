@@ -139,8 +139,8 @@ Event details are presented as interactive 3D flip cards in a clean 2-column, 3-
 
 ## 6. Blessings Section Text
 
-- Subtext under the "Blessings" heading (currently "Sweet wishes from our
-  family & friends"): `[ ]`
+- Subtext under the "Blessings" heading (currently "With honor and gratitude
+  : `[ ]`
 
 ## 7. Blessings & RSVP Section Text
 

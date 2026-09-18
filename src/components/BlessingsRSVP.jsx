@@ -36,6 +36,28 @@ function buildWhatsAppUrl(data, whatsappNumber) {
   return `https://wa.me/${number}?text=${encodeURIComponent(lines.join("\n"))}`;
 }
 
+async function shareViaWhatsApp(data, whatsappNumber) {
+  const waUrl = buildWhatsAppUrl(data, whatsappNumber);
+  const decodedText = decodeURIComponent(waUrl.split("?text=")[1] || "");
+
+  // Try Web Share API with image (works on mobile browsers)
+  if (navigator.canShare) {
+    try {
+      const response = await fetch("/images/monogram/monogram-share-card.jpg");
+      const blob = await response.blob();
+      const file = new File([blob], "mahek-yash-wedding.jpg", { type: "image/jpeg" });
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], text: decodedText });
+        return;
+      }
+    } catch (_err) {
+      // fall through to wa.me link
+    }
+  }
+  // Fallback: open wa.me link directly
+  window.open(waUrl, "_blank", "noopener,noreferrer");
+}
+
 function SendingAnimation({ message = `Sending your RSVP confirmation to ${content.couple.partner1} & ${content.couple.partner2}…` }) {
   return (
     <div className="sending-animation" aria-live="polite">
@@ -158,14 +180,13 @@ function RsvpForm({ appsScriptUrl, whatsappNumber, onCelebrate }) {
             <span style={{ marginRight: "0.35rem" }}>✨</span> Send Blessings
           </a>
           {whatsappNumber !== false && (
-            <a
+            <button
+              type="button"
               className="button form-status__btn form-status__btn--secondary"
-              href={buildWhatsAppUrl(submittedData, whatsappNumber)}
-              target="_blank"
-              rel="noopener noreferrer"
+              onClick={() => shareViaWhatsApp(submittedData, whatsappNumber)}
             >
               <span style={{ marginRight: "0.35rem" }}>💬</span> Share via WhatsApp
-            </a>
+            </button>
           )}
           <button
             type="button"
@@ -216,7 +237,7 @@ function RsvpForm({ appsScriptUrl, whatsappNumber, onCelebrate }) {
 
       <div className="rsvp-form-fields__row">
         <label className="rsvp-form-fields__col">
-          <span className="rsvp-form-fields__label-text">Your visit plan:</span>
+          <span className="rsvp-form-fields__label-text">Your visit plan</span>
           <select
             value={form.attending}
             onChange={(e) => setForm({ ...form, attending: e.target.value })}
@@ -228,20 +249,21 @@ function RsvpForm({ appsScriptUrl, whatsappNumber, onCelebrate }) {
 
         <label className="rsvp-form-fields__col">
           <span className="rsvp-form-fields__label-text">Total Guests</span>
-          <input
-            type="number"
-            min={1}
-            max={10}
+          <select
             value={form.guests}
             onChange={(e) => setForm({ ...form, guests: e.target.value })}
             disabled={form.attending === "No"}
-          />
+          >
+            {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
+              <option key={n} value={n}>{n}</option>
+            ))}
+          </select>
         </label>
       </div>
 
       {form.attending === "Yes" && (
         <div className="rsvp-form-fields__arrival-group">
-          <span className="rsvp-form-fields__label-text">Expected Arrival (Date &amp; Time):</span>
+          <span className="rsvp-form-fields__label-text">Expected Arrival (Date &amp; Time)</span>
           <div className="rsvp-form-fields__arrival-row">
             <label className="rsvp-arrival-field rsvp-arrival-field--date">
               <span className="rsvp-arrival-field__sublabel">Date</span>

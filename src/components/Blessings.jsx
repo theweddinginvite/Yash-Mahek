@@ -221,7 +221,7 @@ export default function Blessings({ entries = [], status, myBlessingKey, onBless
     <section id="blessings" className="section section--surface blessings-section">
       <div className="section__inner">
         <div className="section__heading">
-          <span className="eyebrow">With Love &amp; Gratitude</span>
+          <span className="eyebrow">With Honor &amp; Gratitude</span>
           <h2>{blessings.heading}</h2>
           <p>{blessings.subtext}</p>
         </div>

@@ -189,7 +189,7 @@ The bottom-right floating control cluster (`FloatingControls.jsx`), top to botto
   - Row 3: **Jaimaal** (Sun, Dec 6, 1:00 PM) &amp; **Phere** (Sun, Dec 6, 5:00 PM)
 - **Single-Screen Mobile Grid Fit**: On mobile (`≤680px`), the events grid uses `grid-template-rows: repeat(3, minmax(0, 1fr))` with cards dynamically occupying 100% of available height (`min-height: 0; height: 100%`). This guarantees all cards and the action buttons appear together in a single viewport without overflowing.
 - **Card Front**: Centered event title (`Playfair Display`, Burgundy `#8f3350`), signature gold gradient divider line with center jewel dot, event day/date, event time, and "Tap for details" icon.
-- **Card Back**: Flips 180° to reveal event name, date, time, description, meal line (*Dinner to follow* / *Lunch to follow*), and Attire theme (*Tradition & Grace*). Signature gold gradient divider with center jewel dot matches the front face. Back face includes scroll protection if text length varies.
+- **Card Back**: Flips 180° to reveal event name, date, time, description, meal line (*Dinner to follow* / *Lunch to follow*), and Attire theme (*Ethnic Wear*). Signature gold gradient divider with center jewel dot matches the front face. Back face includes scroll protection if text length varies.
 - **Action Buttons Row & 10% Viewport Clearance**:
   - Positioned beneath the cards with a guaranteed **10% bottom viewport spacing** (`max(10vh, 10lvh)`).
   - Left Button: **"Save Event Details"** (`.event-details__action-btn--primary`, burgundy pill button with calendar icon).

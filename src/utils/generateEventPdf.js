@@ -80,30 +80,30 @@ export function getWhatsAppShareText(couple, rawEvents, venue) {
 
   let text = `*The wedding of ${p1} & ${p2}*\n`;
   text += `*December 5-6, 2026*\n\n`;
-  text += `Events details:\n\n`;
+  text += `✨ *Events & Itinerary*\n\n`;
 
   events.forEach((ev) => {
-    text += `✨ *${ev.name.toUpperCase()}*\n`;
+    text += `*${ev.name.toUpperCase()}*\n`;
     const dayStr = ev.day ? `${ev.day}, ` : "";
     text += `${dayStr}${ev.date} · ${ev.time}\n`;
-    if (ev.description) text += `• Details: ${ev.description}\n`;
+    if (ev.description) text += `• ${ev.description}\n`;
     if (ev.attire) text += `• Attire: ${ev.attire}\n`;
     text += `\n`;
   });
 
   if (venue) {
-    text += `📍 *Venue:* ${venue.name}\n`;
+    text += `*Venue:* ${venue.name}\n`;
     if (venue.address) {
-      text += `Address: ${venue.address}\n\n`;
+      text += `${venue.address}\n\n`;
     }
     if (venue.phone) {
-      text += `📞 Helpdesk: ${venue.phone}\n\n`;
+      text += `*Helpdesk:* ${venue.phone}\n\n`;
     }
     if (venue.qrUrl) {
-      text += `🔍 *Google Search Resort:* ${venue.qrUrl}\n`;
+      text += `*Google Search Resort:*\n${venue.qrUrl}\n`;
     }
     if (venue.directionsUrl) {
-      text += `🧭 *Maps Direction:* ${venue.directionsUrl}\n\n`;
+      text += `*Maps Direction:*\n${venue.directionsUrl}\n`;
     }
   }
 

@@ -64,36 +64,53 @@ export default function SaveEventsModal({ isOpen, onClose, events = [], couple, 
   async function handleShareText() {
     const text = getWhatsAppShareText(couple, itinerary, venue);
     const encoded = encodeURIComponent(text);
-    const waUrl = `https://api.whatsapp.com/send?text=${encoded}`;
+    const waUrl = `https://wa.me/?text=${encoded}`;
 
     try {
       setIsProcessing(true);
-      const cardImageUrl = asset("/images/wedding_invite_card.png");
+
+      // 1. Try Web Share API with monogram image + full text (no URL length limit)
       if (navigator.canShare) {
-        const response = await fetch(cardImageUrl);
-        if (response.ok) {
-          const blob = await response.blob();
-          const cardFile = new File([blob], `Wedding_Invitation_${partner1}_${partner2}.png`, {
-            type: "image/png",
-          });
-          if (navigator.canShare({ files: [cardFile] })) {
-            await navigator.share({
-              files: [cardFile],
-              text: text,
-              title: `The Wedding of ${partner1} & ${partner2}`,
+        try {
+          const cardImagePath = asset("/images/monogram/monogram-share-card.jpg");
+          const absoluteUrl = cardImagePath.startsWith("http")
+            ? cardImagePath
+            : `${window.location.origin}${cardImagePath.startsWith("/") ? "" : "/"}${cardImagePath}`;
+          const response = await fetch(absoluteUrl);
+          if (response.ok) {
+            const blob = await response.blob();
+            const cardFile = new File([blob], `Wedding_Invitation_${partner1}_${partner2}.jpg`, {
+              type: "image/jpeg",
             });
+            if (navigator.canShare({ files: [cardFile] })) {
+              await navigator.share({
+                files: [cardFile],
+                text: text,
+                title: `The Wedding of ${partner1} & ${partner2}`,
+              });
+              return;
+            }
+          }
+        } catch (err) {
+          if (err.name === "AbortError") return;
+          // image share failed — try text-only share
+        }
+
+        // 2. Try text-only Web Share (full text, no truncation)
+        try {
+          if (navigator.canShare({ text })) {
+            await navigator.share({ text, title: `The Wedding of ${partner1} & ${partner2}` });
             return;
           }
+        } catch (err) {
+          if (err.name === "AbortError") return;
         }
-      }
-    } catch (err) {
-      if (err.name === "AbortError") {
-        return;
       }
     } finally {
       setIsProcessing(false);
     }
 
+    // 3. Last resort: open wa.me URL (may truncate on very long text)
     window.open(waUrl, "_blank", "noopener,noreferrer");
   }
 
