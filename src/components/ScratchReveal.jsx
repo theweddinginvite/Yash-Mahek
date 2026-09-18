@@ -49,6 +49,14 @@ export default function ScratchReveal({
   const isActuallyRevealed = revealed || forceRevealed;
 
   useEffect(() => {
+    if (!forceRevealed) {
+      hasRevealedRef.current = false;
+      hasScratchedRef.current = false;
+      setRevealed(false);
+    }
+  }, [forceRevealed]);
+
+  useEffect(() => {
     if (isActuallyRevealed) return;
 
     const container = containerRef.current;

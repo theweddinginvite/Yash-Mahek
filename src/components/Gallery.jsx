@@ -13,7 +13,7 @@ const CARICATURE_PLACEHOLDERS = [
     isCaricature: true,
     caricatureSrc: asset("/images/monogram/monogramWithoutBg.png"),
     title: `${content.couple.partner1} & ${content.couple.partner2}`,
-    subtitle: "A Lifetime of Love and Happiness",
+    subtitle: "The Lifetime of Love and Happiness",
     badge: "Forever Together 🌸",
     alt: `${content.couple.partner1} & ${content.couple.partner2} Monogram Logo`,
   },

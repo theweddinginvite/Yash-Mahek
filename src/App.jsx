@@ -30,6 +30,7 @@ function App({ entries, status, myBlessingKey, addLocalBlessing }) {
   const [dateRevealed, setDateRevealed] = useState(
     () => sessionStorage.getItem("dateRevealed") === "true"
   );
+  const [scratchResetKey, setScratchResetKey] = useState(0);
 
   const [isSaveEventsModalOpen, setIsSaveEventsModalOpen] = useState(false);
   const [isNoticeBoardOpen, setIsNoticeBoardOpen] = useState(false);
@@ -47,11 +48,25 @@ function App({ entries, status, myBlessingKey, addLocalBlessing }) {
 
   useEffect(() => {
     document.body.style.overflow = opened ? "" : "hidden";
-    if (opened && window.location.hash && window.location.hash !== "#wall") {
-      setTimeout(() => {
-        const el = document.querySelector(window.location.hash);
-        if (el) el.scrollIntoView({ behavior: "instant" });
-      }, 50);
+    if (opened) {
+      if (window.location.hash && window.location.hash !== "#wall") {
+        setTimeout(() => {
+          const el = document.querySelector(window.location.hash);
+          if (el) el.scrollIntoView({ behavior: "instant" });
+        }, 50);
+      } else {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        setTimeout(() => {
+          const el = document.getElementById("shree-ganesh");
+          if (el) {
+            el.scrollIntoView({ behavior: "instant", block: "start" });
+          } else {
+            window.scrollTo(0, 0);
+          }
+        }, 50);
+      }
     }
     return () => {
       document.body.style.overflow = "";
@@ -61,6 +76,17 @@ function App({ entries, status, myBlessingKey, addLocalBlessing }) {
   function handleOpen() {
     sessionStorage.setItem("envelopeOpened", "true");
     setOpened(true);
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    setTimeout(() => {
+      const el = document.getElementById("shree-ganesh");
+      if (el) {
+        el.scrollIntoView({ behavior: "instant", block: "start" });
+      } else {
+        window.scrollTo(0, 0);
+      }
+    }, 50);
   }
 
   function handleDateReveal() {
@@ -71,7 +97,14 @@ function App({ entries, status, myBlessingKey, addLocalBlessing }) {
   function handleReopenEnvelope() {
     sessionStorage.removeItem("envelopeOpened");
     sessionStorage.removeItem("dateRevealed");
+    if (window.location.hash && window.location.hash !== "#wall") {
+      history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
     setDateRevealed(false);
+    setScratchResetKey((prev) => prev + 1);
     setOpened(false);
   }
 
@@ -82,12 +115,21 @@ function App({ entries, status, myBlessingKey, addLocalBlessing }) {
       <CursorSparkleTrail />
       <Nav />
       <ShreeGanesh />
-      <Invitation isDateRevealed={dateRevealed} onDateReveal={handleDateReveal} />
+      <Invitation
+        key={scratchResetKey}
+        isDateRevealed={dateRevealed}
+        onDateReveal={handleDateReveal}
+      />
       <MeetFamilies />
       <EventDetails onOpenSaveEvents={() => setIsSaveEventsModalOpen(true)} />
       <Gallery />
-      <Blessings entries={entries} status={status} myBlessingKey={myBlessingKey} />
-      <BlessingsRSVP onBlessingSent={addLocalBlessing} />
+      <Blessings
+        entries={entries}
+        status={status}
+        myBlessingKey={myBlessingKey}
+        onBlessingSent={addLocalBlessing}
+      />
+      <BlessingsRSVP />
       <FAQ isDateRevealed={dateRevealed} />
       <FloatingControls
         onReopenEnvelope={handleReopenEnvelope}

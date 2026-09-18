@@ -5,6 +5,7 @@ import hinduBrideIcon from "../assets/flaticons/hindu-bride.png";
 import hinduWeddingIcon from "../assets/flaticons/hindu-wedding-mandap.png";
 import hinduGroomIcon from "../assets/flaticons/hindu-groom.png";
 import writingIcon from "../assets/flaticons/writing.png";
+import SendBlessingModal from "./SendBlessingModal";
 import { isFirebaseConfigured, updateBlessingHearts } from "../lib/firebase";
 
 export const NOTE_COLORS = ["note--blush", "note--sage", "note--butter", "note--sky"];
@@ -93,11 +94,12 @@ function HeartIcon({ filled }) {
   );
 }
 
-export default function Blessings({ entries = [], status, myBlessingKey }) {
+export default function Blessings({ entries = [], status, myBlessingKey, onBlessingSent }) {
   const { blessings } = content;
   const [active, setActive] = useState(null); // Lightbox { entry }
   const [filter, setFilter] = useState("all"); // 'bride' | 'all' | 'groom'
   const [pageIndex, setPageIndex] = useState(0);
+  const [isBlessingModalOpen, setIsBlessingModalOpen] = useState(false);
 
   // Heart Reactions: local map + user click tracking
   const [reactions, setReactions] = useState(() => {
@@ -319,11 +321,13 @@ export default function Blessings({ entries = [], status, myBlessingKey }) {
           })}
 
           {placeholders.map((_, idx) => (
-            <a
+            <button
               key={`placeholder-${idx}`}
-              href="#blessings-rsvp"
+              type="button"
+              onClick={() => setIsBlessingModalOpen(true)}
               className="curated-wish-card curated-wish-card--placeholder"
-              title="Send Blessings & RSVP"
+              title="Click to send warm blessings"
+              aria-label="Click to send warm blessing"
             >
               <div className="curated-placeholder-inner">
                 <img
@@ -336,7 +340,7 @@ export default function Blessings({ entries = [], status, myBlessingKey }) {
                 />
                 <p className="placeholder-title">Click to leave warm wish</p>
               </div>
-            </a>
+            </button>
           ))}
         </div>
 
@@ -388,21 +392,32 @@ export default function Blessings({ entries = [], status, myBlessingKey }) {
             ✨ Tap the card to see full message
           </p>
 
-          {/* Action Link */}
+          {/* Action Button */}
           <div className="blessings-actions">
-            <a className="blessings-action-btn" href="#blessings-rsvp">
+            <button
+              type="button"
+              className="blessings-action-btn"
+              onClick={() => setIsBlessingModalOpen(true)}
+            >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M12 20h9" />
                 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
               </svg>
-              Send Blessings &amp; RSVP
-            </a>
+              Send Blessings
+            </button>
           </div>
         </div>
       </div>
 
       {/* Full-Width Section Division Line Across Page */}
       <div className="section-divider" aria-hidden="true" />
+
+      {/* Send Blessing Modal Popup */}
+      <SendBlessingModal
+        isOpen={isBlessingModalOpen}
+        onClose={() => setIsBlessingModalOpen(false)}
+        onBlessingSent={onBlessingSent}
+      />
 
       {/* Detail Lightbox */}
       {active && (

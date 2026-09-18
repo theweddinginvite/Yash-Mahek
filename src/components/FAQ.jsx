@@ -120,6 +120,7 @@ export default function FAQ({ isDateRevealed }) {
         isOpen={isVenueModalOpen}
         onClose={() => setIsVenueModalOpen(false)}
         venue={venue}
+        couple={couple}
       />
       <GalleryUploadModal
         isOpen={isUploadModalOpen}

@@ -317,6 +317,37 @@
   width: 100%;
 }
 
+/* Arrival date & time selector */
+.rsvp-form-fields__arrival-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.rsvp-form-fields__arrival-row {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 1fr;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.rsvp-arrival-field {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.2rem !important;
+  width: 100%;
+}
+
+.rsvp-arrival-field__sublabel {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
 /* Submit Button */
 .rsvp-submit-btn,
 .button.rsvp-submit-btn {

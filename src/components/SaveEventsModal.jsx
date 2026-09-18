@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
+import { asset } from "../content";
 import {
   getWhatsAppShareText,
   downloadEventPdf,
   shareEventPdf,
+  getItineraryEvents,
 } from "../utils/generateEventPdf";
 import whatsappIcon from "../assets/flaticons/whatsapp-2582600.png";
 import sharePdfIcon from "../assets/flaticons/share-1358023.png";
@@ -15,7 +17,9 @@ export default function SaveEventsModal({ isOpen, onClose, events = [], couple, 
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
 
-  const autoCloseSeconds = venue?.modalAutoCloseSeconds ?? 30;
+  const autoCloseSeconds = venue?.saveEventsAutoCloseSeconds ?? 90;
+
+  const itinerary = getItineraryEvents(events);
 
   useEffect(() => {
     if (!isOpen) {
@@ -57,32 +61,61 @@ export default function SaveEventsModal({ isOpen, onClose, events = [], couple, 
     setTimeout(() => setToastMessage(""), 4000);
   }
 
-  function handleShareText() {
-    const text = getWhatsAppShareText(couple, events, venue);
+  async function handleShareText() {
+    const text = getWhatsAppShareText(couple, itinerary, venue);
     const encoded = encodeURIComponent(text);
-    const url = `https://api.whatsapp.com/send?text=${encoded}`;
-    window.open(url, "_blank", "noopener,noreferrer");
+    const waUrl = `https://api.whatsapp.com/send?text=${encoded}`;
+
+    try {
+      setIsProcessing(true);
+      const cardImageUrl = asset("/images/wedding_invite_card.png");
+      if (navigator.canShare) {
+        const response = await fetch(cardImageUrl);
+        if (response.ok) {
+          const blob = await response.blob();
+          const cardFile = new File([blob], `Wedding_Invitation_${partner1}_${partner2}.png`, {
+            type: "image/png",
+          });
+          if (navigator.canShare({ files: [cardFile] })) {
+            await navigator.share({
+              files: [cardFile],
+              text: text,
+              title: `The Wedding of ${partner1} & ${partner2}`,
+            });
+            return;
+          }
+        }
+      }
+    } catch (err) {
+      if (err.name === "AbortError") {
+        return;
+      }
+    } finally {
+      setIsProcessing(false);
+    }
+
+    window.open(waUrl, "_blank", "noopener,noreferrer");
   }
 
   async function handleSharePdf() {
     try {
       setIsProcessing(true);
-      const res = await shareEventPdf({ events, couple, venue });
+      const res = await shareEventPdf({ events: itinerary, couple, venue });
       if (res?.method === "download" && res?.fallback) {
         showToast("PDF downloaded! You can now send it on WhatsApp.");
       }
     } catch {
       showToast("Unable to share PDF directly. Downloading file...");
-      downloadEventPdf({ events, couple, venue });
+      await downloadEventPdf({ events: itinerary, couple, venue });
     } finally {
       setIsProcessing(false);
     }
   }
 
-  function handleDownloadPdf() {
+  async function handleDownloadPdf() {
     try {
       setIsProcessing(true);
-      downloadEventPdf({ events, couple, venue });
+      await downloadEventPdf({ events: itinerary, couple, venue });
       showToast("PDF downloaded successfully!");
     } catch {
       showToast("Download failed. Please try again.");
@@ -135,8 +168,11 @@ export default function SaveEventsModal({ isOpen, onClose, events = [], couple, 
 
           {/* Events Itinerary List */}
           <div className="save-events-card__list">
-            {events.map((event) => (
-              <div key={event.name} className="save-events-card__item">
+            {itinerary.map((event) => (
+              <div
+                key={`${event.name}-${event.time}`}
+                className={`save-events-card__item ${event.isFoodEvent ? "save-events-card__item--food" : ""}`}
+              >
                 <div className="save-events-card__item-top">
                   <span className="save-events-card__item-name">{event.name}</span>
                   <span className="save-events-card__item-time">
@@ -144,27 +180,33 @@ export default function SaveEventsModal({ isOpen, onClose, events = [], couple, 
                   </span>
                 </div>
 
-                {/* 2x2 Grid: Event Details & Attire Details */}
-                <div className="save-events-card__grid">
-                  <div className="save-events-card__grid-label">Event details:</div>
-                  <div className="save-events-card__grid-val">
-                    {event.description && (
-                      <p className="save-events-card__grid-desc">{event.description}</p>
+                {/* Grid details (only rendered if description, meal, or attire exists) */}
+                {(event.description || event.meal || event.attire) && (
+                  <div className="save-events-card__grid">
+                    {(event.description || event.meal) && (
+                      <>
+                        <div className="save-events-card__grid-label">Event details:</div>
+                        <div className="save-events-card__grid-val">
+                          {event.description && (
+                            <p className="save-events-card__grid-desc">{event.description}</p>
+                          )}
+                          {event.meal && (
+                            <p className="save-events-card__grid-meal">{event.meal}</p>
+                          )}
+                        </div>
+                      </>
                     )}
-                    {event.meal && (
-                      <p className="save-events-card__grid-meal">{event.meal}</p>
+
+                    {event.attire && (
+                      <>
+                        <div className="save-events-card__grid-label">Attire details:</div>
+                        <div className="save-events-card__grid-val">
+                          <p className="save-events-card__grid-attire">{event.attire}</p>
+                        </div>
+                      </>
                     )}
                   </div>
-
-                  {event.attire && (
-                    <>
-                      <div className="save-events-card__grid-label">Attire details:</div>
-                      <div className="save-events-card__grid-val">
-                        <p className="save-events-card__grid-attire">{event.attire}</p>
-                      </div>
-                    </>
-                  )}
-                </div>
+                )}
               </div>
             ))}
           </div>

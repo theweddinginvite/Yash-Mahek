@@ -29,7 +29,8 @@
 
 /* Section Main Heading */
 .family-section__heading {
-  margin-bottom: 0.75rem;
+  margin-top: 0;
+  margin-bottom: var(--space-heading-to-content, clamp(2rem, 4.2vh, 3rem));
 }
 
 .family-section__heading .eyebrow {
@@ -47,6 +48,7 @@
   font-size: clamp(1.85rem, 3.5vh, 2.4rem);
   color: var(--color-text);
   margin: 0;
+  margin-bottom: 0;
   font-weight: 500;
   letter-spacing: 0.02em;
   line-height: 1.2;
@@ -54,7 +56,7 @@
 
 /* Header with Sanskrit Shloka and Translation */
 .family-section__header {
-  margin-bottom: 1.65rem;
+  margin-bottom: clamp(0.75rem, 1.5vh, 1.15rem);
   padding: 0 1rem;
   width: 100%;
   max-width: 48rem;
@@ -62,22 +64,22 @@
 
 .family-section__shloka {
   font-family: "Tiro Devanagari Sanskrit", var(--font-heading), serif;
-  font-size: clamp(1.15rem, 2.2vh, 1.35rem);
+  font-size: clamp(0.98rem, 1.9vh, 1.18rem);
   font-weight: 500;
   color: var(--color-burgundy);
-  margin: 0 0 0.3rem;
-  line-height: 1.45;
+  margin: 0 0 0.25rem;
+  line-height: 1.42;
   -webkit-font-smoothing: antialiased;
 }
 
 .family-section__quote {
   font-family: var(--font-body);
   font-style: italic;
-  font-size: clamp(0.88rem, 1.6vh, 1.02rem);
-  color: var(--color-text-muted);
-  max-width: 42rem;
+  font-size: clamp(0.78rem, 1.35vh, 0.88rem);
+  color: var(--color-text);
+  max-width: 38rem;
   margin: 0 auto;
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
 /* Cards Layout Container (2 cards + center vertical divider) */

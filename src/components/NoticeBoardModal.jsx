@@ -31,7 +31,7 @@ export default function NoticeBoardModal({
   isOpen,
   onClose,
   announcements = [],
-  autoCloseSeconds = 45,
+  autoCloseSeconds = 90,
 }) {
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;

@@ -254,6 +254,7 @@ export default function EventDetails({ onOpenSaveEvents }) {
           isOpen={isVenueModalOpen}
           onClose={() => setIsVenueModalOpen(false)}
           venue={venue}
+          couple={couple}
         />
       </div>
     </section>

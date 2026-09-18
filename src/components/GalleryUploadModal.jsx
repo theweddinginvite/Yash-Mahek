@@ -66,6 +66,8 @@ function formatFileSize(bytes) {
 }
 
 export default function GalleryUploadModal({ isOpen, onClose, onUploadSuccess }) {
+  const p1 = (content.couple?.partner1 || "Bride").replace(/oratna/i, "");
+  const p2 = (content.couple?.partner2 || "Groom").replace(/oratna/i, "");
   const [uploaderName, setUploaderName] = useState("");
   const [ceremony, setCeremony] = useState(CEREMONIES[0]);
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -243,7 +245,7 @@ export default function GalleryUploadModal({ isOpen, onClose, onUploadSuccess })
             </h3>
             <div className="gallery-upload__divider" aria-hidden="true" />
             <p className="gallery-upload__subtitle">
-              Capture a moment from {content.couple.partner1} &amp; {content.couple.partner2}&apos;s celebrations? Share your candid memories with the family!
+              Captured a moment from {p1} &amp; {p2}&apos;s celebration? Share your candid memories with the family!
             </p>
           </div>
 

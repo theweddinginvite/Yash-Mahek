@@ -132,11 +132,23 @@
 .gallery-upload__divider {
   display: block;
   position: relative;
-  width: 4rem;
+  width: 4.5rem;
   height: 1px;
-  margin: 0.35rem auto 0.5rem;
-  background: linear-gradient(to right, transparent, var(--color-accent) 50%, transparent);
-  opacity: 0.75;
+  margin: 0.35rem auto 0.55rem;
+  background: linear-gradient(to right, transparent, var(--color-accent, #b08968) 50%, transparent);
+  opacity: 0.85;
+}
+
+.gallery-upload__divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4.5px;
+  height: 4.5px;
+  border-radius: 50%;
+  background: var(--color-accent, #b08968);
+  transform: translate(-50%, -50%);
 }
 
 .gallery-upload__subtitle {

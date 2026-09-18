@@ -102,7 +102,7 @@ Event details are presented as interactive 3D flip cards in a clean 2-column, 3-
 - Date: `[ December 06, 2026 ]`
 - Time: `[ 10:30 AM ]`
 - One-liner Description: `[ The groom's royal dancing procession with festive dhol beats and celebration. ]`
-- Attire / Dress Code: `[ Tradition & Grace ]`
+- Attire / Dress Code: `[ Ethnic Wear ]`
 - Venue / Location: `[ Resort Entrance to Mandap ]`
 - Additional Note: `[ Join the groom's baraat procession! ]`
 
@@ -112,7 +112,7 @@ Event details are presented as interactive 3D flip cards in a clean 2-column, 3-
 - Time: `[ 1:00 PM ]`
 - Meal: `[ Followed by Gala Lunch ]`
 - One-liner Description: `[ The auspicious floral garland exchange marking the union of bride and groom. ]`
-- Attire / Dress Code: `[ Tradition & Grace ]`
+- Attire / Dress Code: `[ Ethnic Wear ]`
 - Venue / Location: `[ Central Mandap ]`
 - Additional Note: `[ Shower the couple with flower petals. ]`
 
@@ -121,21 +121,21 @@ Event details are presented as interactive 3D flip cards in a clean 2-column, 3-
 - Date: `[ December 06, 2026 ]`
 - Time: `[ 5:00 PM ]`
 - Meal: `[ Followed by Dinner ]`
-- One-liner Description: `[ The seven sacred vows around the holy agni solemnizing our sacred marriage bond. ]`
-- Attire / Dress Code: `[ Tradition & Grace ]`
+- One-liner Description: `[ The seven sacred vows around the holy agni solemnizing the sacred marriage bond. ]`
+- Attire / Dress Code: `[ Ethnic Wear ]`
 - Venue / Location: `[ Mandap by the Forest ]`
 - Additional Note: `[ Dinner & reception to follow. ]`
 
-## 5.1 Venue & "How to Reach the Venue" Popup
+## 5.1 Venue & "How to Reach the Venue?" Popup
 
 - Venue Resort Name: `[ Winsome Resort & Spa ]`
 - Venue Full Address: `[ Village Nandpur, Ramnagar, Jim Corbett, Uttarakhand 244715 ]`
 - Google Search / Location URL (for QR code): `[ https://share.google/xZAuCAlAAjEHdfEsY ]`
 - Google Directions URL: `[ https://www.google.com/maps/dir/?api=1&destination=Winsome+Resorts+and+Spa%2C+Jim+Corbett ]`
-- Popup auto-close timer (seconds): `[ 30 ]`
-- By Road details: `[ Approx. 240 km (~5 to 6 hours drive) from Delhi NCR via NH9 through Hapur, Moradabad, Kashipur to Ramnagar. ]`
-- By Train details: `[ Ramnagar Railway Station (RMR) is approx. 10 km (15–20 mins) from the resort. Direct trains run from Old Delhi & Anand Vihar. ]`
-- By Air details: `[ Pantnagar Airport (PGH) is ~80 km (~2 hours drive). Alternatively, IGI Airport New Delhi is ~260 km away. ]`
+- Popup auto-close timer (seconds): `[ 90 ]`
+- By Road details: `[ Delhi (~245 km · ~5–6 hrs: Via Moradabad – Ramnagar), Moradabad (~81 km · ~2 hrs: Via Tanda – Bajpur – Ramnagar (Recommended), Via Kashipur – Ramnagar), Bareilly (~138 km), Dehradun/Haridwar (~250 km), Chandigarh (~425 km). ]`
+- By Train details: `[ Ramnagar Railway Station (RMR) ~7 km (~15 min). Direct trains are available from Delhi & Moradabad. Kathgodam Railway Station (KGM) ~60 km (~1.5–2 hrs). ]`
+- By Air details: `[ Pantnagar Airport (PGH) ~150 km (~3–4 hrs). Indira Gandhi International Airport (IGI), New Delhi ~265 km (~5.5–6 hrs). ]`
 
 ## 6. Blessings Section Text
 
@@ -174,15 +174,14 @@ The gallery system uses a strictly separated two-tier Google Drive & Google Shee
 ## 9. FAQ
 
 - **How do I reach the venue?**
-  Complete Address: Winsome Resort & Spa, Vill. Nandpur, Choi, Gabua (Near Dabka River, Jim Corbett National Park), Ramnagar – Nainital Road, Khempur, Uttarakhand 244715.
-  Phone: +91 99714 99502 / +91 95600 02045.
+  Click the button below to save, download pdf or share as text/pdf over whatsapp
   (Includes interactive button to open the "How to reach the venue?" travel guide modal).
 - **Is parking available at the venue?**
   Yes, complimentary on-site self-parking and dedicated valet assistance are available at Winsome Resort & Spa for all wedding guests throughout the celebrations.
 - **What are the dress codes and themes for the events?**
   - Haldi (Dec 5, 12:30 PM): Shades of Pink
   - Engagement & Sangeet (Dec 5, 5:00 PM): Glam and Glitter
-  - Wedding Day (Dec 6): Tradition & Grace
+  - Wedding Day (Dec 6): Ethnic Wear
 - **What will the weather be like in Jim Corbett in December?**
   - Daytime: Roughly 21–24°C, comfortable and pleasant.
   - Afternoons: Usually sunny and pleasant, with around 9 hours of sunshine.

@@ -30,7 +30,7 @@
 /* Section Main Heading */
 .family-section__heading {
   margin-top: 0;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-heading-to-content, clamp(2rem, 4.2vh, 3rem));
 }
 
 .family-section__heading .eyebrow {
@@ -76,7 +76,7 @@
   font-family: var(--font-body);
   font-style: italic;
   font-size: clamp(0.78rem, 1.35vh, 0.88rem);
-  color: var(--color-text-muted);
+  color: var(--color-text);
   max-width: 38rem;
   margin: 0 auto;
   line-height: 1.45;
@@ -430,7 +430,7 @@
 
   .family-section__heading {
     margin-top: 0;
-    margin-bottom: 0.35rem;
+    margin-bottom: var(--space-heading-to-content, clamp(2rem, 4.2vh, 3rem));
   }
 
   .family-section__header {

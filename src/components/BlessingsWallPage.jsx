@@ -12,7 +12,7 @@ export default function BlessingsWallPage({ entries, status }) {
 
   useEffect(() => {
     const previousTitle = document.title;
-    document.title = "Blessings Wall";
+    document.title = "Wall of Blessings";
     window.scrollTo(0, 0);
     return () => {
       document.title = previousTitle;
@@ -34,7 +34,7 @@ export default function BlessingsWallPage({ entries, status }) {
         <span className="eyebrow">
           {partner1} &amp; {partner2}
         </span>
-        <h1>Blessings Wall</h1>
+        <h1>Wall of Blessings</h1>
         <p>Every blessing, newest first.</p>
       </header>
 

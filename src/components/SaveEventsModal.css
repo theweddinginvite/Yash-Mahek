@@ -214,48 +214,50 @@
   box-shadow: 0 4px 14px rgba(143, 51, 80, 0.08);
 }
 
+.save-events-card__item--food .save-events-card__item-top {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
 .save-events-card__item-top {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 0.35rem 0.75rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
   margin-bottom: 0.55rem;
-  padding-bottom: 0.35rem;
+  padding-bottom: 0.38rem;
   border-bottom: 1px dashed rgba(176, 137, 104, 0.28);
 }
 
 .save-events-card__item-name {
   font-family: var(--font-heading);
-  font-size: 1.35rem;
+  font-size: 1.38rem;
   font-weight: 600;
   color: var(--color-burgundy);
-  line-height: 1.2;
+  line-height: 1.22;
 }
 
 .save-events-card__item-time {
   font-family: var(--font-body);
-  font-size: 1.05rem;
+  font-size: 1.04rem;
   font-weight: 600;
   color: var(--color-accent);
   white-space: nowrap;
-  margin-left: auto;
-  text-align: right;
 }
 
 /* 2x2 Grid Layout for details */
 .save-events-card__grid {
   display: grid;
-  grid-template-columns: minmax(105px, auto) 1fr;
-  row-gap: 0.52rem;
+  grid-template-columns: minmax(118px, auto) 1fr;
+  row-gap: 0.55rem;
   column-gap: 0.85rem;
   align-items: baseline;
 }
 
 .save-events-card__grid-label {
   font-family: var(--font-body);
-  font-size: 1.02rem;
+  font-size: 1.08rem;
   font-weight: 600;
   color: var(--color-burgundy);
   white-space: nowrap;
@@ -266,9 +268,9 @@
   flex-direction: column;
   gap: 0.25rem;
   font-family: var(--font-body);
-  font-size: 1.05rem;
+  font-size: 1.12rem;
   color: var(--color-text);
-  line-height: 1.45;
+  line-height: 1.48;
 }
 
 .save-events-card__grid-desc {
@@ -342,7 +344,7 @@
   padding: 0 0.5rem;
   border-radius: 2rem;
   font-family: var(--font-body);
-  font-size: 0.98rem;
+  font-size: 1.04rem;
   font-weight: 600;
   cursor: pointer;
   letter-spacing: 0.01em;
@@ -438,54 +440,49 @@
   }
 
   .save-events-card__item-top {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 0.2rem 0.5rem;
+    gap: 0.15rem;
   }
 
   .save-events-card__item-name {
-    font-size: 1.24rem;
+    font-size: 1.28rem;
   }
 
   .save-events-card__item-time {
     font-size: 0.98rem;
-    margin-left: auto;
-    text-align: right;
   }
 
   .save-events-card__grid {
-    grid-template-columns: minmax(95px, auto) 1fr;
+    grid-template-columns: minmax(104px, auto) 1fr;
     column-gap: 0.6rem;
-    row-gap: 0.4rem;
+    row-gap: 0.45rem;
   }
 
   .save-events-card__grid-label {
-    font-size: 0.94rem;
+    font-size: 1.00rem;
   }
 
   .save-events-card__grid-val {
-    font-size: 0.96rem;
+    font-size: 1.04rem;
   }
 
   .save-events-card__toast {
-    font-size: 0.92rem;
+    font-size: 0.94rem;
   }
 
   .save-events-card__footer {
-    padding: 0.65rem 0.55rem max(0.65rem, env(safe-area-inset-bottom, 0px));
-    gap: 0.35rem;
+    padding: 0.65rem 0.45rem max(0.65rem, env(safe-area-inset-bottom, 0px));
+    gap: 0.28rem;
   }
 
   .save-events-card__btn {
     height: 38px;
     min-height: 38px;
     max-height: 38px;
-    font-size: 0.86rem;
-    padding: 0 0.15rem;
-    gap: 0.18rem;
-    letter-spacing: 0;
+    font-size: 0.92rem;
+    padding: 0 0.18rem;
+    gap: 0.16rem;
+    letter-spacing: -0.015em;
+    white-space: nowrap;
     box-sizing: border-box;
   }
 

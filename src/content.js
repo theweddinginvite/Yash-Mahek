@@ -140,7 +140,7 @@ const content = {
       date: "December 6, 2026",
       time: "10:30 AM",
       description: "The groom's royal dancing procession with festive dhol beats and celebration.",
-      attire: "Tradition & Grace",
+      attire: "Ethnic Wear",
       location: "Resort Entrance to Mandap",
       note: "Join the groom's baraat procession!",
     },
@@ -151,7 +151,7 @@ const content = {
       date: "December 6, 2026",
       time: "1:00 PM",
       description: "The auspicious floral garland exchange marking the union of bride and groom.",
-      attire: "Tradition & Grace",
+      attire: "Ethnic Wear",
       location: "Central Mandap",
       note: "Shower the couple with flower petals.",
     },
@@ -161,8 +161,8 @@ const content = {
       day: "Sunday",
       date: "December 6, 2026",
       time: "5:00 PM",
-      description: "The seven sacred vows around the holy agni solemnizing our sacred marriage bond.",
-      attire: "Tradition & Grace",
+      description: "The seven sacred vows around the holy agni solemnizing the sacred marriage bond.",
+      attire: "Ethnic Wear",
       location: "Mandap by the Forest",
       note: "Dinner & reception to follow.",
     },
@@ -177,30 +177,88 @@ const content = {
       "Vill. Nandpur, Choi, Gabua (Near Dabka River, Jim Corbett National Park), Ramnagar – Nainital Road, Khempur, Uttarakhand 244715",
     qrUrl: "https://share.google/xZAuCAlAAjEHdfEsY",
     directionsUrl:
-      "https://www.google.com/maps/dir/?api=1&destination=Winsome+Resorts+and+Spa%2C+Jim+Corbett",
-    modalAutoCloseSeconds: 45,
+      "https://maps.google.com/?daddr=Winsome+Resort+Jim+Corbett",
+    modalAutoCloseSeconds: 90,
+    saveEventsAutoCloseSeconds: 90,
     howToReach: [
       {
         mode: "By Road",
-        description:
-          "• From Delhi: ~245 km (~4 hr 20 min) via Delhi – Moradabad – Rampur - Tanda – Bajpur (or via Kashipur) – Ramnagar (Resort is ~6 km from Ramnagar town).\n" +
-          "• From Moradabad: ~81 km (~1 hr 50 min) via Moradabad – Tanda – Bajpur – Ramnagar.\n" +
-          "• From Bareilly: ~138 km (~2 hr 50 min) via Bareilly – Rampur – Suar – Bajpur – Ramnagar.\n" +
-          "• From Badaun: ~204 km (~3 hr 50 min) via Badaun – Chandausi Bypass – Moradabad – Tanda – Bajpur – Ramnagar.\n" +
-          "• From Dehradun / Haridwar: ~252 km (~4 hr 50 min) via Haridwar – Jagannathpur – Ramnagar.\n" +
-          "• From Chandigarh: ~424 km (~7 hr 45 min) via Saharanpur – Bhagwanpur – Haridwar (NH734) – Ramnagar.",
+        subtitle: "Driving Routes",
+        routes: [
+          {
+            name: "Delhi",
+            distance: "~245 km · ~5–6 hrs",
+            details: [
+              { text: "Via Moradabad – Ramnagar" },
+            ],
+          },
+          {
+            name: "Moradabad",
+            distance: "~81 km · ~2 hrs",
+            details: [
+              { text: "Via Tanda – Bajpur – Ramnagar (Recommended)" },
+              { text: "Via Kashipur – Ramnagar" },
+            ],
+          },
+          {
+            name: "Bareilly",
+            distance: "~138 km · ~3 hrs",
+            details: [
+              { text: "Via Rampur – Suar – Bajpur – Ramnagar" },
+            ],
+          },
+          {
+            name: "Dehradun / Haridwar",
+            distance: "~250 km · ~5 hrs",
+            details: [
+              { text: "Via Haridwar – Ramnagar" },
+            ],
+          },
+          {
+            name: "Chandigarh",
+            distance: "~425 km · ~8 hrs",
+            details: [
+              { text: "Via Saharanpur – Haridwar – Ramnagar" },
+            ],
+          },
+        ],
       },
       {
         mode: "By Train",
-        description:
-          "• Ramnagar Railway Station (RMR): Approx. 7 km (~12–15 mins drive from resort) with direct trains from Old Delhi and Anand Vihar.\n" +
-          "• Kathgodam Railway Station: ~60 km from resort.",
+        subtitle: "Railway Stations",
+        routes: [
+          {
+            name: "Ramnagar Railway Station (RMR)",
+            distance: "~7 km · ~15 min",
+            details: [
+              { text: "Direct trains are available from Delhi & Moradabad." },
+            ],
+          },
+          {
+            name: "Kathgodam Railway Station (KGM)",
+            distance: "~60 km · ~1.5–2 hrs",
+          },
+        ],
       },
       {
         mode: "By Air",
-        description:
-          "• Pantnagar Airport (PGH): Approx. 150 km (~2.5 hrs drive).\n" +
-          "• IGI Airport New Delhi: ~260 km away.",
+        subtitle: "Airport Connectivity",
+        routes: [
+          {
+            name: "Pantnagar Airport (PGH)",
+            distance: "~150 km · ~3–4 hrs",
+            details: [
+              { text: "Nearest airport to the resort." },
+            ],
+          },
+          {
+            name: "Indira Gandhi International Airport (IGI)",
+            distance: "~265 km · ~5.5–6 hrs",
+            details: [
+              { text: "Major airport hub with direct cabs and train connections to Ramnagar." },
+            ],
+          },
+        ],
       },
     ],
   },
@@ -218,23 +276,19 @@ const content = {
   ],
 
   blessings: {
-    heading: "Blessings Wall",
+    heading: "Wall of Blessings",
     subtext: "Sweet wishes from our family & friends",
   },
 
   blessingsRsvp: {
-    heading: "Blessings & RSVP",
-    subtext: "Send blessings, RSVP, and share your photos",
+    heading: "RSVP",
+    subtext: "Please let us know if you will be celebrating with us",
   },
 
   faq: [
     {
       question: "How do I reach the venue?",
-      answer:
-        "Complete Address of Winsome Resort:\n" +
-        "Winsome Resort & Spa is located at Vill. Nandpur, Choi, Gabua (Near Dabka River, Jim Corbett National Park), Ramnagar – Nainital Road, Khempur, Uttarakhand 244715.\n" +
-        "Phone: +91 99714 99502 / +91 95600 02045\n\n" +
-        "Click the button below to get travel options:",
+      answer: "Click the button below to save, download pdf or share as text/pdf over whatsapp",
       action: {
         type: "venueModal",
         label: "How to reach the venue?",
@@ -259,7 +313,7 @@ const content = {
         "We encourage you to dress in accordance with the ceremony themes:\n" +
         "• Haldi (Dec 5, 12:30 PM): Shades of Pink\n" +
         "• Engagement & Sangeet (Dec 5, 5:00 PM): Glam and Glitter\n" +
-        "• Wedding Day (Dec 6): Tradition & Grace",
+        "• Wedding Day (Dec 6): Ethnic Wear",
     },
     {
       question: "What will the weather be like in Jim Corbett in December?",

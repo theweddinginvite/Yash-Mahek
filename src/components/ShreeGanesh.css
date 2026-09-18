@@ -139,7 +139,7 @@
 .shree-ganesh__shlok-translation {
   font-style: italic;
   font-size: clamp(1.02rem, 1.7vh, 1.12rem);
-  color: var(--color-text-muted);
+  color: var(--color-burgundy);
   line-height: 1.55;
   max-width: 32rem;
   margin: 0 auto var(--space-3);

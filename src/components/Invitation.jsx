@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import content from "../content";
 import Countdown from "./Countdown";
 import ScratchReveal from "./ScratchReveal";
@@ -8,6 +8,10 @@ import "./Invitation.css";
 export default function Invitation({ isDateRevealed = false, onDateReveal }) {
   const { couple, wedding, hero } = content;
   const [revealed, setRevealed] = useState(isDateRevealed);
+
+  useEffect(() => {
+    setRevealed(isDateRevealed);
+  }, [isDateRevealed]);
 
   function handleReveal() {
     setRevealed(true);

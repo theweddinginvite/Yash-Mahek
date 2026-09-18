@@ -35,7 +35,7 @@
   position: relative;
   width: 100%;
   max-width: 32rem;
-  max-height: min(86vh, 86dvh, calc(100svh - 1.5rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)));
+  max-height: min(88vh, 88dvh, calc(100svh - 1.5rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)));
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -59,7 +59,7 @@
   }
 }
 
-/* Pinned Top Progress Timer Bar (30s countdown) */
+/* Pinned Top Progress Timer Bar (90s countdown) */
 .venue-modal__timer-bar {
   position: absolute;
   top: 0;
@@ -118,69 +118,77 @@
 
 /* Scrollable Modal Body */
 .venue-modal__body {
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 1.6rem 1.4rem 1.4rem;
+  -webkit-overflow-scrolling: touch;
+  padding: 1.4rem 1.3rem 0.85rem;
   box-sizing: border-box;
   scrollbar-width: thin;
   scrollbar-color: rgba(176, 137, 104, 0.45) transparent;
 }
 
-/* WebKit Custom Scrollbar (contained cleanly inside the window) */
+/* WebKit Custom Scrollbar */
 .venue-modal__body::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 .venue-modal__body::-webkit-scrollbar-track {
   background: transparent;
-  margin: 0.75rem 0;
 }
 
 .venue-modal__body::-webkit-scrollbar-thumb {
   background: rgba(176, 137, 104, 0.45);
-  border-radius: 999px;
+  border-radius: 4px;
 }
 
 .venue-modal__body::-webkit-scrollbar-thumb:hover {
   background: var(--color-accent);
 }
 
-/* Header */
+/* Header - Consistent with SaveEventsModal */
 .venue-modal__header {
   text-align: center;
-  margin-bottom: 1.15rem;
-  padding-right: 1.5rem;
-  padding-left: 1.5rem;
+  margin-bottom: 1.2rem;
+  padding: 0 2.2rem;
+  box-sizing: border-box;
 }
 
 .venue-modal__header .eyebrow {
   display: inline-block;
   font-family: var(--font-body);
-  font-size: 0.72rem;
+  font-size: 0.92rem;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.22em;
   color: var(--color-accent);
   margin-bottom: 0.2rem;
 }
 
 .venue-modal__title {
   font-family: var(--font-heading);
-  font-size: 1.45rem;
+  font-size: clamp(1.55rem, 4.8vw, 1.95rem);
   font-weight: 500;
   color: var(--color-burgundy);
-  margin: 0 0 0.3rem;
+  margin: 0.2rem 0 0.15rem;
   line-height: 1.2;
 }
 
 .venue-modal__divider {
   display: block;
   position: relative;
-  width: 4rem;
+  width: 4.5rem;
   height: 1px;
-  margin: 0.25rem auto 0.45rem;
-  background: linear-gradient(to right, transparent, var(--color-accent) 50%, transparent);
-  opacity: 0.75;
+  margin: 0.45rem auto 0.85rem;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(176, 137, 104, 0.4) 20%,
+    var(--color-accent, #b08968) 50%,
+    rgba(176, 137, 104, 0.4) 80%,
+    transparent 100%
+  );
+  opacity: 0.85;
 }
 
 .venue-modal__divider::before {
@@ -188,35 +196,37 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 4px;
-  height: 4px;
+  width: 4.5px;
+  height: 4.5px;
   border-radius: 50%;
-  background: var(--color-accent);
+  background: var(--color-accent, #b08968);
   transform: translate(-50%, -50%);
 }
 
 .venue-modal__resort-name {
   font-family: var(--font-heading);
-  font-size: 1.05rem;
+  font-size: 1.38rem;
   font-weight: 600;
-  color: var(--color-text);
-  margin: 0 0 0.15rem;
+  color: var(--color-burgundy);
+  margin: 0.65rem 0 0.25rem;
+  line-height: 1.25;
 }
 
 .venue-modal__resort-addr {
   font-family: var(--font-body);
-  font-size: 0.82rem;
-  color: var(--color-text-muted);
+  font-size: 1.08rem;
+  color: var(--color-text);
   margin: 0;
-  line-height: 1.4;
+  line-height: 1.48;
 }
 
 .venue-modal__resort-phone {
   font-family: var(--font-body);
-  font-size: 0.82rem;
+  font-size: 1.08rem;
   color: var(--color-burgundy);
-  margin: 0.3rem 0 0;
+  margin: 0.35rem 0 0;
   font-weight: 500;
+  line-height: 1.48;
 }
 
 .venue-modal__resort-phone span {
@@ -228,12 +238,18 @@
 .venue-modal__action-box {
   display: flex;
   align-items: center;
-  gap: 1.1rem;
+  gap: 1.15rem;
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 0.9rem;
-  padding: 0.95rem 1rem;
-  margin-bottom: 1.15rem;
+  border: 1px solid rgba(176, 137, 104, 0.28);
+  border-radius: 0.85rem;
+  padding: 1rem 1.1rem;
+  margin-bottom: 1.2rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.venue-modal__action-box:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 4px 14px rgba(143, 51, 80, 0.08);
 }
 
 .venue-modal__qr-frame {
@@ -242,7 +258,7 @@
   align-items: center;
   flex-shrink: 0;
   background: #ffffff;
-  padding: 0.45rem 0.45rem 0.35rem;
+  padding: 0.5rem 0.5rem 0.4rem;
   border-radius: 0.65rem;
   border: 1px solid rgba(176, 137, 104, 0.3);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -250,27 +266,34 @@
 
 .venue-modal__qr-hint {
   font-family: var(--font-body);
-  font-size: 0.62rem;
+  font-size: 0.86rem;
   color: var(--color-text-muted);
-  margin-top: 0.25rem;
+  margin-top: 0.35rem;
   text-align: center;
   max-width: 124px;
-  line-height: 1.2;
+  line-height: 1.3;
 }
 
 .venue-modal__directions-action {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.75rem;
 }
 
 .venue-modal__action-desc {
   font-family: var(--font-body);
-  font-size: 0.82rem;
+  font-size: 1.08rem;
   color: var(--color-text);
   margin: 0;
-  line-height: 1.35;
+  line-height: 1.48;
+}
+
+.venue-modal__action-btns {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
 }
 
 .venue-modal__btn {
@@ -278,101 +301,275 @@
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
-  padding: 0.6rem 1rem;
+  height: 40px;
+  padding: 0 1.15rem;
   background: var(--color-burgundy);
   color: #ffffff;
   border-radius: 2rem;
   font-family: var(--font-body);
-  font-size: 0.86rem;
-  font-weight: 500;
+  font-size: 1.04rem;
+  font-weight: 600;
   text-decoration: none;
-  border: 1px solid transparent;
-  box-shadow: 0 4px 12px rgba(143, 51, 80, 0.25);
+  border: 1px solid var(--color-burgundy);
+  box-shadow: 0 4px 12px rgba(143, 51, 80, 0.22);
   transition: all 0.2s ease;
   width: fit-content;
+  box-sizing: border-box;
+  white-space: nowrap;
 }
 
 .venue-modal__btn svg {
   width: 15px;
   height: 15px;
+  filter: brightness(0) invert(1);
+  flex-shrink: 0;
 }
 
 .venue-modal__btn:hover {
   background: #73273e;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(143, 51, 80, 0.35);
+  border-color: #73273e;
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 14px rgba(143, 51, 80, 0.32);
 }
 
-/* Travel Guide List */
+/* Travel Guide & 3 Mode Cards (By Road, By Train, By Air) */
 .venue-modal__guide {
-  border-top: 1px solid var(--color-border);
-  padding-top: 0.95rem;
+  border-top: 1px solid rgba(176, 137, 104, 0.28);
+  padding-top: 1.1rem;
 }
 
 .venue-modal__guide-heading {
   font-family: var(--font-heading);
-  font-size: 0.98rem;
+  font-size: 1.38rem;
   font-weight: 600;
   color: var(--color-burgundy);
-  margin: 0 0 0.65rem;
+  margin: 0 0 0.85rem;
+  line-height: 1.22;
 }
 
-.venue-modal__guide-list {
+.venue-modal__cards-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
-.venue-modal__guide-item {
-  display: flex;
-  gap: 0.8rem;
-  align-items: flex-start;
+/* Mode Card Item (Strictly modeled after .save-events-card__item) */
+.venue-modal__card-item {
+  padding: 0.85rem 1rem;
   background: var(--color-surface);
-  padding: 0.8rem 0.95rem;
+  border: 1px solid rgba(176, 137, 104, 0.28);
   border-radius: 0.75rem;
-  border: 1px solid rgba(176, 137, 104, 0.22);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.venue-modal__guide-badge {
-  flex-shrink: 0;
-  padding-top: 0.1rem;
+.venue-modal__card-item:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 4px 14px rgba(143, 51, 80, 0.08);
 }
 
-.venue-modal__guide-mode {
-  display: inline-block;
-  font-family: var(--font-body);
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-burgundy);
-  background: rgba(143, 51, 80, 0.08);
-  border: 1px solid rgba(143, 51, 80, 0.2);
-  padding: 0.22rem 0.55rem;
-  border-radius: 0.4rem;
+.venue-modal__card-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+  margin-bottom: 0.65rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px dashed rgba(176, 137, 104, 0.28);
 }
 
-.venue-modal__guide-body {
-  flex: 1;
-}
-
-.venue-modal__guide-title {
-  display: block;
-  font-size: 0.86rem;
-  color: var(--color-burgundy);
+.venue-modal__card-item-name {
+  font-family: var(--font-heading);
+  font-size: 1.38rem;
   font-weight: 600;
-  margin-bottom: 0.25rem;
+  color: var(--color-burgundy);
+  line-height: 1.22;
+}
+
+.venue-modal__card-item-time {
+  font-family: var(--font-body);
+  font-size: 1.04rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+/* Routes List Inside the Card */
+.venue-modal__card-routes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.venue-modal__card-route {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.venue-modal__card-route + .venue-modal__card-route {
+  border-top: 1px dashed rgba(176, 137, 104, 0.18);
+  padding-top: 0.65rem;
+}
+
+.venue-modal__card-route-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.6rem;
+}
+
+.venue-modal__card-route-name {
+  font-family: var(--font-heading);
+  font-size: 1.22rem;
+  font-weight: 600;
+  color: var(--color-burgundy);
+  line-height: 1.25;
+}
+
+.venue-modal__card-route-time {
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+/* Detail rows (Recommended / Alternative or plain route text) */
+.venue-modal__card-route-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+  padding-left: 0.25rem;
+}
+
+.venue-modal__card-detail-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  font-family: var(--font-body);
+  font-size: 1.06rem;
+  line-height: 1.45;
+}
+
+.venue-modal__card-detail-label {
+  font-weight: 600;
+  color: var(--color-burgundy);
+  white-space: nowrap;
+}
+
+.venue-modal__card-detail-text {
+  color: var(--color-text);
 }
 
 .venue-modal__guide-text {
-  font-size: 0.82rem;
-  color: #4a3e35;
-  line-height: 1.6;
+  font-family: var(--font-body);
+  font-size: 1.08rem;
+  color: var(--color-text);
+  line-height: 1.55;
   white-space: pre-line;
   margin: 0;
 }
 
-/* Mobile Responsiveness */
+/* Toast Notification */
+.venue-modal__toast {
+  margin-top: 0.85rem;
+  padding: 0.55rem 0.85rem;
+  background: #fdf5ea;
+  border: 1px solid var(--color-accent);
+  border-radius: 0.5rem;
+  color: var(--color-burgundy);
+  font-family: var(--font-body);
+  font-size: 1.0rem;
+  font-weight: 600;
+  text-align: center;
+  animation: venueModalToastPop 0.25s ease-out;
+}
+
+@keyframes venueModalToastPop {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modal Footer Action Buttons - Consistent with SaveEventsModal */
+.venue-modal__footer {
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.55rem;
+  padding: 0.85rem 1.25rem max(0.85rem, env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-sizing: border-box;
+  z-index: 20;
+}
+
+.venue-modal__btn-action {
+  flex: 1;
+  height: 40px;
+  min-height: 40px;
+  max-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0 0.5rem;
+  border-radius: 2rem;
+  font-family: var(--font-body);
+  font-size: 1.04rem;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  outline: none;
+  background: var(--color-burgundy);
+  color: #ffffff;
+  border: 1px solid var(--color-burgundy);
+  box-shadow: 0 4px 12px rgba(143, 51, 80, 0.22);
+  box-sizing: border-box;
+}
+
+.venue-modal__btn-action:hover {
+  background: #73273e;
+  border-color: #73273e;
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 14px rgba(143, 51, 80, 0.32);
+}
+
+.venue-modal__btn-action svg,
+.venue-modal__btn-action-icon {
+  width: 15px;
+  height: 15px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  flex-shrink: 0;
+  display: block;
+}
+
+.venue-modal__btn-action--whatsapp,
+.venue-modal__btn-action--share-pdf,
+.venue-modal__btn-action--download {
+  background: var(--color-burgundy);
+  color: #ffffff;
+  border: 1px solid var(--color-burgundy);
+}
+
+.venue-modal__btn-action--whatsapp:hover,
+.venue-modal__btn-action--share-pdf:hover,
+.venue-modal__btn-action--download:hover {
+  background: #73273e;
+}
+
+/* Mobile Responsiveness - Strictly matching SaveEventsModal */
 @media (max-width: 540px) {
   .venue-modal-overlay {
     padding: max(0.4rem, env(safe-area-inset-top, 0px)) max(0.4rem, env(safe-area-inset-right, 0px)) max(0.4rem, env(safe-area-inset-bottom, 0px)) max(0.4rem, env(safe-area-inset-left, 0px));
@@ -380,22 +577,57 @@
 
   .venue-modal-card {
     border-radius: 1rem;
-    max-height: min(84vh, 84dvh, calc(100svh - 0.8rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)));
+    max-height: min(88vh, 88dvh, calc(100svh - 0.8rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)));
+  }
+
+  .venue-modal__close-btn {
+    top: 0.55rem;
+    right: 0.55rem;
+    width: 1.85rem;
+    height: 1.85rem;
+  }
+
+  .venue-modal__close-btn svg {
+    width: 13px;
+    height: 13px;
   }
 
   .venue-modal__body {
-    padding: 1.35rem 0.95rem 1.15rem;
+    padding: 1.1rem 0.85rem 0.65rem;
   }
 
   .venue-modal__header {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    margin-bottom: 0.95rem;
+    padding: 0 1.8rem;
+  }
+
+  .venue-modal__header .eyebrow {
+    font-size: 0.86rem;
+  }
+
+  .venue-modal__title {
+    font-size: clamp(1.45rem, 4.5vw, 1.75rem);
+  }
+
+  .venue-modal__resort-name {
+    font-size: 1.28rem;
+  }
+
+  .venue-modal__resort-addr,
+  .venue-modal__resort-phone,
+  .venue-modal__action-desc,
+  .venue-modal__guide-text {
+    font-size: 1.02rem;
+  }
+
+  .venue-modal__qr-hint {
+    font-size: 0.82rem;
   }
 
   .venue-modal__action-box {
     flex-direction: column;
     text-align: center;
-    gap: 0.8rem;
+    gap: 0.85rem;
     padding: 0.85rem 0.75rem;
   }
 
@@ -403,12 +635,87 @@
     align-items: center;
   }
 
-  .venue-modal__btn {
+  .venue-modal__action-btns {
     width: 100%;
-    max-width: 14rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
   }
 
-  .venue-modal__title {
-    font-size: 1.3rem;
+  .venue-modal__btn {
+    height: 38px;
+    font-size: 0.94rem;
+    width: 100%;
+    max-width: 16rem;
+  }
+
+  .venue-modal__guide-heading {
+    font-size: 1.28rem;
+  }
+
+  .venue-modal__guide-mode {
+    font-size: 0.88rem;
+  }
+
+  .venue-modal__cards-list {
+    gap: 0.85rem;
+  }
+
+  .venue-modal__card-item {
+    padding: 0.75rem 0.85rem;
+  }
+
+  .venue-modal__card-item-top {
+    gap: 0.15rem;
+    margin-bottom: 0.55rem;
+    padding-bottom: 0.38rem;
+  }
+
+  .venue-modal__card-item-name {
+    font-size: 1.28rem;
+  }
+
+  .venue-modal__card-item-time {
+    font-size: 0.98rem;
+  }
+
+  .venue-modal__card-route-name {
+    font-size: 1.14rem;
+  }
+
+  .venue-modal__card-route-time {
+    font-size: 0.92rem;
+  }
+
+  .venue-modal__card-detail-row {
+    font-size: 1.00rem;
+    gap: 0.25rem;
+  }
+
+  .venue-modal__toast {
+    font-size: 0.94rem;
+  }
+
+  .venue-modal__footer {
+    padding: 0.65rem 0.45rem max(0.65rem, env(safe-area-inset-bottom, 0px));
+    gap: 0.28rem;
+  }
+
+  .venue-modal__btn-action {
+    height: 38px;
+    min-height: 38px;
+    max-height: 38px;
+    font-size: 0.92rem;
+    padding: 0 0.18rem;
+    gap: 0.16rem;
+    letter-spacing: -0.015em;
+    white-space: nowrap;
+    box-sizing: border-box;
+  }
+
+  .venue-modal__btn-action svg,
+  .venue-modal__btn-action-icon {
+    width: 13px;
+    height: 13px;
   }
 }
