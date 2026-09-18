@@ -1,6 +1,34 @@
 import { jsPDF } from "jspdf";
 import QRCode from "qrcode";
 
+// Helper to force download without opening a new tab and with the correct filename (fixes Firefox mobile)
+function forceDownloadPdf(doc, filename) {
+  const isFirefoxMobile = /Android/i.test(navigator.userAgent) && /Firefox/i.test(navigator.userAgent);
+  if (isFirefoxMobile) {
+    const dataStr = doc.output("datauristring");
+    const a = document.createElement("a");
+    a.href = dataStr;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } else {
+    const blob = doc.output("blob");
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.style.display = "none";
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 250);
+  }
+}
+
+
 export function getWhatsAppVenueShareText(couple, venue) {
   const p1 = (couple?.partner1 || "Bride").replace(/oratna/i, "");
   const p2 = (couple?.partner2 || "Groom").replace(/oratna/i, "");
@@ -418,7 +446,7 @@ export async function downloadVenuePdf({ couple, venue }) {
   const p1 = (couple?.partner1 || "Bride").replace(/oratna/i, "");
   const p2 = (couple?.partner2 || "Groom").replace(/oratna/i, "");
   const filename = `Venue_Travel_Guide_${p1}_${p2}.pdf`;
-  doc.save(filename);
+  forceDownloadPdf(doc, filename);
 }
 
 export async function shareVenuePdf({ couple, venue }) {
@@ -439,13 +467,13 @@ export async function shareVenuePdf({ couple, venue }) {
       return { success: true, method: "share" };
     } catch (err) {
       if (err.name !== "AbortError") {
-        doc.save(filename);
+        forceDownloadPdf(doc, filename);
         return { success: true, method: "download", fallback: true };
       }
       return { success: false, aborted: true };
     }
   } else {
-    doc.save(filename);
+    forceDownloadPdf(doc, filename);
     return { success: true, method: "download", fallback: true };
   }
 }

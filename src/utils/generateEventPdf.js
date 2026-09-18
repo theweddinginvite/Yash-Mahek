@@ -1,6 +1,34 @@
 import { jsPDF } from "jspdf";
 import QRCode from "qrcode";
 
+// Helper to force download without opening a new tab and with the correct filename (fixes Firefox mobile)
+function forceDownloadPdf(doc, filename) {
+  const isFirefoxMobile = /Android/i.test(navigator.userAgent) && /Firefox/i.test(navigator.userAgent);
+  if (isFirefoxMobile) {
+    const dataStr = doc.output("datauristring");
+    const a = document.createElement("a");
+    a.href = dataStr;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } else {
+    const blob = doc.output("blob");
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.style.display = "none";
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 250);
+  }
+}
+
+
 /**
  * Calculates a new time string exactly 1 hour after the provided time string.
  * Supports formats like "12:30 PM", "7:00 PM", "1:00 PM", "5:00 PM", etc.
@@ -344,7 +372,7 @@ export async function downloadEventPdf({ events, couple, venue }) {
   const p1 = (couple?.partner1 || "Bride").replace(/oratna/i, "");
   const p2 = (couple?.partner2 || "Groom").replace(/oratna/i, "");
   const filename = `The_Wedding_Events_${p1}_${p2}.pdf`;
-  doc.save(filename);
+  forceDownloadPdf(doc, filename);
 }
 
 export async function shareEventPdf({ events, couple, venue }) {
@@ -365,14 +393,14 @@ export async function shareEventPdf({ events, couple, venue }) {
       return { success: true, method: "share" };
     } catch (err) {
       if (err.name !== "AbortError") {
-        doc.save(filename);
+        forceDownloadPdf(doc, filename);
         return { success: true, method: "download", fallback: true };
       }
       return { success: false, aborted: true };
     }
   } else {
     // Desktop or unsupported browser
-    doc.save(filename);
+    forceDownloadPdf(doc, filename);
     return { success: true, method: "download", fallback: true };
   }
 }
