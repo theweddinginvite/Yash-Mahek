@@ -11,6 +11,27 @@ import sharePdfIcon from "../assets/flaticons/share-1358023.png";
 import downloadPdfIcon from "../assets/flaticons/download-pdf-7257793.png";
 import "./SaveEventsModal.css";
 
+function formatEventDateTime(day = "", dateStr = "", timeStr = "") {
+  if (!dateStr) return timeStr || "";
+
+  // Shorten month name (e.g. "December 5, 2026" -> "Dec 5, 2026")
+  const formattedDate = dateStr.replace(
+    /\b(January|February|March|April|May|June|July|August|September|October|November|December)\b/gi,
+    (m) => m.slice(0, 3)
+  );
+
+  // Ensure full day name (e.g. "Sat" -> "Saturday", "Sun" -> "Sunday")
+  let fullDay = day || "";
+  if (fullDay) {
+    const lower = fullDay.toLowerCase();
+    if (lower.startsWith("sat")) fullDay = "Saturday";
+    else if (lower.startsWith("sun")) fullDay = "Sunday";
+  }
+
+  const datePart = fullDay ? `${fullDay}, ${formattedDate}` : formattedDate;
+  return timeStr ? `${datePart} · ${timeStr}` : datePart;
+}
+
 export default function SaveEventsModal({ isOpen, onClose, events = [], couple, venue }) {
   const [toastMessage, setToastMessage] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
@@ -198,7 +219,7 @@ export default function SaveEventsModal({ isOpen, onClose, events = [], couple, 
                 <div className="save-events-card__item-top">
                   <span className="save-events-card__item-name">{event.name}</span>
                   <span className="save-events-card__item-time">
-                    {event.day ? `${event.day.slice(0, 3)}, ` : ""}{event.date} · {event.time}
+                    {formatEventDateTime(event.day, event.date, event.time)}
                   </span>
                 </div>
 
