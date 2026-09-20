@@ -25,8 +25,18 @@ function getTelegramChatId_() {
 
 const BLESSINGS_SHEETS = ["BLESSINGS_BRIDE", "BLESSINGS_GROOM"];
 const SHEET_BY_TYPE_AND_SIDE = {
-  blessing: { "Bride Side": "BLESSINGS_BRIDE", "Groom Side": "BLESSINGS_GROOM" },
-  rsvp: { "Bride Side": "RSVP_BRIDE", "Groom Side": "RSVP_GROOM" },
+  blessing: {
+    "Bride": "BLESSINGS_BRIDE",
+    "Groom": "BLESSINGS_GROOM",
+    "Bride Side": "BLESSINGS_BRIDE",
+    "Groom Side": "BLESSINGS_GROOM",
+  },
+  rsvp: {
+    "Bride": "RSVP_BRIDE",
+    "Groom": "RSVP_GROOM",
+    "Bride Side": "RSVP_BRIDE",
+    "Groom Side": "RSVP_GROOM",
+  },
 };
 
 // Google Drive Gallery Folder Configuration
@@ -55,9 +65,123 @@ function deriveInitials_(name) {
 }
 
 /**
+ * Safe spreadsheet accessor:
+ * Returns active spreadsheet or falls back to SPREADSHEET_ID stored in ScriptProperties.
+ */
+function getSpreadsheet_() {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    if (ss) return ss;
+  } catch (e) {}
+
+  const sheetId = PropertiesService.getScriptProperties().getProperty("SPREADSHEET_ID");
+  if (sheetId) {
+    try {
+      return SpreadsheetApp.openById(sheetId);
+    } catch (e) {
+      Logger.log("getSpreadsheet_ openById error: " + e);
+    }
+  }
+  return null;
+}
+
+function getKnownIds_(key) {
+  try {
+    const raw = PropertiesService.getScriptProperties().getProperty(key);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (e) {
+    return null;
+  }
+}
+
+function setKnownIds_(key, idsArray) {
+  try {
+    PropertiesService.getScriptProperties().setProperty(key, JSON.stringify(idsArray));
+  } catch (e) {
+    Logger.log("Error saving known IDs: " + e);
+  }
+}
+
+function addKnownId_(key, id) {
+  if (!id) return;
+  try {
+    const known = getKnownIds_(key) || [];
+    if (!known.includes(id)) {
+      known.push(id);
+      setKnownIds_(key, known);
+    }
+  } catch (e) {
+    Logger.log("addKnownId_ error: " + e);
+  }
+}
+
+function removeKnownId_(key, id) {
+  if (!id) return;
+  try {
+    const known = getKnownIds_(key) || [];
+    const updated = known.filter(function(x) { return x !== id; });
+    setKnownIds_(key, updated);
+  } catch (e) {
+    Logger.log("removeKnownId_ error: " + e);
+  }
+}
+
+function deleteFromFirestore_(collectionName, docId) {
+  if (!docId) return false;
+  try {
+    const deleteUrl = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/${collectionName}/${docId}?key=${FIREBASE_API_KEY}`;
+    const res = UrlFetchApp.fetch(deleteUrl, { method: "delete", muteHttpExceptions: true });
+    Logger.log(`Deleted ${collectionName}/${docId} from Firestore: response ${res.getResponseCode()}`);
+    return res.getResponseCode() === 200;
+  } catch (err) {
+    Logger.log(`Firestore delete error for ${collectionName}/${docId}: ` + err);
+    return false;
+  }
+}
+
+/**
+ * Checks if a submission with this firestoreId was already processed recently.
+ * Returns true if duplicate (to be ignored), false if new.
+ */
+function isDuplicateSubmission_(firestoreId, type) {
+  if (!firestoreId) return false;
+  const cleanId = String(firestoreId).trim();
+  if (!cleanId) return false;
+
+  // 1. Check in-memory fast cache (catches near-simultaneous POST and GET within 5 mins)
+  try {
+    const cache = CacheService.getScriptCache();
+    const cacheKey = "proc_" + cleanId;
+    if (cache.get(cacheKey)) {
+      return true;
+    }
+    cache.put(cacheKey, "1", 300); // 5 minutes TTL
+  } catch (e) {
+    Logger.log("Cache check error: " + e);
+  }
+
+  // 2. Check persistent known IDs
+  const propKey = type === "rsvp" ? "KNOWN_RSVP_IDS" : "KNOWN_BLESSING_IDS";
+  const known = getKnownIds_(propKey) || [];
+  if (known.includes(cleanId)) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
  * Creates custom menu in Google Sheets on open
  */
 function onOpen() {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    if (ss) {
+      PropertiesService.getScriptProperties().setProperty("SPREADSHEET_ID", ss.getId());
+    }
+  } catch (e) {}
+
   SpreadsheetApp.getUi()
     .createMenu("💌 Wedding Admin")
     .addItem("⚡ Instant 2-Way Sync (Firebase ↔ Sheet)", "instantBidirectionalSync")
@@ -477,7 +601,63 @@ function handleSpreadsheetChange_(e) {
  * 2. Default -> Returns blessings for website
  */
 function doGet(e) {
-  const action = e && e.parameter && e.parameter.action;
+  const p = e && e.parameter ? e.parameter : {};
+  const action = p.action;
+
+  // 1. GET Blessing Submission Fallback
+  if (action === "sendBlessing" || action === "blessing") {
+    const data = {
+      type: "blessing",
+      name: p.name || "Guest",
+      side: p.side || "Bride",
+      message: p.message || "",
+      firestoreId: p.firestoreId || "",
+    };
+    if (isDuplicateSubmission_(data.firestoreId, "blessing")) {
+      Logger.log("Duplicate GET blessing ignored: " + data.firestoreId);
+      return jsonResponse_({ ok: true, duplicate: true });
+    }
+    const sheetName = (SHEET_BY_TYPE_AND_SIDE["blessing"] || {})[data.side] || "BLESSINGS_BRIDE";
+    const sheet = getOrCreateSheet_(sheetName, "blessing");
+    if (sheet) {
+      sheet.appendRow([data.name, data.side, data.message, new Date(), 1, data.firestoreId]);
+      SpreadsheetApp.flush();
+    }
+    if (data.firestoreId) {
+      addKnownId_("KNOWN_BLESSING_IDS", data.firestoreId);
+    }
+    sendTelegramBlessingNotification_(data);
+    return jsonResponse_({ ok: true, message: "Blessing recorded via GET" });
+  }
+
+  // 2. GET RSVP Submission Fallback
+  if (action === "sendRSVP" || action === "rsvp") {
+    const data = {
+      type: "rsvp",
+      name: p.name || "Guest",
+      side: p.side || "Bride",
+      attending: p.attending || "Yes",
+      guests: Number(p.guests) || 1,
+      parkingRequired: p.parkingRequired || "No",
+      expectedArrival: p.expectedArrival || "",
+      firestoreId: p.firestoreId || "",
+    };
+    if (isDuplicateSubmission_(data.firestoreId, "rsvp")) {
+      Logger.log("Duplicate GET RSVP ignored: " + data.firestoreId);
+      return jsonResponse_({ ok: true, duplicate: true });
+    }
+    const sheetName = (SHEET_BY_TYPE_AND_SIDE["rsvp"] || {})[data.side] || "RSVP_BRIDE";
+    const sheet = getOrCreateSheet_(sheetName, "rsvp");
+    if (sheet) {
+      sheet.appendRow([data.name, data.side, data.attending, data.guests, data.parkingRequired, new Date(), data.firestoreId]);
+      SpreadsheetApp.flush();
+    }
+    if (data.firestoreId) {
+      addKnownId_("KNOWN_RSVP_IDS", data.firestoreId);
+    }
+    sendTelegramRsvpNotification_(data);
+    return jsonResponse_({ ok: true, message: "RSVP recorded via GET" });
+  }
 
   if (action === "getGallery") {
     const photos = getGalleryPhotos_();
@@ -503,7 +683,9 @@ function doGet(e) {
 }
 
 function readBlessingsSheet_(sheetName) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+  const ss = getSpreadsheet_();
+  if (!ss) return [];
+  const sheet = ss.getSheetByName(sheetName);
   if (!sheet) return [];
 
   const [, ...dataRows] = sheet.getDataRange().getValues();
@@ -520,7 +702,9 @@ function readBlessingsSheet_(sheetName) {
 }
 
 function readRsvpsSheet_(sheetName) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+  const ss = getSpreadsheet_();
+  if (!ss) return [];
+  const sheet = ss.getSheetByName(sheetName);
   if (!sheet) return [];
 
   const [, ...dataRows] = sheet.getDataRange().getValues();
@@ -538,7 +722,8 @@ function readRsvpsSheet_(sheetName) {
 }
 
 function readAnnouncementsSheet_() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = getSpreadsheet_();
+  if (!ss) return [];
   const sheet = ss.getSheetByName(ANNOUNCEMENTS_SHEET_NAME);
   if (!sheet) return [];
 
@@ -590,35 +775,50 @@ function doPost(e) {
 
     // CASE 3: Website Submission (Blessing or RSVP)
     const data = payload;
-    const sheetName = (SHEET_BY_TYPE_AND_SIDE[data.type] || {})[data.side];
-    if (!sheetName) {
-      return jsonResponse_({ ok: false, error: "Unknown submission type or side" });
+    if (isDuplicateSubmission_(data.firestoreId, data.type)) {
+      Logger.log("Duplicate POST ignored: " + data.firestoreId);
+      return jsonResponse_({ ok: true, duplicate: true });
     }
+
+    const sideNormalized = data.side || "Bride";
+    const sheetName =
+      (SHEET_BY_TYPE_AND_SIDE[data.type] || {})[sideNormalized] ||
+      (data.type === "rsvp" ? "RSVP_BRIDE" : "BLESSINGS_BRIDE");
 
     const sheet = getOrCreateSheet_(sheetName, data.type);
 
     if (data.type === "blessing") {
-      sheet.appendRow([
-        data.name,
-        data.side,
-        data.message,
-        new Date(),
-        1, // initial hearts
-        data.firestoreId || "",
-      ]);
-      SpreadsheetApp.flush();
+      if (sheet) {
+        sheet.appendRow([
+          data.name,
+          data.side,
+          data.message,
+          new Date(),
+          1, // initial hearts
+          data.firestoreId || "",
+        ]);
+        SpreadsheetApp.flush();
+      }
+      if (data.firestoreId) {
+        addKnownId_("KNOWN_BLESSING_IDS", data.firestoreId);
+      }
       sendTelegramBlessingNotification_(data);
     } else if (data.type === "rsvp") {
-      sheet.appendRow([
-        data.name,
-        data.side,
-        data.attending,
-        data.guests,
-        data.parkingRequired,
-        new Date(),
-        data.firestoreId || "",
-      ]);
-      SpreadsheetApp.flush();
+      if (sheet) {
+        sheet.appendRow([
+          data.name,
+          data.side,
+          data.attending,
+          data.guests,
+          data.parkingRequired,
+          new Date(),
+          data.firestoreId || "",
+        ]);
+        SpreadsheetApp.flush();
+      }
+      if (data.firestoreId) {
+        addKnownId_("KNOWN_RSVP_IDS", data.firestoreId);
+      }
       sendTelegramRsvpNotification_(data);
     }
 
@@ -780,15 +980,10 @@ function handleTelegramCallback_(callbackQuery) {
 
     // 3. Delete from Firebase Firestore immediately
     if (docId) {
-      try {
-        let collectionName = "blessings";
-        if (action === "del_rsvp") collectionName = "rsvps";
-        if (action === "del_notice") collectionName = "announcements";
-        const deleteUrl = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/${collectionName}/${docId}?key=${FIREBASE_API_KEY}`;
-        UrlFetchApp.fetch(deleteUrl, { method: "delete", muteHttpExceptions: true });
-      } catch (fbErr) {
-        Logger.log("Firestore delete error: " + fbErr);
-      }
+      let collectionName = "blessings";
+      if (action === "del_rsvp") collectionName = "rsvps";
+      if (action === "del_notice") collectionName = "announcements";
+      deleteFromFirestore_(collectionName, docId);
     }
 
     // 4. Update row in Google Sheet (targeted to relevant sheets only, fast)
@@ -808,48 +1003,102 @@ function handleTelegramCallback_(callbackQuery) {
 
 function deleteRowFromSheetByDocId_(docId, action) {
   if (!docId) return;
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-
-  // Target only the relevant sheets instead of looping through the entire workbook
-  const targetSheetNames =
-    action === "del_rsvp"
-      ? ["RSVP_BRIDE", "RSVP_GROOM"]
-      : ["BLESSINGS_BRIDE", "BLESSINGS_GROOM"];
+  const ss = getSpreadsheet_();
+  if (!ss) {
+    Logger.log("deleteRowFromSheetByDocId_: No active spreadsheet found");
+    return;
+  }
 
   const searchId = String(docId).trim();
+  if (!searchId) return;
 
-  for (let s = 0; s < targetSheetNames.length; s++) {
-    const sheet = ss.getSheetByName(targetSheetNames[s]);
-    if (!sheet) continue;
+  const sheets = ss.getSheets();
+  let deletedCount = 0;
+
+  // 1. First search prioritized sheets matching action
+  for (let s = 0; s < sheets.length; s++) {
+    const sheet = sheets[s];
+    const sheetName = sheet.getName().toUpperCase();
+    const isTarget =
+      action === "del_rsvp"
+        ? sheetName.includes("RSVP")
+        : sheetName.includes("BLESSING");
+
+    if (!isTarget) continue;
+
     const values = sheet.getDataRange().getValues();
-
-    // Col G (index 6) for RSVPs, Col F (index 5) for Blessings
-    const targetCol = action === "del_rsvp" ? 6 : 5;
+    if (values.length <= 1) continue;
 
     for (let i = values.length - 1; i >= 1; i--) {
-      const cellVal = String(values[i][targetCol] || "").trim();
-      // Match specific docId column or any cell in the row
-      const isMatch = cellVal === searchId || values[i].some(cell => String(cell).trim() === searchId);
+      const row = values[i];
+      const isMatch = row.some(cell => String(cell).trim() === searchId);
       if (isMatch) {
         sheet.deleteRow(i + 1);
-        Logger.log(`Deleted row ${i + 1} from sheet ${sheet.getName()}`);
-        return; // found and deleted, exit early!
+        deletedCount++;
+        Logger.log(`Deleted row ${i + 1} with ID ${searchId} from sheet ${sheet.getName()}`);
       }
+    }
+  }
+
+  // 2. Fallback: Search all sheets if not found in prioritized sheets
+  if (deletedCount === 0) {
+    for (let s = 0; s < sheets.length; s++) {
+      const sheet = sheets[s];
+      const values = sheet.getDataRange().getValues();
+      if (values.length <= 1) continue;
+
+      for (let i = values.length - 1; i >= 1; i--) {
+        const row = values[i];
+        const isMatch = row.some(cell => String(cell).trim() === searchId);
+        if (isMatch) {
+          sheet.deleteRow(i + 1);
+          deletedCount++;
+          Logger.log(`Fallback deleted row ${i + 1} with ID ${searchId} from sheet ${sheet.getName()}`);
+        }
+      }
+    }
+  }
+
+  if (deletedCount > 0) {
+    SpreadsheetApp.flush();
+    if (action === "del_rsvp") {
+      removeKnownId_("KNOWN_RSVP_IDS", searchId);
+    } else {
+      removeKnownId_("KNOWN_BLESSING_IDS", searchId);
     }
   }
 }
 
 function clearAllRsvps_() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  ["RSVP_BRIDE", "RSVP_GROOM"].forEach((name) => {
-    const sheet = ss.getSheetByName(name);
-    if (!sheet) return;
-    const lastRow = sheet.getLastRow();
-    if (lastRow > 1) {
-      sheet.deleteRows(2, lastRow - 1);
-      Logger.log(`Cleared all RSVPs from ${name}`);
+  const ss = getSpreadsheet_();
+  if (ss) {
+    ["RSVP_BRIDE", "RSVP_GROOM"].forEach((name) => {
+      const sheet = ss.getSheetByName(name);
+      if (!sheet) return;
+      const lastRow = sheet.getLastRow();
+      if (lastRow > 1) {
+        sheet.deleteRows(2, lastRow - 1);
+        Logger.log(`Cleared all RSVPs from ${name}`);
+      }
+    });
+    SpreadsheetApp.flush();
+  }
+
+  // Also clear all RSVPs from Firebase Firestore
+  try {
+    const firestoreUrl = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/rsvps?key=${FIREBASE_API_KEY}`;
+    const response = UrlFetchApp.fetch(firestoreUrl, { muteHttpExceptions: true });
+    if (response.getResponseCode() === 200) {
+      const data = JSON.parse(response.getContentText());
+      (data.documents || []).forEach((doc) => {
+        const docId = doc.name.split("/").pop();
+        deleteFromFirestore_("rsvps", docId);
+      });
     }
-  });
+    setKnownIds_("KNOWN_RSVP_IDS", []);
+  } catch (e) {
+    Logger.log("clearAllRsvps_ Firestore error: " + e);
+  }
 }
 
 function clearAllRsvpsMenu() {
@@ -1100,50 +1349,69 @@ function escapeHtml_(text) {
 
 /**
  * Safe 2-Way Synchronization:
- * 1. Pulls any missing Firebase blessings into the appropriate Sheet tab.
- * 2. Synchronizes live heart reaction counts (❤️).
- * 3. Deletion occurs ONLY when explicitly requested via Telegram 'Delete' button.
+ * 1. Synchronizes live heart reaction counts (❤️).
+ * 2. Deletes from Firebase any item that was removed from Google Sheets.
+ * 3. Pulls in genuine new submissions from website if they haven't been written to sheet yet.
  */
 function instantBidirectionalSync() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = getSpreadsheet_();
+  if (!ss) return;
 
+  syncBlessings_(ss);
+  syncRsvps_(ss);
+}
+
+function syncBlessings_(ss) {
   const firestoreUrl = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/blessings?key=${FIREBASE_API_KEY}`;
   const response = UrlFetchApp.fetch(firestoreUrl, { muteHttpExceptions: true });
 
   if (response.getResponseCode() !== 200) {
-    Logger.log("Firestore connection error: " + response.getContentText());
+    Logger.log("Firestore blessings connection error: " + response.getContentText());
     return;
   }
 
   const data = JSON.parse(response.getContentText());
   const firestoreDocs = data.documents || [];
-  
+
   const firestoreMap = new Map();
   firestoreDocs.forEach((doc) => {
     const docId = doc.name.split("/").pop();
     const fields = doc.fields || {};
     const hearts = fields.hearts?.integerValue ? parseInt(fields.hearts.integerValue, 10) : 1;
+    const ts = fields.timestamp?.timestampValue || fields.timestamp?.stringValue || new Date().toISOString();
     firestoreMap.set(docId, {
       id: docId,
       name: fields.name?.stringValue || "",
       side: fields.side?.stringValue || "Bride Side",
       message: fields.message?.stringValue || "",
-      timestamp: fields.timestamp?.timestampValue || new Date().toISOString(),
+      timestamp: ts,
       hearts: hearts,
+      createdAtMs: new Date(ts).getTime() || 0,
     });
   });
 
   const sheetDocIds = new Set();
+  const sheets = ss.getSheets();
+  const blessingSheets = sheets.filter(s => s.getName().toUpperCase().includes("BLESSING"));
+  const targetSheets = blessingSheets.length > 0 ? blessingSheets : sheets;
 
-  BLESSINGS_SHEETS.forEach((sheetName) => {
-    const sheet = ss.getSheetByName(sheetName);
-    if (!sheet) return;
+  targetSheets.forEach((sheet) => {
+    if (!sheet.getName().toUpperCase().includes("BLESSING") && blessingSheets.length > 0) return;
     const values = sheet.getDataRange().getValues();
     if (values.length <= 1) return;
 
     for (let i = 1; i < values.length; i++) {
       const row = values[i];
-      const docId = String(row[5] || row[4] || "").trim();
+      let docId = String(row[5] || "").trim();
+      if (!docId) {
+        for (let c = 0; c < row.length; c++) {
+          const v = String(row[c] || "").trim();
+          if (firestoreMap.has(v)) {
+            docId = v;
+            break;
+          }
+        }
+      }
 
       if (!docId) continue;
       sheetDocIds.add(docId);
@@ -1157,41 +1425,143 @@ function instantBidirectionalSync() {
     }
   });
 
-  // Pull any Firebase documents into the sheet if they are not already recorded
-  let addedToSheetCount = 0;
+  const knownIds = getKnownIds_("KNOWN_BLESSING_IDS");
+  const now = Date.now();
+
   firestoreDocs.forEach((doc) => {
     const docId = doc.name.split("/").pop();
     if (!sheetDocIds.has(docId)) {
       const item = firestoreMap.get(docId);
-      if (!item) return;
-      const targetSheetName = item.side.toLowerCase().includes("groom") ? "BLESSINGS_GROOM" : "BLESSINGS_BRIDE";
-      const targetSheet = ss.getSheetByName(targetSheetName);
-      if (targetSheet) {
-        targetSheet.appendRow([
-          item.name,
-          item.side,
-          item.message,
-          item.timestamp,
-          item.hearts,
-          docId,
-        ]);
-        sheetDocIds.add(docId);
-        addedToSheetCount++;
+      const ageMinutes = (now - (item ? item.createdAtMs : 0)) / (1000 * 60);
+      const wasInSheet = knownIds && knownIds.includes(docId);
+
+      // If it was previously tracked in the sheet, OR if it's an older doc (>3 mins) missing from sheet:
+      // Host deleted it from the sheet! Delete from Firestore.
+      if (wasInSheet || ageMinutes > 3) {
+        deleteFromFirestore_("blessings", docId);
+        Logger.log(`Deleted blessing ${docId} from Firestore because row is absent from sheet`);
+      } else if (item) {
+        // Recent web submission fallback: pull to sheet
+        const targetSheetName = item.side.toLowerCase().includes("groom") ? "BLESSINGS_GROOM" : "BLESSINGS_BRIDE";
+        const targetSheet = getOrCreateSheet_(targetSheetName, "blessing");
+        if (targetSheet) {
+          targetSheet.appendRow([
+            item.name,
+            item.side,
+            item.message,
+            item.timestamp,
+            item.hearts,
+            docId,
+          ]);
+          sheetDocIds.add(docId);
+        }
       }
     }
   });
 
-  try {
-    const msg = `Sync complete! Synced ${firestoreDocs.length} live blessings across Firebase & Sheet.`;
-    ss.toast(msg, "Safe Sync ⚡", 4);
-  } catch (e) {}
+  SpreadsheetApp.flush();
+  setKnownIds_("KNOWN_BLESSING_IDS", Array.from(sheetDocIds));
 }
 
-/**
- * Pulls all blessings from Firebase Firestore and writes them into the Sheet tabs
- */
+function syncRsvps_(ss) {
+  const firestoreUrl = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/rsvps?key=${FIREBASE_API_KEY}`;
+  const response = UrlFetchApp.fetch(firestoreUrl, { muteHttpExceptions: true });
+
+  if (response.getResponseCode() !== 200) {
+    Logger.log("Firestore rsvps connection error: " + response.getContentText());
+    return;
+  }
+
+  const data = JSON.parse(response.getContentText());
+  const firestoreDocs = data.documents || [];
+
+  const firestoreMap = new Map();
+  firestoreDocs.forEach((doc) => {
+    const docId = doc.name.split("/").pop();
+    const fields = doc.fields || {};
+    const ts = fields.timestamp?.timestampValue || fields.timestamp?.stringValue || new Date().toISOString();
+    firestoreMap.set(docId, {
+      id: docId,
+      name: fields.name?.stringValue || "",
+      side: fields.side?.stringValue || "Bride",
+      attending: fields.attending?.stringValue || "Yes",
+      guests: fields.guests?.integerValue ? parseInt(fields.guests.integerValue, 10) : 1,
+      parkingRequired: fields.parkingRequired?.stringValue || "No",
+      expectedArrival: fields.expectedArrival?.stringValue || "",
+      timestamp: ts,
+      createdAtMs: new Date(ts).getTime() || 0,
+    });
+  });
+
+  const sheetDocIds = new Set();
+  const sheets = ss.getSheets();
+  const rsvpSheets = sheets.filter(s => s.getName().toUpperCase().includes("RSVP"));
+  const targetSheets = rsvpSheets.length > 0 ? rsvpSheets : sheets;
+
+  targetSheets.forEach((sheet) => {
+    if (!sheet.getName().toUpperCase().includes("RSVP") && rsvpSheets.length > 0) return;
+    const values = sheet.getDataRange().getValues();
+    if (values.length <= 1) return;
+
+    for (let i = 1; i < values.length; i++) {
+      const row = values[i];
+      let docId = String(row[6] || "").trim();
+      if (!docId) {
+        for (let c = 0; c < row.length; c++) {
+          const v = String(row[c] || "").trim();
+          if (firestoreMap.has(v)) {
+            docId = v;
+            break;
+          }
+        }
+      }
+
+      if (!docId) continue;
+      sheetDocIds.add(docId);
+    }
+  });
+
+  const knownIds = getKnownIds_("KNOWN_RSVP_IDS");
+  const now = Date.now();
+
+  firestoreDocs.forEach((doc) => {
+    const docId = doc.name.split("/").pop();
+    if (!sheetDocIds.has(docId)) {
+      const item = firestoreMap.get(docId);
+      const ageMinutes = (now - (item ? item.createdAtMs : 0)) / (1000 * 60);
+      const wasInSheet = knownIds && knownIds.includes(docId);
+
+      if (wasInSheet || ageMinutes > 3) {
+        deleteFromFirestore_("rsvps", docId);
+        Logger.log(`Deleted RSVP ${docId} from Firestore because row is absent from sheet`);
+      } else if (item) {
+        const sideNormalized = item.side || "Bride";
+        const targetSheetName = (SHEET_BY_TYPE_AND_SIDE["rsvp"] || {})[sideNormalized] || "RSVP_BRIDE";
+        const targetSheet = getOrCreateSheet_(targetSheetName, "rsvp");
+        if (targetSheet) {
+          targetSheet.appendRow([
+            item.name,
+            item.side,
+            item.attending,
+            item.guests,
+            item.parkingRequired,
+            item.timestamp,
+            docId,
+          ]);
+          sheetDocIds.add(docId);
+        }
+      }
+    }
+  });
+
+  SpreadsheetApp.flush();
+  setKnownIds_("KNOWN_RSVP_IDS", Array.from(sheetDocIds));
+}
+
 function pullAllBlessingsFromFirebaseToSheet() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = getSpreadsheet_();
+  if (!ss) return;
+
   const firestoreUrl = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/blessings?key=${FIREBASE_API_KEY}`;
   const response = UrlFetchApp.fetch(firestoreUrl, { muteHttpExceptions: true });
 
@@ -1209,29 +1579,37 @@ function pullAllBlessingsFromFirebaseToSheet() {
   clearSheetData_(brideSheet);
   clearSheetData_(groomSheet);
 
-  let count = 0;
+  const importedIds = [];
   documents.forEach((doc) => {
     const fields = doc.fields || {};
     const docId = doc.name.split("/").pop();
     const name = fields.name?.stringValue || "";
     const side = fields.side?.stringValue || "Bride Side";
     const message = fields.message?.stringValue || "";
-    const timestamp = fields.timestamp?.timestampValue || new Date().toISOString();
+    const timestamp = fields.timestamp?.timestampValue || fields.timestamp?.stringValue || new Date().toISOString();
     const hearts = fields.hearts?.integerValue ? parseInt(fields.hearts.integerValue, 10) : 1;
 
     const targetSheet = side.toLowerCase().includes("groom") ? groomSheet : brideSheet;
-    targetSheet.appendRow([name, side, message, timestamp, hearts, docId]);
-    count++;
+    if (targetSheet) {
+      targetSheet.appendRow([name, side, message, timestamp, hearts, docId]);
+      importedIds.push(docId);
+    }
   });
 
-  ss.toast(`Successfully imported ${count} blessings with live heart counts from Firebase!`, "Wedding Admin", 5);
+  SpreadsheetApp.flush();
+  setKnownIds_("KNOWN_BLESSING_IDS", importedIds);
+  ss.toast(`Successfully imported ${importedIds.length} blessings with live heart counts from Firebase!`, "Wedding Admin", 5);
 }
 
-/**
- * Installs both Real-Time onChange Trigger + 1-Minute Backup Cron Trigger
- */
 function setupInstantTriggers() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = getSpreadsheet_();
+  if (!ss) {
+    SpreadsheetApp.getUi().alert("Please open this script directly from the Google Sheet container.");
+    return;
+  }
+
+  PropertiesService.getScriptProperties().setProperty("SPREADSHEET_ID", ss.getId());
+
   const triggers = ScriptApp.getProjectTriggers();
 
   triggers.forEach((t) => {
@@ -1263,10 +1641,14 @@ function setupInstantTriggers() {
     .everyMinutes(1)
     .create();
 
-  ss.toast("🚀 All Instant Auto-Sync Triggers are active! (Every 1 minute for Sheet ↔ Firebase & Drive Gallery)", "Activated", 6);
+  // Immediately run sync once to populate known IDs
+  instantBidirectionalSync();
+
+  ss.toast("🚀 All Instant Auto-Sync Triggers are active! (Every 1 minute & Real-time Sheet -> Website Deletions)", "Activated", 6);
 }
 
 function clearSheetData_(sheet) {
+  if (!sheet) return;
   const lastRow = sheet.getLastRow();
   if (lastRow > 1) {
     sheet.getRange(2, 1, lastRow - 1, sheet.getLastColumn()).clearContent();
@@ -1274,27 +1656,31 @@ function clearSheetData_(sheet) {
 }
 
 function getOrCreateSheet_(name, type) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = getSpreadsheet_();
+  if (!ss) return null;
   let sheet = ss.getSheetByName(name);
   if (!sheet) {
     sheet = ss.insertSheet(name);
   }
 
-  if (type === "blessing") {
-    sheet.getRange(1, 1, 1, 6).setValues([["Name", "Side", "Message", "Timestamp", "Hearts (❤️)", "FirebaseDocID"]]);
-    sheet.getRange(1, 1, 1, 6).setFontWeight("bold");
-    sheet.setFrozenRows(1);
-  } else if (type === "rsvp") {
-    sheet.getRange(1, 1, 1, 7).setValues([["Name", "Side", "Attending", "Guests", "Parking Required", "Timestamp", "FirebaseDocID"]]);
-    sheet.getRange(1, 1, 1, 7).setFontWeight("bold");
-    sheet.setFrozenRows(1);
+  if (sheet.getLastRow() === 0) {
+    if (type === "blessing") {
+      sheet.getRange(1, 1, 1, 6).setValues([["Name", "Side", "Message", "Timestamp", "Hearts (❤️)", "FirebaseDocID"]]);
+      sheet.getRange(1, 1, 1, 6).setFontWeight("bold");
+      sheet.setFrozenRows(1);
+    } else if (type === "rsvp") {
+      sheet.getRange(1, 1, 1, 7).setValues([["Name", "Side", "Attending", "Guests", "Parking Required", "Timestamp", "FirebaseDocID"]]);
+      sheet.getRange(1, 1, 1, 7).setFontWeight("bold");
+      sheet.setFrozenRows(1);
+    }
   }
 
   return sheet;
 }
 
 function getOrCreateGallerySheet_() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = getSpreadsheet_();
+  if (!ss) return null;
   const sheets = ss.getSheets();
   const targetName = (typeof GALLERY_SHEET_NAME !== "undefined" && GALLERY_SHEET_NAME) ? GALLERY_SHEET_NAME : "GALLERY";
 
@@ -1312,7 +1698,8 @@ function getOrCreateGallerySheet_() {
 }
 
 function getOrCreateGuestUploadsSheet_() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = getSpreadsheet_();
+  if (!ss) return null;
   const sheets = ss.getSheets();
   const targetName = (typeof GUEST_UPLOADS_SHEET_NAME !== "undefined" && GUEST_UPLOADS_SHEET_NAME) ? GUEST_UPLOADS_SHEET_NAME : "GUEST_UPLOADS";
 

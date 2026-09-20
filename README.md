@@ -86,21 +86,31 @@ The gallery is built on a strictly separated two-tier Google Drive & Google Shee
 ## 💌 Backend Integrations (Firebase, Google Sheets & Telegram)
 
 ### 1. Firebase Firestore (Live Web Tier)
-- Real-time Firestore collections (`blessings` and `rsvp`) provide instant 0-latency updates for guests and live heart reaction counts (❤️).
+- Real-time Firestore collections (`blessings` and `rsvps`) provide instant 0-latency updates for guests and live heart reaction counts (❤️).
 
 ### 2. Google Sheets ('Wedding Admin System' Tier)
 - Spreadsheet Workbook: **'Wedding Admin System'**
 - Apps Script Project: **'WeddingAdminScript'**
-- Automatically synchronized with Firebase every 1 minute and on real-time sheet edits with permanent data protection.
+- **Instant Two-Way Synchronization**:
+  - Automatically synchronized with Firebase every 1 minute and on real-time sheet edits (`onChange` installable trigger).
+  - **Sheet ➔ Website Auto-Deletion**: Deleting any row directly in Google Sheets automatically identifies the removed document ID and purges it from Firebase Firestore, instantly removing it from the live website wall.
+  - **Protected In-Flight Submissions**: Brand-new web submissions (<3 minutes) are preserved and never accidentally purged during sync cycles.
 - Dedicated Tabs:
   - `BLESSINGS_BRIDE` & `BLESSINGS_GROOM`: `Name | Side | Message | Timestamp | Hearts (❤️) | FirebaseDocID`
   - `RSVP_BRIDE` & `RSVP_GROOM`: `Name | Side | Attending | Guests | Parking Required | Timestamp | FirebaseDocID`
   - `GALLERY`: `IMAGE_URL | PHOTO_CAPTION | DRIVE_FILE_ID | DATE_ADDED | PREVIEW` (with `=IMAGE(...)` thumbnail formula)
   - `GUEST_UPLOADS`: `BATCH_ID | FILE_NAME | UPLOADER_NAME | CEREMONY | TOTAL_COUNT | FILE_INDEX | UPLOAD_DATE | UPLOAD_TIME | DRIVE_FILE_ID | DRIVE_FILE_URL | STATUS`
+  - `ANNOUNCEMENTS`: Real-time announcements synchronized with the Live Notice Board.
 
 ### 3. Telegram Bot Notifications & In-App Moderation
 - Instant Telegram group notifications for every Blessing, RSVP, and completed Guest Upload batch.
-- Native inline `🗑️ Delete from Live Wall` button: immediately answers callback queries and removes the blessing live from Firebase and Google Sheets.
+- **Single-Notification Deduplication**: Uses `CacheService.getScriptCache()` and persistent ID verification to guarantee exactly **one** Telegram alert per submission, preventing duplicate messages from network retries or cross-origin redirect fallbacks.
+- **Native Inline `🗑️ Delete from Live Wall` Button**:
+  - In-app callback acknowledges the action in <0.2s without browser navigation.
+  - Strikes through message text in Telegram and labels it `❌ REMOVED & DELETED`.
+  - Immediately deletes the document from Firebase Firestore (removing it from the live website).
+  - Automatically scans and removes all matching rows across all sheet tabs and forces a disk flush via `SpreadsheetApp.flush()`.
+- **Live Notice Board Broadcast**: Hosts can post announcements to the live website notice board directly from Telegram via `/notice <message>`, `/announce <message>`, or `/alert <message>`.
 
 ---
 

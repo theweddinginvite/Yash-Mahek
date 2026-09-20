@@ -8,11 +8,22 @@ import "./SendBlessingModal.css";
 const SIDES = ["Bride", "Groom"];
 
 function submitToSheet(appsScriptUrl, payload) {
+  const params = new URLSearchParams();
+  params.append("action", payload.type === "rsvp" ? "sendRSVP" : "sendBlessing");
+  Object.keys(payload).forEach((key) => {
+    if (payload[key] !== undefined && payload[key] !== null) {
+      params.append(key, String(payload[key]));
+    }
+  });
+
+  const getUrl = `${appsScriptUrl}?${params.toString()}`;
+
   return fetch(appsScriptUrl, {
     method: "POST",
+    mode: "no-cors",
     headers: { "Content-Type": "text/plain;charset=utf-8" },
     body: JSON.stringify(payload),
-  });
+  }).catch(() => fetch(getUrl, { mode: "no-cors" }));
 }
 
 function SendingAnimation({ message }) {
