@@ -338,7 +338,7 @@ export default function Blessings({ entries = [], status, myBlessingKey, onBless
                   height="38"
                   loading="lazy"
                 />
-                <p className="placeholder-title">Click to leave warm wish</p>
+                <p className="placeholder-title">Click to leave warm wishes</p>
               </div>
             </button>
           ))}

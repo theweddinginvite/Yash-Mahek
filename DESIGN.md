@@ -82,17 +82,18 @@ A single scale used everywhere via CSS variables — no ad-hoc pixel values:
 1. **Shree Ganesh** (`#shree-ganesh`) — full-height sacred invocation screen with Lord Ganesh crest & shlokas
 2. **Invitation** (`#invitation`) — standalone wedding invitation, lineage, and scratch card date reveal
 3. **Meet the Couple** (`#couple`)
-4. **Event Details** (`#details`) — 2x3 interactive flip cards grid + dual unified action buttons ("Save Event Details" & "How to reach venue?") with modal dialogs
+4. **Event Details** (`#details`) — 5 interactive flip cards grid + dual unified action buttons ("Save Event Details" & "How to reach venue?") with modal dialogs
 5. **Gallery** (`#gallery`) — 3D coverflow carousel
 6. **Blessings** (`#blessings`) — guest blessings display
 7. **Blessings and RSVP** (`#blessings-rsvp`) — interactive RSVP & blessing form
-8. **FAQ & Footer** (`#faq`) — frequently asked questions accordion with the footer signature (`Yash & Mahek` and wedding date) integrated at the bottom of the final page
+8. **Best Compliments** (`#compliments`) — royal luxury card with family compliments & awaiting eyes
+9. **FAQ & Footer** (`#faq`) — frequently asked questions accordion with the footer signature (`Mahek & Yash` and wedding date) integrated at the bottom of the final page
 
 Each section is a full-screen "frame" you can jump to directly — every section above has a stable `id`, used both by the Nav links and by the section frame-nav (below).
 
 ### Floating Controls Cluster (Envelope, Notice Board, Event Details & Music Player)
 
-The bottom-right floating control cluster (`FloatingControls.jsx`), top to bottom: an **Envelope button** (`HomeButton.jsx`) with an envelope icon — reopens the interactive 3D Envelope invitation intro; a **Live Notice Board button** (`MegaphoneIcon`) with a pulsing badge indicator — opens the live announcement feed with instant updates from hosts; an **Event Details & Itinerary button** (`CalendarIcon`) — opens the Save Event Details popup with 2x2 grid itinerary, PDF downloads, and WhatsApp sharing; then the music mute/unmute button (`MusicPlayer.jsx`). All buttons share the unified `.icon-button` circular ivory/gold styling with responsive safe-area offset.
+The bottom-right floating control cluster (`FloatingControls.jsx`), top to bottom: an **Envelope button** (`HomeButton.jsx`) with an envelope icon — reopens the interactive 3D Envelope invitation intro (also resets the entire page to a fresh state: clears sessionStorage, scrolls to top, and resets the scratch card); a **Live Notice Board button** (`MegaphoneIcon`) with a pulsing badge indicator — opens the live announcement feed with instant updates from hosts; an **Event Details & Itinerary button** (`CalendarIcon`) — opens the Save Event Details popup with 2x2 grid itinerary, PDF downloads, and WhatsApp sharing; then the music mute/unmute button (`MusicPlayer.jsx`). All buttons share the unified `.icon-button` circular ivory/gold styling: **44×44px on desktop**, **42×42px on mobile** (≤680px), with SVG icons 22px desktop / 20px mobile, and responsive safe-area offset.
 
 ---
 
@@ -116,19 +117,19 @@ The bottom-right floating control cluster (`FloatingControls.jsx`), top to botto
     3. **The Couple** (`#couple`)
     4. **Events** (`#details`)
     5. **Gallery** (`#gallery`)
-    6. **Blessings** (`#blessings`)
+    6. **Wall of Blessings** (`#blessings`)
     7. **RSVP** (`#blessings-rsvp`)
     8. **FAQ** (`#faq`)
   - Clicking any link smoothly scrolls to the target with zero offset and auto-closes the drawer.
 
-#### Shree Ganesh (`#shree-ganesh`, `ShreeGanesh.jsx`)
+### Shree Ganesh (`#shree-ganesh`, `ShreeGanesh.jsx`)
 - **Sacred Invocation Screen**: Pure spiritual focus on Lord Ganesha and Lord Vishnu blessings with balanced vertical layout and generous breathing room.
 - **Top Clearance & Ganesh Crest**: After comfortable top spacing, Lord Ganesha's sacred emblem (`clamp(185px, 24vh, 230px)` on mobile, `230px` on desktop, `public/images/lordganesh/ganeshWithoutBackground.png`) is prominently displayed.
 - **Glow Aura**: `🌸 Golden Rose` halo (`.shree-ganesh__ganesh-glow`, `inset: -20%`, radial gradient with `rgba(230, 155, 165, 0.75)` core and `rgba(216, 150, 76, 0.5)` mid, `filter: blur(5px)`), pulsing softly with a tranquil `5.5s` breathing rhythm (`opacity: 0.75`, `scale: 1.0`).
 - **Devanagari Shlokas & Readable Typography**:
-  1. Ganesha shloka (*Vakratunda Mahakaya...*) in `Tiro Devanagari Sanskrit` (`clamp(1.2rem, 2.35vh, 1.35rem)`) with readable English translation (`clamp(0.92rem, 1.6vh, 1.02rem)`).
+  1. Ganesha shloka (*Vakratunda Mahakaya...*) in `Tiro Devanagari Sanskrit` (`clamp(1.2rem, 2.35vh, 1.35rem)`) with readable English translation (`clamp(0.92rem, 1.6vh, 1.02rem)`) styled in **royal burgundy (`var(--color-burgundy)`) on all screen sizes**.
   2. Ornamental gold diamond divider line (`.shree-ganesh__shlok-divider`).
-  3. Vishnu Mangalam verse (*Mangalam Bhagwan Vishnuh...* without trailing commas for clean Sanskrit metre) in `Tiro Devanagari Sanskrit` with readable English translation.
+  3. Vishnu Mangalam verse (*Mangalam Bhagwan Vishnuh...* without trailing commas for clean Sanskrit metre) in `Tiro Devanagari Sanskrit` with readable English translation, also in **royal burgundy (`var(--color-burgundy)`)** on all screen sizes.
 - **Bouncing Gold Scroll-Down Button**: Centered circular button (`clamp(2.55rem, 5.2vh, 2.85rem)`) that smoothly scrolls directly to the Invitation screen (`#invitation`). Verified visible with balanced bottom clearance on all mobile viewports.
 
 ### Invitation (`#invitation`)
@@ -136,9 +137,9 @@ The bottom-right floating control cluster (`FloatingControls.jsx`), top to botto
 - **Header**: Tagline (`hero.tagline`, "With All The Blessings").
 - **Body**:
   - Invitation phrase: *"We cordially invite you on the auspicious union of"*
-  - Groom block: **Yashoratna** (`4.2rem` Alex Brush cursive in royal burgundy).
-  - Center connector: **`&`** (`2.4rem` Playfair Display italic in gold accent `#b08968`).
   - Bride block: **Mahek** (`4.2rem` Alex Brush cursive in royal burgundy).
+  - Center connector: **`&`** (`2.4rem` Playfair Display italic in gold accent `#b08968`).
+  - Groom block: **Yashoratna** (`4.2rem` Alex Brush cursive in royal burgundy).
   *(Parents' names and lineage are featured exclusively in "Meet the Families" (`#couple`), keeping this invitation view clean, elegant, and balanced).*
 - **Divider**: Thin gold lines with centered diamond marker.
 - **Scratch-to-Reveal Card**: Covers the wedding date and live countdown.
@@ -149,7 +150,7 @@ The bottom-right floating control cluster (`FloatingControls.jsx`), top to botto
   - Delicate gold inner border frame.
   - **Couple's Initials Monogram Logo** (`public/images/monogram/monogramCircularWithoutBg.png`) rendered in the center (`78px` × `78px` desktop, `68px` × `68px` mobile).
   - **"SAVE THE DATE"** title (`17px`, `Playfair Display` 600 with `0.14em` letter-spacing) and **"Scratch to reveal"** subtitle (`17px`, `Cormorant Garamond` italic 400) below the logo.
-  - **Glass Shine Animation**: A continuous, elegant linear-gradient light sheen sweeps smoothly across the "SAVE THE DATE" lettering and card face every 5.2s cycle.
+  - **Glass Shine Animation**: A continuous, elegant linear-gradient light sheen sweeps smoothly across the "SAVE THE DATE" lettering and card face every 5.2s cycle (2.6s sweep eased via `easeInOutCubic` followed by a 2.6s rest pause). Pure reflective glass shimmer with star glints removed.
   - **Mobile Dimension Guarding**: Canvas drawing dimensions are cached (`lastSizeRef`) to prevent redundant canvas resizing and redraw flickering during mobile address bar transitions.
   - **Scratch Physics**: Scratching clears both the paper texture and monogram logo with organic debris particle flakes falling away.
 - **Revealed Card View**:
@@ -161,15 +162,16 @@ The bottom-right floating control cluster (`FloatingControls.jsx`), top to botto
 ### Meet the Couple / Family Section (`#couple`, `MeetFamilies.jsx` / `MeetCouple.jsx`)
 - **Sacred Family Shloka & Quote Header**:
   - Sanskrit Shloka (`॥ ॐ भूर्भुवः स्वः तत्सवितुर्वरेण्यं । भर्गो देवस्य धीमहि धियो यो नः प्रचोदयात् ॥`) rendered in `var(--color-burgundy)` in `Tiro Devanagari Sanskrit` (`clamp(0.92rem, 1.8vh, 1.08rem)` mobile / `clamp(0.98rem, 1.9vh, 1.18rem)` desktop).
-  - Editorial translation quote below in `Cormorant Garamond` italic (`0.8rem` mobile / `clamp(0.78rem, 1.35vh, 0.88rem)` desktop).
+  - Editorial translation quote below in `Cormorant Garamond` italic (`0.8rem` mobile / `clamp(0.78rem, 1.35vh, 0.88rem)` desktop), styled in **`var(--color-text)` (warm near-black)** — not muted gray.
+  - Heading-to-content spacing uses `var(--space-heading-to-content, clamp(2rem, 4.2vh, 3rem))`, consistent with EventDetails and Gallery sections.
 - **Two Side-by-Side Royal Indian Family Cards**:
-  - Left: Groom's Family Card (The Gupta Family in royal burgundy `var(--color-burgundy)`, location `Moradabad · The City of Brass`, invite phrases, parents in burgundy bold, groom name in Alex Brush cursive, relation tagline in muted text).
-  - Right: Bride's Family Card (The Gupta Family in royal burgundy `var(--color-burgundy)`, location `Moradabad · The City of Brass`, invite phrases, parents in burgundy bold, bride name in Alex Brush cursive, relation tagline in muted text).
+  - Left: Bride's Family Card (The Gupta Family in royal burgundy `var(--color-burgundy)`, location `Moradabad · The City of Brass`, invite phrases, parents in burgundy bold, bride name in Alex Brush cursive, relation tagline in muted text).
+  - Right: Groom's Family Card (The Gupta Family in royal burgundy `var(--color-burgundy)`, location `Moradabad · The City of Brass`, invite phrases, parents in burgundy bold, groom name in Alex Brush cursive, relation tagline in muted text).
 - **Typography Consistency & Standardization**:
   - City origin standardized to `Moradabad · The City of Brass` (`पीतल नगरी` removed).
   - Family titles (`THE GUPTA FAMILY`) colored in royal burgundy (`var(--color-burgundy)` / `#8f3350`), matching parents' names, couple cursive names, and Hindi initial accents.
-  - Relation lines `Their beloved son` and `Their beloved daughter` styled in `var(--color-text-muted)` matching `with their family and loved ones` in `Cormorant Garamond` italic.
-  - Unified typography across all 6 descriptive/connective card lines using `font-family: var(--font-body)` (*Cormorant Garamond*), `font-style: italic`, synchronized clamp sizing `clamp(0.9rem, 1.6vh, 1rem)`, and unified muted color palette.
+  - Relation lines `Their beloved daughter` and `Their beloved son` styled in `var(--color-text-muted)` matching `with their family and loved ones` in `Cormorant Garamond` italic.
+  - Unified typography across all 6 descriptive/connective card lines: *Auspicious Beginning*, *Moradabad · The City of Brass*, *Under the divine grace & blessings of revered grandparents*, *with their family and loved ones*, *request the pleasure of your company on the auspicious wedding of*, and *Their beloved daughter/son* — all using `font-family: var(--font-body)` (*Cormorant Garamond*), `font-style: italic`, synchronized clamp sizing `clamp(0.9rem, 1.6vh, 1rem)`, and unified muted color palette.
 - **Luxury Double Border & Corner Flourishes**:
   - Outer rounded border (`1.2px solid rgba(176, 137, 104, 0.45)` with `1.25rem` radius).
   - Inset dashed gold inner border (`inset: 8px`).
@@ -177,19 +179,26 @@ The bottom-right floating control cluster (`FloatingControls.jsx`), top to botto
 - **Center Divider with Sacred ॐ**:
   - Vertical golden hairline divider with gold `ॐ` (Om) symbol centered between the cards on desktop.
   - Smoothly converts to horizontal divider with centered `ॐ` when stacked on mobile screens.
-- **Cross-Platform Sanskrit Symbol Typography with Two-Layer Initial Highlights (`॥ युग्म ॥` & `॥ मंगलम् ॥`)**:
-  - Implemented in semantic HTML (`.family-card__symbol-title`) using `Tiro Devanagari Sanskrit`.
-  - Uses a **Two-Layer Ghost-Matched Overlay Architecture** (`.family-card__symbol-layered`) for zero metric drift and continuous shirorekha.
+- **Compact Proportions & Generous Bottom Clearance**:
+  - Card top padding streamlined to `clamp(0.9rem, 1.8vh, 1.35rem)` (mobile `1.15rem–1.25rem`), eliminating awkward empty space above `॥ मंगलम् ॥` and `॥ युग्म ॥`.
+  - Section header margin tightened to `clamp(0.75rem, 1.5vh, 1.15rem)` and cursive name scaled to `clamp(2.6rem, 4.6vh, 3.4rem)`.
+  - Added bottom clearance margin (`clamp(1.5rem, 3.5vh, 2.5rem)`) to `.family-cards-container`, guaranteeing ~100px+ of comfortable breathing space below the cards on laptop and desktop screens.
+- **Cross-Platform Sanskrit Symbol Typography with Two-Layer Initial Highlights (`॥ मंगलम् ॥` & `॥ युग्म ॥`)**:
+  - Implemented in semantic HTML (`.family-card__symbol-title`) using `Tiro Devanagari Sanskrit` (`clamp(1.45rem, 2.8vh, 1.85rem)`).
+  - Uses a **Two-Layer Ghost-Matched Overlay Architecture** (`.family-card__symbol-layered`):
+    - **Base Layer** (`.family-card__symbol-base`): Contains the entire, unsegmented Sanskrit word (`मंगलम्` / `युग्म`) in antique gold (`#b08968`), ensuring complete typographic context, unbroken shirorekha, and standard text selection / clipboard copying (`॥ मंगलम् ॥` and `॥ युग्म ॥`).
+    - **Overlay Layer** (`.family-card__symbol-overlay`, `aria-hidden="true"`): Absolutely positioned (`inset: 0`, `pointer-events: none`, `user-select: none`). Contains strictly the highlighted Hindi initial consonant—**`म`** (for **M**ahek, `.family-card__symbol-initial`) and **`य`** (for **Y**ash, `.family-card__symbol-initial`)—in bold royal burgundy (`#8f3350`), followed by an invisible ghost span (`.family-card__symbol-ghost`, `visibility: hidden; opacity: 0; color: transparent`) containing the rest of the word (`ंगलम्` / `ुग्म`).
+    - **Zero Metric Drift & Continuous Shirorekha**: The invisible ghost ensures both layers share identical ascenders, descenders, and font bounding boxes, perfectly aligning the burgundy consonant over the base while letting the antique gold diacritics (*anusvara* `ं` and *u-matra* `ु`), subsequent letters (`गलम्` and `ग्म`), and double dandas (`॥`) shine through seamlessly without dotted circles (`◌`) or stair-step displacement across all mobile and desktop devices.
 
 ### Event Details
 - White/surface section (visually distinct from the ivory sections around it)
-- Events shown as interactive **3D Flip Cards** arranged in a centered 2-column grid (`.events-grid`, 6 event cards):
+- Events shown as interactive **3D Flip Cards** arranged in a centered 2-column grid (`.events-grid`, 5 event cards in Mahek-Yash, 6 in Yash-Mahek):
   - Row 1: **Haldi** (Sat, Dec 5, 12:30 PM) &amp; **Engagement &amp; Sangeet** (Sat, Dec 5, 5:00 PM)
-  - Row 2: **Godh Bharai &amp; Sagai** (Sat, Dec 5, 7:00 PM) &amp; **Baraat &amp; Ghurchari** (Sun, Dec 6, 10:30 AM)
-  - Row 3: **Jaimaal** (Sun, Dec 6, 1:00 PM) &amp; **Phere** (Sun, Dec 6, 5:00 PM)
+  - Row 2: **Godh Bharai &amp; Sagai** (Sat, Dec 5, 7:00 PM) &amp; **Jaimaal** (Sun, Dec 6, 1:00 PM)
+  - Row 3: **Phere** (Sun, Dec 6, 5:00 PM) — centered across the grid (or paired in Yash-Mahek).
 - **Single-Screen Mobile Grid Fit**: On mobile (`≤680px`), the events grid uses `grid-template-rows: repeat(3, minmax(0, 1fr))` with cards dynamically occupying 100% of available height (`min-height: 0; height: 100%`). This guarantees all cards and the action buttons appear together in a single viewport without overflowing.
-- **Card Front**: Centered event title (`Playfair Display`, Burgundy `#8f3350`), signature gold gradient divider line with center jewel dot, event day/date, event time, and "Tap for details" icon.
-- **Card Back**: Flips 180° to reveal event name, date, time, description, meal line (*Dinner to follow* / *Lunch to follow*), and Attire theme (*Ethnic Wear*). Signature gold gradient divider with center jewel dot matches the front face. Back face includes scroll protection if text length varies.
+- **Card Front**: Centered event title (`Playfair Display`, Burgundy `#8f3350`), signature gold gradient divider line with center jewel dot, event day (`SATURDAY` / `SUNDAY`), date, and event time (`Playfair Display`, Gold `#b08968`), with a "Tap for details" hint icon. Food/meal details are cleanly excluded from the front face to keep it uncluttered.
+- **Card Back**: Flips 180° to reveal event name, date, time, description, meal line (*Dinner to follow* / *Lunch to follow*), and Attire theme — **Shades of Pink** (Haldi), **Glam and Glitter** (Engagement & Sangeet, Godh Bharai & Sagai), **Ethnic Wear** (all Dec 6 events: Jaimaal, Phere). Signature gold gradient divider with center jewel dot matches the front face. Back face includes scroll protection if text length varies.
 - **Action Buttons Row & 10% Viewport Clearance**:
   - Positioned beneath the cards with a guaranteed **10% bottom viewport spacing** (`max(10vh, 10lvh)`).
   - Left Button: **"Save Event Details"** (`.event-details__action-btn--primary`, burgundy pill button with calendar icon).
@@ -204,15 +213,20 @@ The bottom-right floating control cluster (`FloatingControls.jsx`), top to botto
     ```
   - Displays event name and timings cleanly separated without leader dots.
   - **Three Modal Action Buttons**:
-    1. **Share as text**: Opens WhatsApp with formatted pretext (`*The wedding of Yash & Mahek*\nDecember 5-6, 2026\n\nEvents details:`) followed by bulleted event list, meal, and venue map link.
+    1. **Share as text (WhatsApp)**: Uses Web Share API — on mobile, triggers native share sheet with the **M&Y monogram card image** (`/images/monogram/monogram-share-card.jpg`) + full formatted text (no URL length truncation). Falls back to text-only Web Share, then `wa.me` URL. Message format: `*The wedding of Mahek & Yash*`, `*December 5-6, 2026*`, `✨ *Events & Itinerary*` header, each event in **bold name**, date · time, description, attire — venue in **bold labels** (`*Venue:*`, `*Helpdesk:*`, `*Google Search Resort:*`, `*Maps Direction:*`), no emoji prefixes.
     2. **Share as pdf**: Invokes native Web Share API (`navigator.share({ files: [file] })`) on supported mobile devices to share PDF directly to WhatsApp/AirDrop; falls back to download on desktop.
-    3. **Download pdf**: Directly downloads the themed vector PDF (`The_Wedding_Events_Yash_Mahek.pdf`).
+    3. **Download pdf**: Directly downloads the themed vector PDF (`The_Wedding_Events_Mahek_Yash.pdf`).
 - **Themed Vector PDF Generator (`generateEventPdf.js`)**:
   - Generated client-side using `jspdf`.
   - Styled with soft ivory background (`#faf7f2`), double warm gold border (`#b08968`) with corner diamonds, burgundy headings (`#8f3350`), dotted line event separators, and generous line spacing.
 - **Venue & Travel Popup Modal (`VenueModal.jsx`)**:
   - Opens on clicking "How to reach the venue?".
-  - Auto-closes after 30 seconds or via close button / backdrop tap.
+  - **Auto-Close**: Closes automatically after **30 seconds** (visualized via a subtle top progress timer bar), or immediately when tapping the top-right `✕` close button, clicking the backdrop overlay, or pressing `Escape`.
+  - **Content**:
+    - Header with venue resort name & address.
+    - **QR Code** (`qrcode.react` SVG, scanning navigates to Google Maps location `https://share.google/xZAuCAlAAjEHdfEsY`).
+    - **"Get Directions" Button** (opens Google Maps turn-by-turn navigation in a new tab).
+    - **Travel Options Guide**: Detailed instructions for **By Road / Cab**, **By Train** (Ramnagar Railway Station), and **By Air** (Pantnagar / Delhi airports).
 
 ### Gallery
 - White/surface section (`#gallery`), occupying its own whole view (`min-height: 100vh; min-height: 100lvh;`), cleanly isolating the Gallery from the Blessings Wall (`#blessings`). Vertically distributed with the section heading anchored at the top, the photo stage in the vertical middle, and controls directly underneath.
@@ -243,11 +257,25 @@ The bottom-right floating control cluster (`FloatingControls.jsx`), top to botto
 - **Dedicated Blessings Wall Page** (`#/blessings-wall`): Reached via the "View All Blessings" link, displaying the complete chronological blessings wall.
 
 ### Blessings and RSVP
-- White/surface section (`#blessings-rsvp`), occupying a dedicated whole view (`height: 100vh; height: 100lvh; overflow: hidden;`).
+- White/surface section (`#blessings-rsvp`), occupying a dedicated whole view (`min-height: 100vh; min-height: 100lvh; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; box-sizing: border-box;`).
 - **Top-Anchored Heading**: Section heading and subtitle remain firmly anchored at the top of the viewport.
-- **Full Viewport Responsive Card**: The interactive form card (`.blessings-rsvp-card`) dynamically fills available vertical space (`flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: space-between;`).
-- **Two-Column Mobile Fields**: Guests count and Parking required inputs sit side-by-side on mobile, saving vertical height and keeping the submit button completely in view on all mobile viewports including iPhone SE.
-- Connected directly to Firebase Firestore for 0-latency live updates and Google Sheets.
+- **Vertically Centered Form Card**: The interactive form card (`.blessings-rsvp-card`) uses `margin: auto auto;` to automatically center itself in the remaining viewport space, ensuring a perfectly centered, balanced presentation on all mobile devices and desktop monitors rather than sinking to the bottom.
+- A custom-built form with 2 tabs — "Send Blessings" and "RSVP" — connected directly to Firebase Firestore for 0-latency live updates and Google Sheets ('Wedding Admin System').
+- Both tabs include Bride Side / Groom Side selection.
+- RSVP fields: Name, Side, Attending (Joyfully accept / Unable to Join), Guests count, and "Parking required?" (Yes/No).
+- **Centered Confirmation Card**: On submission, a burgundy-framed luxury confirmation card is rendered directly in the center of the screen without causing header layout shift.
+- **Instant Telegram Bot Integration**: Triggers real-time alerts to the wedding admin Telegram group with a native inline `🗑️ Delete from Live Wall` button.
+- On successful RSVP: Confirmation message plus a **"Share via WhatsApp"** button pre-filled with the guest's RSVP details.
+- **Confetti Burst**: Fires a celebratory burst of confetti on successful submission.
+
+### Best Compliments
+- Positioned between Blessings & RSVP (`#blessings-rsvp`) and FAQ (`#faq`), accessible via `#compliments`.
+- **Top-Anchored Heading**: Section heading with tagline (`.eyebrow`, `With Love & Blessings`) and section title (`h2`, `With Best Compliments From`) inheriting the site-wide standard typographic scale.
+- **Upper-Balanced Royal Luxury Card**: A warm ivory surface card (`.compliments-card`) with a `1.2px` gold perimeter border, inset dashed burgundy inner border, and soft elevation. Styled with balanced top clearance (`margin-top: clamp(3.8rem, 8vh, 5.5rem)` on desktop, `clamp(2.8rem, 6vh, 4.2rem)` on mobile) to eliminate excessive blank space while keeping generous, comfortable breathing room below the title.
+- **Single-Column Compliments List**: Displays names in a clean, centered single-column layout without bullets, each couple/member on their own line (with Muskan, Paras, and Arpita each on individual lines).
+- **1st-Page Sacred Divider**: Features a 1px gold gradient line with a centered 5px circular gold pearl/dot (`linear-gradient(to right, transparent, var(--color-accent) 50%, transparent)`), identical to the sacred invocation divider in Shree Ganesh.
+- **Awaiting Eyes Row**: Sub-heading `AWAITING EYES` in uppercase gold serif, followed by the children's names (*Amulya*, *Amogh*, *Shriyan*) in a generous space-separated single horizontal row.
+- **Line Separator to FAQ**: A full-width `1px solid var(--color-border)` dividing line cleanly separates Best Compliments from FAQ.
 
 ### FAQ
 - Ivory section, content narrowed to 40rem and centered (narrower than the 1000px page max-width, since Q&A reads better in a tighter column)
@@ -264,7 +292,7 @@ The bottom-right floating control cluster (`FloatingControls.jsx`), top to botto
 
 - Mobile-first breakpoints, primarily at `480px`, `600px`, and `700px` — since most guests are expected to open this on a phone, mobile is treated as the primary layout, not an afterthought
 - Nav collapses to a hamburger menu ≤700px (see Nav section above)
-- Event Details maintains a centered 2-column, 3-row flip card grid (total 6 event ceremonies) across mobile, tablet, and desktop, with calibrated heights (`min-height: 162px; height: 162px;` on desktop) ensuring the bottom venue button remains fully in view without text crowding
+- Event Details maintains a centered 2-column flip card grid (5 cards with 5th centered in Mahek-Yash) across mobile, tablet, and desktop, with calibrated heights (`min-height: 162px; height: 162px;` on desktop) ensuring the bottom venue button remains fully in view without text crowding
 - Gallery's coverflow shrinks its stage height/perspective and widens covers slightly on narrow screens, but keeps the same fan-out mechanic (no reflow to a stacked column) at any width
 - Meet the Couple displays two side-by-side family cards on desktop and tablet, and gracefully stacks them into a single column with an elegant horizontal divider and centered ॐ symbol on mobile screens (≤680px)
 - Blessings displays 6 curated wish cards in a clean 2-column, 3-row layout across all screen sizes, with a full-text modal on tap and a link to the dedicated Blessings Wall page

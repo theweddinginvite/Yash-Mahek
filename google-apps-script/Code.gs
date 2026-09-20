@@ -875,7 +875,7 @@ function sendTelegramRsvpNotification_(data) {
   const chatId = getTelegramChatId_();
   if (!botToken || !chatId || botToken.includes("YOUR_")) return;
 
-  const isAttending = data.attending === "Yes" ? "✅ Joyfully Accept (Attending)" : "❌ Regretfully Decline";
+  const isAttending = data.attending === "Yes" ? "✅ Joyfully Accept (Attending)" : "❌ Unable to Join";
   const text =
     `🎉 <b>New RSVP Received!</b> 🎉\n\n` +
     `👤 <b>Name:</b> ${escapeHtml_(data.name)}\n` +

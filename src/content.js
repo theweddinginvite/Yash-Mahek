@@ -270,7 +270,7 @@ const content = {
 
   blessingsRsvp: {
     heading: "RSVP",
-    subtext: "Please let us know if you will be celebrating with us",
+    subtext: "Please let us know when you will be joining us",
   },
 
   faq: [

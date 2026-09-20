@@ -34,7 +34,7 @@ function buildWhatsAppUrl(data, whatsappNumber) {
     `RSVP for ${partner1} & ${partner2}'s wedding:`,
     `Name: ${data.name || ""}`,
     `From the side of: ${data.side || ""}`,
-    `Visit Plan: ${isAttending ? "Joyfully accept" : "Regretfully decline"}`,
+    `Visit Plan: ${isAttending ? "Joyfully accept" : "Unable to Join"}`,
     ...(isAttending
       ? [
           `Total Guests: ${data.guests || 1}`,
@@ -180,9 +180,15 @@ function RsvpForm({ appsScriptUrl, whatsappNumber, onCelebrate }) {
           <span className="form-status__seal-icon">🎉</span>
         </div>
         <h3 className="form-status__title">RSVP Confirmed!</h3>
-        <p className="form-status__desc">
-          Thank you{submittedData?.name ? `, ${submittedData.name}` : ""}! Your response has been recorded for {content.couple.partner1} &amp; {content.couple.partner2}&apos;s wedding. We look forward to celebrating together!
-        </p>
+        {submittedData?.attending === "No" ? (
+          <p className="form-status__desc">
+            Thank you{submittedData?.name ? `, ${submittedData.name}` : ""} for letting us know! Your response has been recorded. You will be dearly missed as we celebrate {content.couple.partner1} &amp; {content.couple.partner2}&apos;s wedding.
+          </p>
+        ) : (
+          <p className="form-status__desc">
+            Thank you{submittedData?.name ? `, ${submittedData.name}` : ""}! Your response has been recorded for {content.couple.partner1} &amp; {content.couple.partner2}&apos;s wedding. We look forward to celebrating together!
+          </p>
+        )}
         <div className="form-status__actions">
           <a
             className="button form-status__btn form-status__btn--primary"
@@ -254,7 +260,7 @@ function RsvpForm({ appsScriptUrl, whatsappNumber, onCelebrate }) {
             onChange={(e) => setForm({ ...form, attending: e.target.value })}
           >
             <option value="Yes">Joyfully accept</option>
-            <option value="No">Regretfully decline</option>
+            <option value="No">Unable to Join</option>
           </select>
         </label>
 
