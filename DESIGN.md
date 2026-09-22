@@ -82,7 +82,7 @@ A single scale used everywhere via CSS variables — no ad-hoc pixel values:
 1. **Shree Ganesh** (`#shree-ganesh`) — full-height sacred invocation screen with Lord Ganesh crest & shlokas
 2. **Invitation** (`#invitation`) — standalone wedding invitation, lineage, and scratch card date reveal
 3. **Meet the Couple** (`#couple`)
-4. **Event Details** (`#details`) — 5 interactive flip cards grid + dual unified action buttons ("Save Event Details" & "How to reach venue?") with modal dialogs
+4. **Event Details** (`#details`) — 5 interactive flip cards grid + three unified action buttons ("Save Events Details", "Get Venue Directions", & "View Live Updates") with modal dialogs
 5. **Gallery** (`#gallery`) — 3D coverflow carousel
 6. **Blessings** (`#blessings`) — guest blessings display
 7. **Blessings and RSVP** (`#blessings-rsvp`) — interactive RSVP & blessing form
@@ -201,8 +201,9 @@ The bottom-right floating control cluster (`FloatingControls.jsx`), top to botto
 - **Card Back**: Flips 180° to reveal event name, date, time, description, meal line (*Dinner to follow* / *Lunch to follow*), and Attire theme — **Shades of Pink** (Haldi), **Glam and Glitter** (Engagement & Sangeet, Godh Bharai & Sagai), **Ethnic Wear** (all Dec 6 events: Jaimaal, Phere). Signature gold gradient divider with center jewel dot matches the front face. Back face includes scroll protection if text length varies.
 - **Action Buttons Row & 10% Viewport Clearance**:
   - Positioned beneath the cards with a guaranteed **10% bottom viewport spacing** (`max(10vh, 10lvh)`).
-  - Left Button: **"Save Event Details"** (`.event-details__action-btn--primary`, burgundy pill button with calendar icon).
-  - Right Button: **"How to reach the venue?"** (`.event-details__action-btn--secondary`, ivory pill button with burgundy border & map-pin icon).
+  - Button 1: **"Save Events Details"** (`.event-details__action-btn`, burgundy text with bookmark/calendar icon).
+  - Button 2: **"Get Venue Directions"** (`.event-details__action-btn`, burgundy text with map-pin icon).
+  - Button 3: **"View Live Updates"** (`.event-details__action-btn`, burgundy text with megaphone icon).
 - **"Save Event Details" Popup Modal (`SaveEventsModal.jsx`)**:
   - Opens on clicking "Save Event Details". Includes backdrop dismiss, `Escape` key support, body scroll lock, and close button.
   - **2x2 Grid Layout**:
@@ -296,7 +297,7 @@ The bottom-right floating control cluster (`FloatingControls.jsx`), top to botto
 - Gallery's coverflow shrinks its stage height/perspective and widens covers slightly on narrow screens, but keeps the same fan-out mechanic (no reflow to a stacked column) at any width
 - Meet the Couple displays two side-by-side family cards on desktop and tablet, and gracefully stacks them into a single column with an elegant horizontal divider and centered ॐ symbol on mobile screens (≤680px)
 - Blessings displays 6 curated wish cards in a clean 2-column, 3-row layout across all screen sizes, with a full-text modal on tap and a link to the dedicated Blessings Wall page
-- The floating bottom-right controls (envelope + notice board + event itinerary + music player) are pinned on mobile (≤680px) at `right: max(17px, calc(env(safe-area-inset-right, 0px) + 17px))` for clean edge alignment
+- The floating bottom-right controls (envelope + notice board + event itinerary + location/venue + music player) are pinned on mobile (≤680px) at `right: max(17px, calc(env(safe-area-inset-right, 0px) + 17px))` for clean edge alignment
 - All interactive elements maintain a 44px minimum touch target
 
 ## 8. Images
