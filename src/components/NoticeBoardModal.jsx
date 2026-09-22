@@ -119,9 +119,9 @@ export default function NoticeBoardModal({
                     <path d="M13.73 21a2 2 0 0 1-3.46 0" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
-                <h4 className="notice-modal__empty-title">All on Schedule</h4>
+                <h4 className="notice-modal__empty-title">The celebrations are on track! ✨</h4>
                 <p className="notice-modal__empty-desc">
-                  There are no active notices right now. All ceremony events are running smoothly on schedule! Check back here during the wedding for live announcements.
+                  No new announcements right now.
                 </p>
               </div>
             ) : (

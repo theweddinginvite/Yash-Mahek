@@ -25,16 +25,26 @@ function MegaphoneIcon() {
   );
 }
 
+function LocationIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  );
+}
+
 export default function FloatingControls({
   onReopenEnvelope,
   onOpenSaveEvents,
   onOpenNoticeBoard,
+  onOpenVenue,
   hasNotices = false,
 }) {
   return (
     <div className="floating-controls">
       <HomeButton onReopenEnvelope={onReopenEnvelope} />
-      <button
+            <button
         type="button"
         className="icon-button"
         onClick={onOpenNoticeBoard}
@@ -52,6 +62,15 @@ export default function FloatingControls({
         title="Event Details & Itinerary"
       >
         <CalendarIcon />
+      </button>
+      <button
+        type="button"
+        className="icon-button"
+        onClick={onOpenVenue}
+        aria-label="How to reach & Venue Guide"
+        title="Venue & Travel Guide"
+      >
+        <LocationIcon />
       </button>
       <MusicPlayer />
     </div>

@@ -988,11 +988,7 @@ function handleTelegramCallback_(callbackQuery) {
 
     // 4. Update row in Google Sheet (targeted to relevant sheets only, fast)
     try {
-      if (action === "del_notice") {
-        updateNoticeSheetStatus_(docId, "REMOVED");
-      } else {
-        deleteRowFromSheetByDocId_(docId, action);
-      }
+      deleteRowFromSheetByDocId_(docId, action);
     } catch (sheetErr) {
       Logger.log("Sheet delete error: " + sheetErr);
     }
@@ -1020,7 +1016,9 @@ function deleteRowFromSheetByDocId_(docId, action) {
     const sheet = sheets[s];
     const sheetName = sheet.getName().toUpperCase();
     const isTarget =
-      action === "del_rsvp"
+      action === "del_notice"
+        ? sheetName.includes("ANNOUNCEMENT")
+        : action === "del_rsvp"
         ? sheetName.includes("RSVP")
         : sheetName.includes("BLESSING");
 
@@ -1061,7 +1059,9 @@ function deleteRowFromSheetByDocId_(docId, action) {
 
   if (deletedCount > 0) {
     SpreadsheetApp.flush();
-    if (action === "del_rsvp") {
+    if (action === "del_notice") {
+      removeKnownId_("KNOWN_NOTICE_IDS", searchId);
+    } else if (action === "del_rsvp") {
       removeKnownId_("KNOWN_RSVP_IDS", searchId);
     } else {
       removeKnownId_("KNOWN_BLESSING_IDS", searchId);
@@ -1471,6 +1471,88 @@ function syncRsvps_(ss) {
     Logger.log("Firestore rsvps connection error: " + response.getContentText());
     return;
   }
+
+
+function syncAnnouncements_(ss) {
+  const firestoreUrl = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/announcements?key=${FIREBASE_API_KEY}`;
+  const response = UrlFetchApp.fetch(firestoreUrl, { muteHttpExceptions: true });
+
+  if (response.getResponseCode() !== 200) {
+    Logger.log("Firestore announcements connection error: " + response.getContentText());
+    return;
+  }
+
+  const data = JSON.parse(response.getContentText());
+  const firestoreDocs = data.documents || [];
+
+  const firestoreMap = new Map();
+  firestoreDocs.forEach((doc) => {
+    const docId = doc.name.split("/").pop();
+    const fields = doc.fields || {};
+    const ts = fields.timestamp?.timestampValue || fields.timestamp?.stringValue || new Date().toISOString();
+    firestoreMap.set(docId, {
+      id: docId,
+      message: fields.message?.stringValue || "",
+      priority: fields.priority?.stringValue || "normal",
+      author: fields.author?.stringValue || "",
+      timestamp: ts,
+      createdAtMs: new Date(ts).getTime() || 0,
+    });
+  });
+
+  const sheetDocIds = new Set();
+  const sheet = ss.getSheetByName(ANNOUNCEMENTS_SHEET_NAME);
+
+  if (sheet) {
+    const values = sheet.getDataRange().getValues();
+    if (values.length > 1) {
+      for (let i = values.length - 1; i >= 1; i--) {
+        const row = values[i];
+        const status = String(row[4] || "").trim().toUpperCase();
+        let docId = String(row[5] || "").trim();
+        
+        if (status === "REMOVED") {
+          continue; 
+        }
+
+        if (docId) {
+          sheetDocIds.add(docId);
+        }
+      }
+    }
+  }
+
+  const knownIds = getKnownIds_("KNOWN_NOTICE_IDS");
+  const now = Date.now();
+
+  firestoreDocs.forEach((doc) => {
+    const docId = doc.name.split("/").pop();
+    if (!sheetDocIds.has(docId)) {
+      const item = firestoreMap.get(docId);
+      const ageMinutes = (now - (item ? item.createdAtMs : 0)) / (1000 * 60);
+      const wasInSheet = knownIds && knownIds.includes(docId);
+
+      if (wasInSheet || ageMinutes > 3) {
+        deleteFromFirestore_("announcements", docId);
+        Logger.log(`Deleted announcement ${docId} from Firestore because row is absent/REMOVED in sheet`);
+      } else if (item && sheet) {
+        sheet.appendRow([
+          item.timestamp,
+          item.message,
+          item.priority.toUpperCase(),
+          item.author,
+          "ACTIVE",
+          docId,
+          ""
+        ]);
+        sheetDocIds.add(docId);
+      }
+    }
+  });
+
+  setKnownIds_("KNOWN_NOTICE_IDS", Array.from(sheetDocIds));
+}
+
 
   const data = JSON.parse(response.getContentText());
   const firestoreDocs = data.documents || [];

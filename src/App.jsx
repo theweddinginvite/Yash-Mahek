@@ -14,6 +14,7 @@ import PageSparkles from "./components/PageSparkles";
 import CursorSparkleTrail from "./components/CursorSparkleTrail";
 import SaveEventsModal from "./components/SaveEventsModal";
 import NoticeBoardModal from "./components/NoticeBoardModal";
+import VenueModal from "./components/VenueModal";
 import { subscribeToAnnouncements } from "./lib/firebase";
 import content from "./content";
 
@@ -34,6 +35,7 @@ function App({ entries, status, myBlessingKey, addLocalBlessing }) {
 
   const [isSaveEventsModalOpen, setIsSaveEventsModalOpen] = useState(false);
   const [isNoticeBoardOpen, setIsNoticeBoardOpen] = useState(false);
+  const [isVenueModalOpen, setIsVenueModalOpen] = useState(false);
   const [announcements, setAnnouncements] = useState([]);
 
   useEffect(() => {
@@ -121,7 +123,7 @@ function App({ entries, status, myBlessingKey, addLocalBlessing }) {
         onDateReveal={handleDateReveal}
       />
       <MeetFamilies />
-      <EventDetails onOpenSaveEvents={() => setIsSaveEventsModalOpen(true)} />
+      <EventDetails onOpenSaveEvents={() => setIsSaveEventsModalOpen(true)} onOpenNoticeBoard={() => setIsNoticeBoardOpen(true)} />
       <Gallery />
       <Blessings
         entries={entries}
@@ -130,11 +132,12 @@ function App({ entries, status, myBlessingKey, addLocalBlessing }) {
         onBlessingSent={addLocalBlessing}
       />
       <BlessingsRSVP />
-      <FAQ isDateRevealed={dateRevealed} />
+      <FAQ isDateRevealed={dateRevealed} onOpenNoticeBoard={() => setIsNoticeBoardOpen(true)} />
       <FloatingControls
         onReopenEnvelope={handleReopenEnvelope}
         onOpenSaveEvents={() => setIsSaveEventsModalOpen(true)}
         onOpenNoticeBoard={() => setIsNoticeBoardOpen(true)}
+        onOpenVenue={() => setIsVenueModalOpen(true)}
         hasNotices={announcements.length > 0}
       />
       <SaveEventsModal
@@ -148,6 +151,12 @@ function App({ entries, status, myBlessingKey, addLocalBlessing }) {
         isOpen={isNoticeBoardOpen}
         onClose={() => setIsNoticeBoardOpen(false)}
         announcements={announcements}
+      />
+      <VenueModal
+        isOpen={isVenueModalOpen}
+        onClose={() => setIsVenueModalOpen(false)}
+        venue={content.venue}
+        couple={content.couple}
       />
     </>
   );

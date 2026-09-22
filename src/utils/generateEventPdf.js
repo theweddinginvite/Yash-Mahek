@@ -54,7 +54,7 @@ export function addOneHour(timeStr) {
 
 /**
  * Transforms an array of events by expanding any event that includes a meal
- * into its primary ceremony plus a separate, subsequent food event box (Lunch, Gala Lunch, or Dinner)
+ * into its primary ceremony plus a separate, subsequent food event box (Lunch or Dinner)
  * set to begin exactly 1 hour after the ceremony.
  * Food events do not carry redundant detail text.
  */
@@ -77,9 +77,7 @@ export function getItineraryEvents(events = []) {
     if (event.meal) {
       let foodName = "Lunch";
 
-      if (/gala lunch/i.test(event.meal)) {
-        foodName = "Gala Lunch";
-      } else if (/dinner/i.test(event.meal)) {
+      if (/dinner/i.test(event.meal)) {
         foodName = "Dinner";
       } else if (/lunch/i.test(event.meal)) {
         foodName = "Lunch";

@@ -48,7 +48,6 @@ function formatShortDate(dateStr = "", day = "") {
 
 function getMealText(meal) {
   if (!meal) return "";
-  if (/gala lunch/i.test(meal)) return "Gala Lunch to follow";
   if (/lunch/i.test(meal)) return "Lunch to follow";
   if (/dinner/i.test(meal)) return "Dinner to follow";
   return meal;
@@ -188,7 +187,7 @@ function EventCard({ event, autoFlipSeconds = 20 }) {
   );
 }
 
-export default function EventDetails({ onOpenSaveEvents }) {
+export default function EventDetails({ onOpenSaveEvents, onOpenNoticeBoard }) {
   const { events, eventCardAutoFlipSeconds, venue, couple } = content;
   const [isVenueModalOpen, setIsVenueModalOpen] = useState(false);
   const [isInternalSaveEventsOpen, setIsInternalSaveEventsOpen] = useState(false);
@@ -212,7 +211,7 @@ export default function EventDetails({ onOpenSaveEvents }) {
           ))}
         </div>
 
-        {/* Action Buttons: Save Event Details (Left) + How to reach venue? (Right) */}
+        {/* Action Buttons: Save Events Details (Left) + Get Venue Directions (Right) */}
         <div className="event-details__actions">
           <button
             type="button"
@@ -222,7 +221,7 @@ export default function EventDetails({ onOpenSaveEvents }) {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
             </svg>
-            Save Event Details
+            Save Events Details
           </button>
 
           <button
@@ -234,7 +233,21 @@ export default function EventDetails({ onOpenSaveEvents }) {
               <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z" />
               <circle cx="12" cy="10" r="3" />
             </svg>
-            How to reach venue?
+            Get Venue Directions
+          </button>
+
+          <button
+            type="button"
+            className="event-details__action-btn"
+            onClick={onOpenNoticeBoard}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M3 11l13-5v12L3 13v-2z" />
+              <path d="M16 8.5c1.5.8 2.5 2.1 2.5 3.5s-1 2.7-2.5 3.5" />
+              <path d="M19 6c2.5 1.5 4 3.8 4 6s-1.5 4.5-4 6" />
+              <path d="M6 13v4a2 2 0 0 0 2 2h1" />
+            </svg>
+            View Live Updates
           </button>
         </div>
 

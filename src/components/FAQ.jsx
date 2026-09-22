@@ -8,7 +8,7 @@ import cameraIcon from "../assets/flaticons/camera-711191.png";
 import { smoothScrollTo } from "../lib/smoothScroll";
 import "./FAQ.css";
 
-export default function FAQ({ isDateRevealed }) {
+export default function FAQ({ isDateRevealed, onOpenNoticeBoard }) {
   const { faq, venue, events, couple } = content;
   const [openIndex, setOpenIndex] = useState(null);
   const [isVenueModalOpen, setIsVenueModalOpen] = useState(false);
@@ -17,6 +17,32 @@ export default function FAQ({ isDateRevealed }) {
 
   const toggle = (index) => {
     setOpenIndex((current) => (current === index ? null : index));
+  };
+
+  const renderAnswer = (text) => {
+    if (!text || typeof text !== 'string') return text;
+    if (!text.includes('[SHARE_ICON]')) return text;
+    const parts = text.split('[SHARE_ICON]');
+    return (
+      <>
+        {parts[0]}
+        <svg
+          className="ios-share-icon-inline"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+          <polyline points="16 6 12 2 8 6" />
+          <line x1="12" y1="2" x2="12" y2="15" />
+        </svg>
+        {parts[1]}
+      </>
+    );
   };
 
   return (
@@ -43,7 +69,7 @@ export default function FAQ({ isDateRevealed }) {
                   </button>
                   {isOpen && (
                     <div className="faq-item__answer-wrap">
-                      <p className="faq-item__answer">{item.answer}</p>
+                      <p className="faq-item__answer">{renderAnswer(item.answer)}</p>
                       {item.action?.type === "venueModal" && (
                         <div className="faq-item__action-row">
                           <button
@@ -85,6 +111,23 @@ export default function FAQ({ isDateRevealed }) {
                           </button>
                         </div>
                       )}
+                      {item.action?.type === "noticeBoardModal" && (
+                        <div className="faq-item__action-row">
+                          <button
+                            type="button"
+                            className="faq-item__action-btn faq-item__action-btn--save"
+                            onClick={onOpenNoticeBoard}
+                          >
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                              <path d="M3 11l13-5v12L3 13v-2z" />
+                              <path d="M16 8.5c1.5.8 2.5 2.1 2.5 3.5s-1 2.7-2.5 3.5" />
+                              <path d="M19 6c2.5 1.5 4 3.8 4 6s-1.5 4.5-4 6" />
+                              <path d="M6 13v4a2 2 0 0 0 2 2h1" />
+                            </svg>
+                            {item.action.label}
+                          </button>
+                        </div>
+                      )}
                       {item.action?.type === "uploadModal" && (
                         <div className="faq-item__action-row">
                           <button
@@ -107,6 +150,12 @@ export default function FAQ({ isDateRevealed }) {
                             {item.action.label}
                           </button>
                         </div>
+                      )}
+
+                      {item.answer2 && (
+                        <p className="faq-item__answer" style={{ marginTop: '0.85rem' }}>
+                          {renderAnswer(item.answer2)}
+                        </p>
                       )}
                     </div>
                   )}

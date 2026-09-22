@@ -114,22 +114,22 @@ const content = {
       note: "Get ready for color, music, and haldi fun!",
     },
     {
-      name: "Engagement & Sangeet",
+      name: "Engagement & Godh Bharai",
       day: "Saturday",
       date: "December 5, 2026",
       time: "5:00 PM",
-      description: "An enchanting evening of music, dance performances, and celebration.",
+      description: "Auspicious ring ceremony and traditional blessings with friends and family.",
       attire: "Glam and Glitter",
       location: "Grand Ballroom",
       note: "Followed by dinner, music & celebration.",
     },
     {
-      name: "Godh Bharai & Sagai",
+      name: "Sagai & Sangeet",
       meal: "Dinner to follow",
       day: "Saturday",
       date: "December 5, 2026",
       time: "7:00 PM",
-      description: "Traditional blessings and auspicious ring ceremony with family & loved ones.",
+      description: "An enchanting event of music, dance performances and celebrations.",
       attire: "Glam and Glitter",
       location: "Grand Ballroom",
       note: "Celebration followed by music and dinner.",
@@ -146,7 +146,7 @@ const content = {
     },
     {
       name: "Jaimaal",
-      meal: "Gala Lunch to follow",
+      meal: "Lunch to follow",
       day: "Sunday",
       date: "December 6, 2026",
       time: "1:00 PM",
@@ -291,6 +291,15 @@ const content = {
       },
     },
     {
+      question: "How to check live updates from the events?",
+      answer: "Keep a check on the live updates board by clicking the button below.",
+      answer2: "You can also save the invite as an 'App' on your phone to keep it handy:\n• iPhone: Open this website in any browser → Tap Share [SHARE_ICON] → Add to Home Screen.\n• Android: Open this website in Chrome → Tap Menu (⋮) → Add to Home Screen / Install App.",
+      action: {
+        type: "noticeBoardModal",
+        label: "View Live Updates",
+      },
+    },
+    {
       question: "Is parking available at the venue?",
       answer:
         "Yes, complimentary on-site self-parking and dedicated valet assistance are available at Winsome Resort & Spa for all wedding guests throughout the celebrations.",
@@ -300,7 +309,7 @@ const content = {
       answer:
         "We encourage you to dress in accordance with the ceremony themes:\n" +
         "• Haldi (Dec 5, 12:30 PM): Shades of Pink\n" +
-        "• Engagement & Sangeet (Dec 5, 5:00 PM): Glam and Glitter\n" +
+        "• Engagement & Godh Bharai (Dec 5, 5:00 PM): Glam and Glitter\n" +
         "• Wedding Day (Dec 6): Ethnic Wear",
     },
     {
@@ -330,7 +339,9 @@ const content = {
       question: "What are the official wedding hashtags for sharing photos?",
       answer:
         "If you upload photos, stories, or reels anywhere on social media (Instagram, Facebook, etc.), please use our wedding hashtags:\n\n" +
-        "#MahekWedsYash\n" +
+        "#YashMahekWedding\n" +
+        "#YashMahekWedding\n" +
+        "#MahekYashWedding\n" +
         "#YashKiMahek\n\n" +
         "You can also upload your candid photos and videos directly to our wedding album:",
       action: {

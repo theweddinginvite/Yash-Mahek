@@ -164,3 +164,12 @@
     margin-bottom: var(--space-heading-to-content, clamp(2rem, 4.2vh, 3rem));
   }
 }
+
+.ios-share-icon-inline {
+  width: 1.25em;
+  height: 1.25em;
+  vertical-align: -0.25em;
+  margin: 0 0.2em;
+  color: var(--color-burgundy);
+  stroke-width: 2.2px;
+}
