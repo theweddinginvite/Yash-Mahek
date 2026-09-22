@@ -1,6 +1,6 @@
 .blessings-wall-page {
   min-height: 100vh;
-  min-height: 100lvh;
+  min-height: 100svh;
   background: var(--color-bg);
   padding: var(--space-4) var(--space-2) var(--space-5);
   overflow-x: clip;

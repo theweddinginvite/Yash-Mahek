@@ -119,7 +119,7 @@ img {
 
 .section {
   min-height: 100vh;
-  min-height: 100lvh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
