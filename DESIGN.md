@@ -331,3 +331,9 @@ Edit the value(s) above (e.g. change the accent color hex, swap a font,
 adjust a spacing number, change a section's layout description) and tell
 me what you changed — I'll translate it into the actual CSS/component edits
 and rebuild.
+
+### Recent UI / Typography Updates (Late Sept 2026)
+- **Event Cards Layout:** Transitioned from a 2-column grid to a single centered column (`minmax(0, 24rem)`) for all Event Cards to provide a more elegant, Instagram-post-style focus.
+- **Event Card Dividers:** Replaced the older CSS gradient line with a Shree Ganesh-style `linear-gradient` fading into transparent edges. Added `flex-shrink: 0` to prevent the flex container from collapsing the 1px height.
+- **Upload / RSVP Typography Normalization:** Synchronized font scales between `GalleryUploadModal` and `SendBlessingModal`. Both now use `0.95rem` for input labels, submit buttons, and descriptive subtitles, improving legibility and consistency.
+- **Gallery Upload Text:** Renamed the "Take Photo" button to "Add Photos or Videos" and updated the drag-and-drop prompt to emphasize both photo and video support, highlighted in the signature burgundy color.

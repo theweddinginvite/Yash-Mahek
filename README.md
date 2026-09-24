@@ -162,3 +162,7 @@ google-apps-script/
   Code.gs             ← Google Sheets, Google Drive dual-gallery & Telegram bot automation
   appsscript.json     ← Apps Script manifest and OAuth scopes
 ```
+
+### Latest Layout & UI Refinements
+- **1-Column Event Cards:** Event details are now beautifully centered in a single vertical column with Shree Ganesh-style partition lines.
+- **Typographic Consistency:** Font sizes across the Blessing and Gallery modals have been strictly normalized for a uniform reading experience.

@@ -245,7 +245,7 @@ export default function GalleryUploadModal({ isOpen, onClose, onUploadSuccess })
             </h3>
             <div className="gallery-upload__divider" aria-hidden="true" />
             <p className="gallery-upload__subtitle">
-              Captured a moment from {p1} &amp; {p2}&apos;s celebration? Share your candid memories with the family!
+              Captured a moment from {p1} &amp; {p2}&apos;s celebration?<br />Share your candid memories with the family!
             </p>
           </div>
 

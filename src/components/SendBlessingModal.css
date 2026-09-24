@@ -154,7 +154,7 @@
 
 .blessing-modal__subtitle {
   font-family: var(--font-body);
-  font-size: 0.84rem;
+  font-size: 0.95rem;
   color: var(--color-text-muted, #6f6a63);
   line-height: 1.4;
   margin: 0;

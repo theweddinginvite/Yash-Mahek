@@ -153,7 +153,7 @@
 
 .gallery-upload__subtitle {
   font-family: var(--font-body);
-  font-size: 0.84rem;
+  font-size: 0.95rem;
   color: var(--color-text-muted);
   line-height: 1.4;
   margin: 0;
@@ -180,7 +180,7 @@
 
 .gallery-upload__label {
   font-family: var(--font-body);
-  font-size: 0.76rem;
+  font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--color-text);
@@ -271,7 +271,7 @@
 
 .gallery-upload__dropzone.is-compact .gallery-upload__dropzone-title {
   margin: 0;
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   line-height: 1.2;
 }
 
@@ -282,7 +282,7 @@
 }
 
 .gallery-upload__dropzone-title {
-  font-size: 0.86rem;
+  font-size: 0.95rem;
   color: var(--color-text);
   margin: 0;
 }
@@ -292,7 +292,7 @@
 }
 
 .gallery-upload__dropzone-hint {
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   color: var(--color-text-muted);
   margin: 0;
 }
@@ -426,7 +426,7 @@
   width: 100%;
   padding: 0.7rem 1.25rem;
   font-family: var(--font-body);
-  font-size: 0.88rem;
+  font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   border-radius: 2rem;
