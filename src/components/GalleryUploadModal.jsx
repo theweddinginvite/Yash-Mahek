@@ -413,15 +413,11 @@ export default function GalleryUploadModal({ isOpen, onClose, onUploadSuccess })
                 <div className="gallery-upload__dropzone-icon">
                   <img src={cameraIcon} alt="" className="gallery-upload__dropzone-flaticon" />
                 </div>
-                <p className="gallery-upload__dropzone-title">
+                <p className="gallery-upload__dropzone-title" style={{ color: "var(--color-burgundy)", fontWeight: 500 }}>
                   {selectedFiles.length > 0 ? (
-                    <>
-                      <strong>+ Add more photos</strong> or drag &amp; drop
-                    </>
+                    "+ Add more photos / videos or drag & drop"
                   ) : (
-                    <>
-                      <strong>Click to select photos</strong> or drag &amp; drop here
-                    </>
+                    "Click to add photos / videos or drag & drop here"
                   )}
                 </p>
                 {selectedFiles.length === 0 && (
@@ -439,7 +435,7 @@ export default function GalleryUploadModal({ isOpen, onClose, onUploadSuccess })
                       onClick={() => cameraInputRef.current?.click()}
                     >
                       <img src={cameraIcon} alt="" className="gallery-upload__camera-btn-flaticon" />
-                      Take Photo
+                      Add Photos or Videos
                     </button>
                   </div>
                 )}
