@@ -181,6 +181,7 @@
 .rsvp-form-fields__label-text {
   font-family: var(--font-body);
   font-size: 0.82rem;
+  white-space: nowrap;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -310,7 +311,7 @@
 /* Two-column responsive row */
 .rsvp-form-fields__row {
   display: grid;
-  grid-template-columns: 1.3fr 1fr;
+  grid-template-columns: 1fr 1.45fr;
   gap: 0.65rem;
   width: 100%;
 }
@@ -961,7 +962,7 @@
 
   .rsvp-form-fields__row {
     display: grid;
-    grid-template-columns: 1.35fr 1fr;
+    grid-template-columns: 1fr 1.5fr;
     gap: 0.4rem;
   }
 

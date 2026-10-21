@@ -164,7 +164,9 @@ google-apps-script/
 ```
 
 ### Latest Layout & UI Refinements (Oct 2026)
-- **Shree Ganesh Inactivity Scroll Hint:** Integrated a smart inactivity prompt featuring a themed burgundy finger scroll animation (sourced from LottieFiles). Appears after 10s of inactivity on the Shree Ganesh page, auto-dismisses after 5s or upon user tap, and re-triggers every 15s if inactivity continues (strictly restricted to the shlok screen).
+- **Invitation Scratch Card Inactivity Auto-Peek:** After 10s of inactivity on the Invitation screen, an animated gentle random scratch automatically runs across a portion of the date reveal card, looping every 10s of further inactivity until the date is scratched open or revealed.
+- **RSVP Form Guest Count Field:** Rebalanced the RSVP two-column row grid ratio (`1fr : 1.45fr` desktop, `1fr : 1.5fr` mobile) and updated the label to `Number of guests (incl. you)` with single-line whitespace preservation.
+- **Shree Ganesh Inactivity Scroll Hint:** Integrated a smart inactivity prompt featuring a themed burgundy finger scroll animation (sourced from LottieFiles). Triggered after 10s of inactivity on the Shree Ganesh page, auto-dismisses after 5s or upon user tap, and re-triggers every 15s if inactivity continues (strictly gated by envelope open & restricted to shlok screen).
 - **Interactive Call-to-Action Scroll Button:** Transformed the shlok downward scroll trigger into a burgundy pill button displaying "Scroll to View Invite" with a centered downward arrow and ambient breathing glow.
 - **Bold English Translations:** Shree Ganesh English shloka translations rendered in bold (`font-weight: 600`) for enhanced legibility.
 - **1-Column Event Cards:** Event details are centered in a single vertical column (`minmax(0, 24rem)`) with elegant gradient partition lines.

@@ -333,8 +333,10 @@ me what you changed — I'll translate it into the actual CSS/component edits
 and rebuild.
 
 ### Recent UI & Interactive Updates (Oct 2026)
+- **Invitation Scratch Card Inactivity Peek:** Implemented an automated random scratch animation that triggers after 10s of inactivity on the `#invitation` screen, repeating every 10s of continued inactivity until the card is fully revealed or scratched by the user.
+- **RSVP Form Layout & Field Labels:** Optimized the visit plan / guest count row grid ratio to `1fr : 1.45fr` (mobile: `1fr : 1.5fr`) to accommodate `Number of guests (incl. you)` on a single line with `white-space: nowrap`.
 - **Shree Ganesh Page Call-to-Action:** The scroll button is styled as a royal burgundy pill (`background: var(--color-burgundy)`) with white typography (`1.05rem` desktop, `0.96rem` mobile), a centered downward white arrow on a second line, and a hardware-accelerated breathing glow animation (`shreeGaneshBounceAndGlow`).
-- **Inactivity Scroll Hint Modal:** Features an animated transparent WebP (`finger-scroll-burgundy.webp`) adapted from Lai's LottieFiles finger-scroll-up animation. Operates exclusively on the `#shree-ganesh` screen: triggers after 10s of inactivity, auto-closes after 5s, closes instantly on tap, and repeats every 15s if the visitor remains idle.
+- **Inactivity Scroll Hint Modal:** Features an animated transparent WebP (`finger-scroll-burgundy.webp`) adapted from Lai's LottieFiles finger-scroll-up animation. Operates exclusively on the `#shree-ganesh` screen: triggers after 10s of inactivity once envelope opens, auto-closes after 5s, closes instantly on tap, and repeats every 15s if the visitor remains idle.
 - **Shlok Translations Typography:** Set to `font-weight: 600` with royal burgundy coloring for higher contrast against the ivory background.
 - **Event Cards Layout:** Transitioned to a single centered column (`minmax(0, 24rem)`) with Shree Ganesh-style `linear-gradient` partition lines and `flex-shrink: 0`.
 - **Upload / RSVP Typography Normalization:** Synchronized font scales between `GalleryUploadModal` and `SendBlessingModal` at `0.95rem` for labels, submit buttons, and descriptive subtitles.

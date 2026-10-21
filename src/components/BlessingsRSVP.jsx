@@ -265,7 +265,7 @@ function RsvpForm({ appsScriptUrl, whatsappNumber, onCelebrate }) {
         </label>
 
         <label className="rsvp-form-fields__col">
-          <span className="rsvp-form-fields__label-text">Total Guests</span>
+          <span className="rsvp-form-fields__label-text">Number of guests (incl. you)</span>
           <select
             value={form.guests}
             onChange={(e) => setForm({ ...form, guests: e.target.value })}

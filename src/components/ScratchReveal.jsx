@@ -426,6 +426,80 @@ export default function ScratchReveal({
       lastPointRef.current = null;
     }
 
+    // Auto-peek gentle scratch on 10s of inactivity while on invitation screen
+    function performAutoHintScratch() {
+      if (hasRevealedRef.current || !container || !maskCanvasRef.current) return;
+      const rect = container.getBoundingClientRect();
+      const w = rect.width;
+      const h = rect.height;
+      if (!w || !h) return;
+
+      // Random gentle scratch streak across the middle date reveal area
+      const cx = w / 2;
+      const cy = h / 2 + 8;
+      const startX = cx - 35 + (Math.random() - 0.5) * 30;
+      const startY = cy - 6 + (Math.random() - 0.5) * 16;
+      const endX = startX + 50 + Math.random() * 20;
+      const endY = startY + (Math.random() - 0.5) * 16;
+
+      // Scratch in small animated steps so it looks natural
+      let steps = 12;
+      let cur = 0;
+      let prevX = startX;
+      let prevY = startY;
+
+      function scratchStep() {
+        if (hasRevealedRef.current) return;
+        cur++;
+        const prog = cur / steps;
+        const x = startX + (endX - startX) * prog;
+        const y = startY + (endY - startY) * prog + Math.sin(prog * Math.PI) * 4;
+
+        scratchSegment(prevX, prevY, x, y);
+        spawnDebris(x, y);
+        prevX = x;
+        prevY = y;
+
+        if (cur < steps) {
+          requestAnimationFrame(scratchStep);
+        } else {
+          // Re-check cleared percentage
+          if (measureCleared() > REVEAL_THRESHOLD && !hasRevealedRef.current) {
+            hasRevealedRef.current = true;
+            setRevealed(true);
+            onRevealRef.current?.();
+          } else if (!hasRevealedRef.current) {
+            // Once scratched, schedule the next auto-scratch after 10s of further inactivity
+            scheduleAutoScratch();
+          }
+        }
+      }
+
+      requestAnimationFrame(scratchStep);
+    }
+
+    let idleTimer = null;
+    const scheduleAutoScratch = () => {
+      clearTimeout(idleTimer);
+      if (hasRevealedRef.current) return;
+
+      idleTimer = setTimeout(() => {
+        if (!hasRevealedRef.current && isVisibleRef.current) {
+          performAutoHintScratch();
+        }
+      }, 10000);
+    };
+
+    const handleInactivityReset = () => {
+      if (!hasRevealedRef.current && isVisibleRef.current) {
+        scheduleAutoScratch();
+      }
+    };
+
+    scheduleAutoScratch();
+    const idleEvents = ["scroll", "wheel", "touchstart", "touchmove", "mousemove", "keydown", "mousedown"];
+    idleEvents.forEach((evt) => window.addEventListener(evt, handleInactivityReset, { passive: true }));
+
     resize();
     window.addEventListener("resize", resize);
 
@@ -461,6 +535,8 @@ export default function ScratchReveal({
         cancelAnimationFrame(animFrameRef.current);
         animFrameRef.current = null;
       }
+      clearTimeout(idleTimer);
+      idleEvents.forEach((evt) => window.removeEventListener(evt, handleInactivityReset));
       window.removeEventListener("resize", resize);
       canvas.removeEventListener("mousedown", handleDown);
       canvas.removeEventListener("mousemove", handleMove);
