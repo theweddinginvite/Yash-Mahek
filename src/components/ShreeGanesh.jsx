@@ -25,19 +25,16 @@ const SPARKLES = [
   { top: "8%", left: "55%", delay: "2.6s", duration: "3.5s" },
 ];
 
-export default function ShreeGanesh() {
+export default function ShreeGanesh({ isEnvelopeOpened = true }) {
   const [showScrollHint, setShowScrollHint] = useState(false);
   const isFirstHintRef = useRef(true);
 
-  // Helper to check if user is on Shree Ganesh screen
+  // Helper: check if visitor is viewing Shree Ganesh
   const isOnShlokScreen = () => {
-    const el = document.getElementById("shree-ganesh");
-    if (!el) return window.scrollY <= 100;
-    const rect = el.getBoundingClientRect();
-    return rect.bottom > window.innerHeight * 0.4 && window.scrollY <= 120;
+    return window.scrollY < 150;
   };
 
-  // 1. DEDICATED AUTO-CLOSE EFFECT: Guaranteed to close in 5 seconds once opened
+  // 1. AUTO-CLOSE: Stays open for 5 seconds, then closes
   useEffect(() => {
     if (!showScrollHint) return;
 
@@ -48,47 +45,46 @@ export default function ShreeGanesh() {
     return () => clearTimeout(timer);
   }, [showScrollHint]);
 
-  // 2. IDLE TIMER SCHEDULER: 10s initial, 15s subsequent
+  // 2. INACTIVITY TRIGGER: 10s initial, 15s subsequent
   useEffect(() => {
-    if (showScrollHint) return;
-    if (!isOnShlokScreen()) return;
+    if (!isEnvelopeOpened || showScrollHint || !isOnShlokScreen()) {
+      return;
+    }
 
-    const delay = isFirstHintRef.current ? 10000 : 15000;
-    let timerId = setTimeout(() => {
+    const waitTime = isFirstHintRef.current ? 10000 : 15000;
+
+    let timer = setTimeout(() => {
       if (isOnShlokScreen()) {
         isFirstHintRef.current = false;
         setShowScrollHint(true);
       }
-    }, delay);
+    }, waitTime);
 
-    const resetIdleTimer = () => {
-      if (!isOnShlokScreen()) {
-        clearTimeout(timerId);
-        return;
-      }
-      clearTimeout(timerId);
-      const nextDelay = isFirstHintRef.current ? 10000 : 15000;
-      timerId = setTimeout(() => {
+    const handleActivity = () => {
+      clearTimeout(timer);
+      if (!isOnShlokScreen()) return;
+
+      const nextWait = isFirstHintRef.current ? 10000 : 15000;
+      timer = setTimeout(() => {
         if (isOnShlokScreen()) {
           isFirstHintRef.current = false;
           setShowScrollHint(true);
         }
-      }, nextDelay);
+      }, nextWait);
     };
 
     const events = ["scroll", "wheel", "touchstart", "touchmove", "keydown", "mousedown"];
-    events.forEach((evt) => window.addEventListener(evt, resetIdleTimer, { passive: true }));
+    events.forEach((evt) => window.addEventListener(evt, handleActivity, { passive: true }));
 
     return () => {
-      clearTimeout(timerId);
-      events.forEach((evt) => window.removeEventListener(evt, resetIdleTimer));
+      clearTimeout(timer);
+      events.forEach((evt) => window.removeEventListener(evt, handleActivity));
     };
-  }, [showScrollHint]);
+  }, [isEnvelopeOpened, showScrollHint]);
 
   const dismissPopup = () => {
     setShowScrollHint(false);
   };
-
 
   return (
     <section id="shree-ganesh" className="shree-ganesh">
