@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 import { asset } from "../content";
 import FitDevanagari from "./FitDevanagari";
 import { smoothScrollTo } from "../lib/smoothScroll";
@@ -25,6 +26,70 @@ const SPARKLES = [
 ];
 
 export default function ShreeGanesh() {
+  const [showScrollHint, setShowScrollHint] = useState(false);
+  const isFirstHintRef = useRef(true);
+
+  // Helper to check if user is on Shree Ganesh screen
+  const isOnShlokScreen = () => {
+    const el = document.getElementById("shree-ganesh");
+    if (!el) return window.scrollY <= 100;
+    const rect = el.getBoundingClientRect();
+    return rect.bottom > window.innerHeight * 0.4 && window.scrollY <= 120;
+  };
+
+  // 1. DEDICATED AUTO-CLOSE EFFECT: Guaranteed to close in 5 seconds once opened
+  useEffect(() => {
+    if (!showScrollHint) return;
+
+    const timer = setTimeout(() => {
+      setShowScrollHint(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [showScrollHint]);
+
+  // 2. IDLE TIMER SCHEDULER: 10s initial, 15s subsequent
+  useEffect(() => {
+    if (showScrollHint) return;
+    if (!isOnShlokScreen()) return;
+
+    const delay = isFirstHintRef.current ? 10000 : 15000;
+    let timerId = setTimeout(() => {
+      if (isOnShlokScreen()) {
+        isFirstHintRef.current = false;
+        setShowScrollHint(true);
+      }
+    }, delay);
+
+    const resetIdleTimer = () => {
+      if (!isOnShlokScreen()) {
+        clearTimeout(timerId);
+        return;
+      }
+      clearTimeout(timerId);
+      const nextDelay = isFirstHintRef.current ? 10000 : 15000;
+      timerId = setTimeout(() => {
+        if (isOnShlokScreen()) {
+          isFirstHintRef.current = false;
+          setShowScrollHint(true);
+        }
+      }, nextDelay);
+    };
+
+    const events = ["scroll", "wheel", "touchstart", "touchmove", "keydown", "mousedown"];
+    events.forEach((evt) => window.addEventListener(evt, resetIdleTimer, { passive: true }));
+
+    return () => {
+      clearTimeout(timerId);
+      events.forEach((evt) => window.removeEventListener(evt, resetIdleTimer));
+    };
+  }, [showScrollHint]);
+
+  const dismissPopup = () => {
+    setShowScrollHint(false);
+  };
+
+
   return (
     <section id="shree-ganesh" className="shree-ganesh">
       <div className="shree-ganesh__view">
@@ -67,7 +132,7 @@ export default function ShreeGanesh() {
                 lines={["मंगलम् भगवान विष्णुः मंगलम् गरुणध्वजः ।", "मंगलम् पुण्डरी काक्षः मंगलाय तनो हरिः ॥"]}
               />
               <p className="shree-ganesh__shlok-translation">
-                Lord Vishnu is auspicious, the lotus-eyed Lord who bears Garuda upon His banner is auspicious; may Lord Hari bless us with auspiciousness.
+                Lord Vishnu is auspicious, the lotus-eyed Lord who bears Garuda upon his banner is auspicious; may Lord Hari bless us with auspiciousness.
               </p>
             </div>
           </div>
@@ -76,8 +141,9 @@ export default function ShreeGanesh() {
             type="button"
             className="shree-ganesh__scroll-btn"
             onClick={() => smoothScrollTo("invitation", { offset: 0 })}
-            aria-label="Scroll to Invitation"
+            aria-label="Scroll to View Invite"
           >
+            <span className="shree-ganesh__scroll-btn-text">Scroll to View Invite</span>
             <span className="shree-ganesh__scroll-arrow" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
@@ -86,6 +152,23 @@ export default function ShreeGanesh() {
           </button>
         </div>
       </div>
+    {showScrollHint && (
+        <div
+          className="shree-ganesh__hint-modal"
+          role="dialog"
+          aria-label="Scroll prompt"
+          onClick={dismissPopup}
+        >
+          <div className="shree-ganesh__hint-card" onClick={dismissPopup}>
+            <img
+              src={asset("/images/icons/finger-scroll-burgundy.webp")}
+              alt="Scroll up"
+              className="shree-ganesh__hint-anim"
+            />
+            <p className="shree-ganesh__hint-text">Scroll Down</p>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

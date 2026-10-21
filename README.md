@@ -7,7 +7,7 @@ A high-performance, single-page luxury Indian wedding invitation built with Reac
 ## ✨ Features & Architecture
 
 - **Interactive 3D Envelope Intro**: Realistic 3D flap rotation, card emergence, wax seal flip, and smooth fly-in animation to the invitation.
-- **Sacred Invocation (`#shree-ganesh`)**: Lord Ganesha crest with ambient golden rose glow and sacred Devanagari Sanskrit shlokas (*Vakratunda Mahakaya...* across 2 rhythmic lines & *Mangalam Bhagwan Vishnuh...*).
+- **Sacred Invocation (`#shree-ganesh`)**: Lord Ganesha crest with ambient golden rose glow, bold Devanagari Sanskrit shlokas and translations, an interactive burgundy "Scroll to View Invite" call-to-action button, and an inactivity finger scroll animation prompt.
 - **Wedding Invitation (`#invitation`)**: Dedicated invitation screen with groom & bride names in royal burgundy cursive calligraphy, elegant gold ampersand connector, and monogrammed scratch-to-reveal card with animated glass shine sweep across "SAVE THE DATE", live countdown, confetti celebration, and synchronized global date reveal.
 - **Navigation Drawer**: Distraction-free viewport with glassmorphic top-left floating menu, tailored 240px width, two-line stacked couple header (*Yashoratna &* / *Mahek*), and smooth section jumping.
 - **Meet the Families (`#couple`)**: Traditional royal Indian wedding lineage cards with sacred Gayatri Mantra Sanskrit shloka (*॥ ॐ भूर्भुवः स्वः...*), `THE GUPTA FAMILY` titles in royal burgundy, `॥ मंगलम् ॥` (*Auspicious Beginning*) & `॥ युग्म ॥` (*Sacred Union*) symbols rendered in two-layer ghost-matched HTML typography with the couple's Hindi initials strictly on consonants (**म** & **य**) highlighted in royal burgundy, diacritics and framing elements in ceremonial gold, unified Cormorant Garamond italic typography across all contextual and relationship lines in muted gray, and luxury double borders with burgundy inner dashed accents.
@@ -26,7 +26,7 @@ A high-performance, single-page luxury Indian wedding invitation built with Reac
   - **Telegram Bot Notifications & Moderation**: Instant Telegram alerts for new blessings & RSVPs with native inline "🗑️ Delete from Live Wall" moderation buttons.
 - **Live Wedding Notice Board**: Real-time announcement feed popup accessible from the floating controls, designed with luxury parchment cards, 45s auto-close progress bar, and instant synchronization with Firebase Firestore and Google Sheets.
 - **Telegram Host Announcements**: Hosts can broadcast live updates, ceremony timings, or venue changes directly from the Telegram bot/admin group using `/notice <message>`, `/announce <message>`, or `/alert <message>` (urgent notice). The bot replies with a native inline "🗑️ Remove from Notice Board" button for 1-tap live deletion.
-- **FAQ & Footer (`#faq`)**: Curated 6-question accordion covering exact travel routes & distances, complimentary parking, dress codes, December weather breakdown, 12:00 PM check-in & 10:00 AM check-out with mandatory Aadhaar ID requirements, hospitality coordinators, 24/7 snacks availability, official wedding hashtags (`#MahekWedsYash` & `#YashKiMahek`), and interactive action buttons for venue navigation and gallery jumps.
+- **FAQ & Footer (`#faq`)**: Curated 6-question accordion covering exact travel routes & distances, complimentary parking, dress codes, December weather breakdown, 12:00 PM check-in & 10:00 AM check-out with mandatory Aadhaar ID requirements, hospitality coordinators, 24/7 snacks availability, official wedding hashtags (`#YashMahekWedding`, `#MahekYashWedding` & `#YashKiMahek`), and interactive action buttons for venue navigation and gallery jumps.
 - **Mobile Viewport Stability & Smooth Free Scrolling**: Standardized on `min-height: 100vh; min-height: 100lvh;` with global `overflow-anchor: none !important;` and `scroll-snap-type: none !important;`, preventing mobile URL bar expansion/retraction from triggering scroll jumps, erratic repositioning, or rubber-banding across iOS Safari and Android Chrome.
 - **Floating Controls**: Ambient background music player, envelope re-opener, Live Notice Board button (with pulsing badge indicator), and Event Details & Itinerary popup button pinned with responsive right safe-area offset.
 
@@ -163,6 +163,9 @@ google-apps-script/
   appsscript.json     ← Apps Script manifest and OAuth scopes
 ```
 
-### Latest Layout & UI Refinements
-- **1-Column Event Cards:** Event details are now beautifully centered in a single vertical column with Shree Ganesh-style partition lines.
-- **Typographic Consistency:** Font sizes across the Blessing and Gallery modals have been strictly normalized for a uniform reading experience.
+### Latest Layout & UI Refinements (Oct 2026)
+- **Shree Ganesh Inactivity Scroll Hint:** Integrated a smart inactivity prompt featuring a themed burgundy finger scroll animation (sourced from LottieFiles). Appears after 10s of inactivity on the Shree Ganesh page, auto-dismisses after 5s or upon user tap, and re-triggers every 15s if inactivity continues (strictly restricted to the shlok screen).
+- **Interactive Call-to-Action Scroll Button:** Transformed the shlok downward scroll trigger into a burgundy pill button displaying "Scroll to View Invite" with a centered downward arrow and ambient breathing glow.
+- **Bold English Translations:** Shree Ganesh English shloka translations rendered in bold (`font-weight: 600`) for enhanced legibility.
+- **1-Column Event Cards:** Event details are centered in a single vertical column (`minmax(0, 24rem)`) with elegant gradient partition lines.
+- **Typographic Consistency:** Font sizes across the Blessing and Gallery modals strictly normalized to `0.95rem` for a uniform reading experience.

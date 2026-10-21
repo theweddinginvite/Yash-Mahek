@@ -138,6 +138,7 @@
 
 .shree-ganesh__shlok-translation {
   font-style: italic;
+  font-weight: 600;
   font-size: clamp(1.02rem, 1.7vh, 1.12rem);
   color: var(--color-burgundy);
   line-height: 1.55;
@@ -169,35 +170,51 @@
 
 .shree-ganesh__scroll-btn {
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
+  gap: 0.15rem;
+  width: auto;
+  min-height: 2.6rem;
+  padding: 0.55rem 1.45rem 0.45rem;
   margin-top: 1rem;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid var(--color-border);
-  border-radius: 50%;
-  color: var(--color-accent);
+  background: var(--color-burgundy, #8f3350);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 2rem;
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-  box-shadow: 0 2px 10px rgba(46, 43, 40, 0.04);
-  animation: shreeGaneshBounce 2.4s infinite ease-in-out;
+  box-shadow: 0 0 16px rgba(143, 51, 80, 0.5), 0 2px 10px rgba(143, 51, 80, 0.3);
+  animation: shreeGaneshBounceAndGlow 2.4s infinite ease-in-out;
+  will-change: transform, box-shadow;
+  transform: translateZ(0);
+}
+
+.shree-ganesh__scroll-btn-text {
+  display: inline-block;
+  line-height: 1;
 }
 
 .shree-ganesh__scroll-btn:hover {
-  background: var(--color-surface);
-  border-color: var(--color-accent);
-  color: var(--color-burgundy);
-  transform: translateY(2px) scale(1.05);
-  box-shadow: 0 4px 16px rgba(143, 51, 80, 0.12);
+  background: #73273e;
+  border-color: #ffffff;
+  color: #ffffff;
+  transform: translateY(2px) scale(1.08);
+  box-shadow: 0 0 24px rgba(143, 51, 80, 0.8), 0 4px 18px rgba(143, 51, 80, 0.4);
 }
 
 .shree-ganesh__scroll-arrow {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  line-height: 1;
 }
 
 .shree-ganesh__scroll-arrow svg {
@@ -205,15 +222,14 @@
   height: 100%;
 }
 
-@keyframes shreeGaneshBounce {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0);
+@keyframes shreeGaneshBounceAndGlow {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+    box-shadow: 0 0 10px rgba(143, 51, 80, 0.35), 0 2px 6px rgba(46, 43, 40, 0.12);
   }
-  40% {
-    transform: translateY(6px);
-  }
-  60% {
-    transform: translateY(3px);
+  50% {
+    transform: translate3d(0, 7px, 0);
+    box-shadow: 0 0 22px rgba(143, 51, 80, 0.75), 0 0 30px rgba(176, 137, 104, 0.45);
   }
 }
 
@@ -297,8 +313,12 @@
     left: 0;
     right: 0;
     margin: 0 auto;
-    width: 2.6rem;
-    height: 2.6rem;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    max-width: 90vw;
+    padding: 0.48rem 1.25rem 0.42rem;
+    font-size: 0.96rem;
     z-index: 10;
   }
 
@@ -313,5 +333,77 @@
   .sparkle,
   .shree-ganesh__ganesh-glow {
     animation: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Finger Scroll / Inactivity Hint Modal (Auto-closes in 3s)
+   -------------------------------------------------------------------------- */
+.shree-ganesh__hint-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(44, 37, 35, 0.45);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  pointer-events: auto;
+  animation: hintFadeIn 0.35s ease forwards;
+}
+
+.shree-ganesh__hint-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 1.5px solid var(--color-burgundy);
+  border-radius: 1.5rem;
+  padding: 1.6rem 2rem 1.4rem;
+  box-shadow: 0 16px 40px rgba(143, 51, 80, 0.25), 0 4px 12px rgba(46, 43, 40, 0.15);
+  text-align: center;
+  max-width: 82vw;
+  animation: hintPopIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.shree-ganesh__hint-anim {
+  width: 82px;
+  height: 82px;
+  object-fit: contain;
+  margin-bottom: 0.35rem;
+  display: block;
+}
+
+.shree-ganesh__hint-text {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-burgundy);
+  letter-spacing: 0.02em;
+  margin: 0;
+  line-height: 1.25;
+}
+
+@keyframes hintFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes hintPopIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+  50% {
+    transform: translateY(-8px);
+    opacity: 1;
   }
 }
