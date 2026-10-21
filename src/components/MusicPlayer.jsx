@@ -1,21 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 import content from "../content";
 
-function SoundOnIcon() {
+function MusicPlayingIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <path d="M4 9v6h4l5 4V5L8 9H4z" strokeLinejoin="round" />
-      <path d="M16.5 8.5a5 5 0 0 1 0 7" strokeLinecap="round" />
-      <path d="M19 6a9 9 0 0 1 0 12" strokeLinecap="round" />
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M9 18V5l12-2v13" />
+      <circle cx="6" cy="18" r="3" fill="currentColor" fillOpacity="0.2" />
+      <circle cx="18" cy="16" r="3" fill="currentColor" fillOpacity="0.2" />
     </svg>
   );
 }
 
-function SoundOffIcon() {
+function MusicMutedIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <path d="M4 9v6h4l5 4V5L8 9H4z" strokeLinejoin="round" />
-      <path d="M16 9l5 6M21 9l-5 6" strokeLinecap="round" />
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M9 18V5l12-2v13" />
+      <circle cx="6" cy="18" r="3" />
+      <circle cx="18" cy="16" r="3" />
+      <line x1="3" y1="3" x2="21" y2="21" stroke="currentColor" strokeWidth="2" />
     </svg>
   );
 }
@@ -23,18 +25,31 @@ function SoundOffIcon() {
 export default function MusicPlayer() {
   const { music } = content;
   const audioRef = useRef(null);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
 
   useEffect(() => {
     if (!music.src) return;
     const audio = audioRef.current;
+    if (!audio) return;
 
-    const tryPlay = () => audio.play().catch(() => {});
-    tryPlay();
+    audio.volume = 0.8;
 
-    // Browsers block autoplay with sound until the visitor interacts with
-    // the page — this catches the first click/tap anywhere and retries.
-    const unlockOnInteraction = () => tryPlay();
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => setIsPlaying(true))
+        .catch(() => {
+          // Browser autoplay restriction before interaction
+          setIsPlaying(false);
+        });
+    }
+
+    const unlockOnInteraction = () => {
+      if (audio && audio.paused) {
+        audio.play().then(() => setIsPlaying(true)).catch(() => {});
+      }
+    };
+
     window.addEventListener("click", unlockOnInteraction, { once: true });
     window.addEventListener("touchstart", unlockOnInteraction, { once: true });
 
@@ -46,11 +61,17 @@ export default function MusicPlayer() {
 
   if (!music.src) return null;
 
-  const toggleMute = () => {
+  const toggleMusic = () => {
     const audio = audioRef.current;
-    audio.muted = !audio.muted;
-    setIsMuted(audio.muted);
-    if (!audio.muted) audio.play().catch(() => {});
+    if (!audio) return;
+
+    if (audio.paused || audio.muted) {
+      audio.muted = false;
+      audio.play().then(() => setIsPlaying(true)).catch(() => {});
+    } else {
+      audio.pause();
+      setIsPlaying(false);
+    }
   };
 
   return (
@@ -59,10 +80,11 @@ export default function MusicPlayer() {
       <button
         type="button"
         className="icon-button"
-        onClick={toggleMute}
-        aria-label={isMuted ? "Unmute background music" : "Mute background music"}
+        onClick={toggleMusic}
+        aria-label={isPlaying ? "Mute background music" : "Play background music"}
+        title={isPlaying ? "Mute background music" : "Play background music"}
       >
-        {isMuted ? <SoundOffIcon /> : <SoundOnIcon />}
+        {isPlaying ? <MusicPlayingIcon /> : <MusicMutedIcon />}
       </button>
     </>
   );
